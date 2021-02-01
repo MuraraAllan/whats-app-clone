@@ -1,7 +1,14 @@
 
+file structure :
+
+// I do prefer to have a pages area where we would in an application divide by routes we have in our application and they business logic;
+// isolate components that belong to "pages" inside of pages
+// distribute components that are used around different pages in components area on  main project, they will be in majority style components
+pages/MainPage 
+components
 
 
-
+packages
 
 fa-icons
 material-ui
@@ -26,8 +33,9 @@ MessagesArea
 
 PROVIDERS
 userProvider = userObject provides all chats that the currentUser has 
-allGrouPChats = groupChats provide all groupChats
+groupChats = groupChats provide all groupChats of current loged in user;
 groupChat = groupChat - contains users belonging to that group and messages;
+
 
 CUSTOM HOOKS
 registerForm 

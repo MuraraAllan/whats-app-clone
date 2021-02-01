@@ -1,5 +1,5 @@
 import React from 'react'
-import { BorderedContainer } from '../../../../components/BorderedContainer'
+import { BorderedContainer } from '../../../../shared/components/BorderedContainer'
 
 export default function ChatsArea() {
   return <BorderedContainer >

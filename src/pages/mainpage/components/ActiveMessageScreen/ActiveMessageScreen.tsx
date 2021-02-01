@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default function ActiveMessageScreen() {
-  return <div> </div>
+  return <div> Active Message Screen</div>
 }
