@@ -1,0 +1,55 @@
+
+
+
+
+
+fa-icons
+material-ui
+styled-components
+
+
+
+typescript
+
+
+bonus storybook?
+
+UserArea
+
+FilterArea 
+
+ActiveMessageScreen should useRegisterForm and when displayed should overwrite the screen it also should be able to clear out the state of displayed.
+
+
+MessagesArea
+
+
+PROVIDERS
+userProvider = userObject provides all chats that the currentUser has 
+allGrouPChats = groupChats provide all groupChats
+groupChat = groupChat - contains users belonging to that group and messages;
+
+CUSTOM HOOKS
+registerForm 
+
+messages interface {
+  it can have attachments, being an attachment of type different then sound,  which would still containg a textMessage, or it can have an audio message file type which would not have a textMessage
+  it can have inline Buttons 
+
+}
+
+inlineButtons interface {
+each button can have an action onClick, being an action an Enum (inlineButtonsActions)
+}
+
+inlineButtonsActions enum {
+  REGISTER_NEW_USER = () => dispatchReact-hook-forms-register,
+  APPROVE_USER
+}
+
+
+activeChatScreen = chatGroupId, isTakingPhoto, isSendingPhoto, isRecordingVoice
+
+
+
+activeMessageScreen 
