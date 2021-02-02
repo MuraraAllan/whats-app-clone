@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
-import { FullHeightBorderedContainer } from 'components/BorderedContainer'
+import { FullHeightBorderedContainer } from 'shared/components/BorderedContainer'
 import UserArea from './components/UserArea'
 import ChatsArea from './components/ChatsArea'
 import FilterArea from './components/FilterArea'

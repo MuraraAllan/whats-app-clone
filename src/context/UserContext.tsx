@@ -12,9 +12,9 @@ const LoggedUserContext = React.createContext<User | null>(null)
 type UserProviderProps = { children: React.ReactNode }
 
 // user context will not carry any reducer nor actions
-// our backend will propagate all users chat rooms
+// our backend will propagate all user's chat rooms
 function LoggedUserProvider({ children }: UserProviderProps) {
-  const [state, dispatch] = React.useState<User | null>(null)
+  const [state] = React.useState<User | null>(null)
 
   return (
     <LoggedUserContext.Provider value={state}>

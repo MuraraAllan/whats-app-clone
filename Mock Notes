@@ -1,3 +1,4 @@
+Should fix relative imports on eslint config;
 
 file structure :
 
@@ -61,3 +62,5 @@ activeChatScreen = chatGroupId, isTakingPhoto, isSendingPhoto, isRecordingVoice
 
 
 activeMessageScreen 
+
+

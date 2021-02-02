@@ -31,7 +31,6 @@ interface ChatSessions {
 
 type Action = { type: 'add_message' }
 type Dispatch = (action: Action) => void
-
 type ChatSessionProviderProps = { children: React.ReactNode }
 
 // user context will carry reducer actions to add messages into our group chats
