@@ -12,14 +12,21 @@ export default interface Message {
   message_id: string,
   textMessage?: string,
   inlineButtons?: InlineButtons[],
+  timeStamp: number,
   user: User
 }
+
+// unreadMessages would be the result of storing last time each user opened that chat in an intersection
+// so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
 
 export interface ChatSession {
   session_id: string,
   title: string,
   participants: User[],
-  messages?: Message[]
+  messages?: Message[],
+  chatImage?: File,
+  unreadMessages?: number,
+  lastReadTimestamp?: number,
   lastMessage?: Message
 }
 
@@ -46,7 +53,6 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
 
 function useChatSessions() {
   const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
-  console.log('form usechatsession hook', chatSessions)
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
   return { chatSessions, addMessage }
 }
@@ -69,9 +75,12 @@ function useChatSession(session_id: string, user_id?: string) {
 
   const userBelongsToSession = useMemo(() => {
     let belongs: boolean = false
+    console.log('user id is', user_id)
+    console.log('chat sessuion is', chatSession)
     if (session_id == null || user_id == null) {
       return belongs
     }
+
     Object.values(chatSession.participants).forEach((participant) => {
       if (participant.user_id === user_id) {
         belongs = true
