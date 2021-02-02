@@ -1,17 +1,17 @@
 import React, { useReducer, useMemo, useState } from 'react'
 import { User } from 'shared/context/UserContext'
-import { chatSessions } from 'mocks/chatSessions'
+import { chatSessionsMock } from 'mocks/chatSessions'
 
 
 interface InlineButtons {
   label: string,
-  onClickAction: Function
+  onClickAction?: Function
 }
 
 export default interface Message {
   message_id: string,
-  textMessage: string,
-  inlineButtons: InlineButtons[],
+  textMessage?: string,
+  inlineButtons?: InlineButtons[],
   user: User
 }
 
@@ -28,8 +28,6 @@ interface ChatSessions {
 }
 
 type Action = { type: 'add_message', session_id: string }
-type Dispatch = (action: Action) => void
-type ChatSessionProviderProps = { children: React.ReactNode }
 
 // user context will carry reducer actions to add messages into our group chats
 // ideally our backend would take care of this functionality, but we want to structure
@@ -47,20 +45,18 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
 }
 
 function useChatSessions() {
-
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
   console.log('form usechatsession hook', chatSessions)
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
   return { chatSessions, addMessage }
 }
-
 
 function useChatSession(session_id: string, user_id?: string) {
   const { chatSessions } = useChatSessions()
 
   const chatSession = useMemo(() => {
     let localSession: ChatSession | null = null
-    Object.values(chatSessions).forEach((session: ChatSession) => {
+    Object.values(chatSessions.sessions).forEach((session: ChatSession) => {
       if (session.session_id === session_id) {
         localSession = session
       }
@@ -95,7 +91,7 @@ function useActiveSession() {
   const [activeSession, setActive] = useState<ChatSession | null>(null)
 
   const setActiveSession = (session_id: string) => {
-    Object.values(chatSessions).forEach(session => {
+    Object.values(chatSessions.sessions).forEach(session => {
       if (session.session_id === session_id) {
         return setActive(session)
       }

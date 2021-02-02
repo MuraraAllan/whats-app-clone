@@ -1,12 +1,13 @@
-export const chatSessions = [
+export const chatSessionsMock = [
   {
     session_id: "1",
     title: "Sala de chat 1",
     participants: [
-      { user_id: 1, userName: 'Karen' },
-      { user_id: 2, userName: 'KYC' },
-      { user_id: 3, userName: 'Seu nome' },
+      { user_id: "1", userName: 'Karen' },
+      { user_id: "2", userName: 'KYC' },
+      { user_id: "3", userName: 'Seu nome' },
     ],
+    unreadMessages: 1,
     messages: [
       {
         message_id: '1a',
@@ -16,7 +17,8 @@ export const chatSessions = [
           { label: "Rejeitar" },
           { label: "Solicitar Info Adicional" }
         ],
-        user: { user_id: 1, userName: 'Karen' }
+        user: { user_id: "1", userName: 'Karen' },
+        timeStamp: 1612275839631,
       },
       {
         message_id: '1b',
@@ -26,7 +28,8 @@ export const chatSessions = [
           { label: "Polícia Civil SP - Antecedentes. R$ 0,20" },
           { label: "Ficha de crédito. R$ 0,20" }
         ],
-        user: { user_id: 2, userName: 'KYC' }
+        user: { user_id: "2", userName: 'KYC' },
+        timeStamp: 1612275839631,
       }
     ]
   },
@@ -34,8 +37,8 @@ export const chatSessions = [
     session_id: "2",
     title: "Sala de chat 2",
     participants: [
-      { user_id: 1, userName: 'Karen' },
-      { user_id: 3, userName: 'Seu nome' },
+      { user_id: "1", userName: 'Karen' },
+      { user_id: "3", userName: 'Seu nome' },
     ],
     messages: [
       {
@@ -45,7 +48,8 @@ export const chatSessions = [
           { label: "Fazer meu Cadastro" },
           { label: "Informações sobre a Intersowa OTC" },
         ],
-        user: { user_id: 1, userName: 'Karen' }
+        user: { user_id: "1", userName: 'Karen' },
+        timeStamp: 1612275839631,
       }
     ]
   },
@@ -53,7 +57,14 @@ export const chatSessions = [
     session_id: "3",
     title: "Sala de chat 3",
     participants: [
-      { user_id: 1, userName: 'Karen' },
+      { user_id: "1", userName: 'Karen' },
     ],
+    lastMessage:
+    {
+      message_id: '3a',
+      textMessage: "any",
+      user: { user_id: "1", userName: 'Karen' },
+      timeStamp: 1612275839631,
+    }
   },
 ]
