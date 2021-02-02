@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChatSession } from './ChatSessionsContext'
+import { ChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 export interface User {
   user_id: string,

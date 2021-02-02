@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { User } from 'shared/UserContext'
+import React, { useReducer, useMemo, useState } from 'react'
+import { User } from 'shared/context/UserContext'
 import { chatSessions } from 'mocks/chatSessions'
 
 
@@ -47,20 +47,62 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
 }
 
 function useChatSessions() {
+
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
   console.log('form usechatsession hook', chatSessions)
-  const [state, dispatch] = React.useReducer(ChatSessionsReducer, { sessions: [] })
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
-  return { state, addMessage }
+  return { chatSessions, addMessage }
 }
 
 
-function useChatSession(session_id: string) {
-  const state = useChatSessions()
-  console.log('all chats are', state)
-  const chatSession = React.useMemo(() => {
+function useChatSession(session_id: string, user_id?: string) {
+  const { chatSessions } = useChatSessions()
 
-  }, [session_id])
+  const chatSession = useMemo(() => {
+    let localSession: ChatSession | null = null
+    Object.values(chatSessions).forEach((session: ChatSession) => {
+      if (session.session_id === session_id) {
+        localSession = session
+      }
+    })
+    if (localSession == null) {
+      throw new Error("Session not found")
+    }
+    return localSession as ChatSession
+  }, [session_id, chatSessions])
+
+  const userBelongsToSession = useMemo(() => {
+    let belongs: boolean = false
+    if (session_id == null || user_id == null) {
+      return belongs
+    }
+    Object.values(chatSession.participants).forEach((participant) => {
+      if (participant.user_id === user_id) {
+        belongs = true
+      }
+    })
+    return belongs
+  }, [session_id, user_id, chatSession])
+
+  return {
+    chatSession,
+    userBelongsToSession
+  }
 }
 
+function useActiveSession() {
+  const { chatSessions } = useChatSessions()
+  const [activeSession, setActive] = useState<ChatSession | null>(null)
 
-export { useChatSessions }
+  const setActiveSession = (session_id: string) => {
+    Object.values(chatSessions).forEach(session => {
+      if (session.session_id === session_id) {
+        return setActive(session)
+      }
+    })
+  };
+
+  return { activeSession, setActiveSession }
+}
+
+export { useChatSessions, useActiveSession, useChatSession }
