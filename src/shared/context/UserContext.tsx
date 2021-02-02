@@ -4,7 +4,7 @@ import { ChatSession } from './ChatSessionsContext'
 export interface User {
   user_id: string,
   userName: string,
-  chatSessions?: ChatSession[]
+  chatSessions?: ChatSession[],
 }
 
 const LoggedUserContext = React.createContext<User | null>(null)

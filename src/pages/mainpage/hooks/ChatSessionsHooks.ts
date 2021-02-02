@@ -1,13 +1,11 @@
 import * as React from 'react'
-import { User } from './UserContext'
+import { User } from 'shared/UserContext'
+import { chatSessions } from 'mocks/chatSessions'
 
-enum InlineButtonsActions {
-  REGISTER_NEW_USER
-}
 
 interface InlineButtons {
   label: string,
-  onClickAction: InlineButtonsActions
+  onClickAction: Function
 }
 
 export default interface Message {
@@ -18,9 +16,9 @@ export default interface Message {
 }
 
 export interface ChatSession {
-  sessionId: string,
+  session_id: string,
   title: string,
-  participantNames: string[],
+  participants: User[],
   messages?: Message[]
   lastMessage?: Message
 }
@@ -29,7 +27,7 @@ interface ChatSessions {
   sessions: ChatSession[] | []
 }
 
-type Action = { type: 'add_message' }
+type Action = { type: 'add_message', session_id: string }
 type Dispatch = (action: Action) => void
 type ChatSessionProviderProps = { children: React.ReactNode }
 
@@ -39,28 +37,30 @@ type ChatSessionProviderProps = { children: React.ReactNode }
 // we will ignore PrivateChatSessions but we are ready to receive also PrivateChatSessions
 // which would share types with GroupChatSessions 
 
-const ChatSessionContext = React.createContext<ChatSessions | null>(null)
-const ChatSessionMessageDispatchContext = React.createContext<Dispatch | undefined>(
-  undefined,
-)
-
 function ChatSessionsReducer(state: ChatSessions, action: Action) {
   switch (action.type) {
     case 'add_message': {
+      console.log('received an action to add message', action.session_id)
       return state
     }
   }
 }
 
-function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
+function useChatSessions() {
+  console.log('form usechatsession hook', chatSessions)
   const [state, dispatch] = React.useReducer(ChatSessionsReducer, { sessions: [] })
-  return (
-    <ChatSessionContext.Provider value={state}>
-      <ChatSessionMessageDispatchContext.Provider value={dispatch}>
-        {children}
-      </ChatSessionMessageDispatchContext.Provider>
-    </ChatSessionContext.Provider>
-  )
+  const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
+  return { state, addMessage }
 }
 
-export { ChatSessionsProvider }
+
+function useChatSession(session_id: string) {
+  const state = useChatSessions()
+  console.log('all chats are', state)
+  const chatSession = React.useMemo(() => {
+
+  }, [session_id])
+}
+
+
+export { useChatSessions }
