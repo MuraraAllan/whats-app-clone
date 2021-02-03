@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { ChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { userWithChatSessions } from 'mocks/userData'
+
 export interface User {
   user_id: string,
   userName: string,

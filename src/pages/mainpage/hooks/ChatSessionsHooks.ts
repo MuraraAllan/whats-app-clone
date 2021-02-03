@@ -1,4 +1,4 @@
-import React, { useReducer, useMemo, useState } from 'react'
+import React, { useReducer, useMemo, useState, useEffect } from 'react'
 import { User } from 'shared/context/UserContext'
 import { chatSessionsMock } from 'mocks/chatSessions'
 
@@ -25,7 +25,7 @@ export interface ChatSession {
   participants: User[],
   messages?: Message[],
   chatImage?: File,
-  unreadMessages?: number,
+  unreadMessages: number,
   lastReadTimestamp?: number,
   lastMessage?: Message
 }
@@ -34,7 +34,7 @@ interface ChatSessions {
   sessions: ChatSession[] | []
 }
 
-type Action = { type: 'add_message', session_id: string }
+type Action = { type: 'add_message', session_id: string } | { type: 'update_fetched', state: ChatSession[] }
 
 // user context will carry reducer actions to add messages into our group chats
 // ideally our backend would take care of this functionality, but we want to structure
@@ -44,6 +44,12 @@ type Action = { type: 'add_message', session_id: string }
 
 function ChatSessionsReducer(state: ChatSessions, action: Action) {
   switch (action.type) {
+    case 'update_fetched': {
+      console.log('received an action to update', action.state)
+      return {
+        sessions: [...action.state]
+      }
+    }
     case 'add_message': {
       console.log('received an action to add message', action.session_id)
       return state
@@ -52,7 +58,15 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
 }
 
 function useChatSessions() {
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
+
+  useEffect(() => {
+    if (chatSessionsMock == null) {
+      return
+    }
+    dispatch({ type: 'update_fetched', state: chatSessionsMock })
+  }, [chatSessionsMock])
+
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
   return { chatSessions, addMessage }
 }
@@ -68,16 +82,14 @@ function useChatSession(session_id: string, user_id?: string) {
       }
     })
     if (localSession == null) {
-      throw new Error("Session not found")
+      return null
     }
     return localSession as ChatSession
   }, [session_id, chatSessions])
 
   const userBelongsToSession = useMemo(() => {
     let belongs: boolean = false
-    console.log('user id is', user_id)
-    console.log('chat sessuion is', chatSession)
-    if (session_id == null || user_id == null) {
+    if (session_id == null || user_id == null || chatSession == null) {
       return belongs
     }
 

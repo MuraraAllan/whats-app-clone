@@ -40,6 +40,7 @@ export const chatSessionsMock = [
       { user_id: "1", userName: 'Karen' },
       { user_id: "3", userName: 'Seu nome' },
     ],
+    unreadMessages: 1,
     messages: [
       {
         message_id: '2a',
@@ -59,6 +60,7 @@ export const chatSessionsMock = [
     participants: [
       { user_id: "1", userName: 'Karen' },
     ],
+    unreadMessages: 5,
     lastMessage:
     {
       message_id: '3a',
