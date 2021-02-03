@@ -6,7 +6,6 @@ import ChatContent from './ChatContent'
 
 export default function ChatsArea() {
   const user = useUser()
-  console.log('hey there from chatsare', user.chatSessions)
   return (
     <>
       {
