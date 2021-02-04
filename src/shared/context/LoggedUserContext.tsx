@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { userWithChatSessions } from 'mocks/userData'
 
@@ -15,7 +15,7 @@ type UserProviderProps = { children: React.ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 function LoggedUserProvider({ children }: UserProviderProps) {
-  const [state, setUser] = React.useState<User | null>(userWithChatSessions)
+  const [state,] = React.useState<User | null>(userWithChatSessions)
   return (
     <LoggedUserContext.Provider value={state}>
       {children}

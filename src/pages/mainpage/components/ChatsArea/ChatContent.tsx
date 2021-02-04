@@ -5,7 +5,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 import { BorderedContainer } from 'shared/components/BorderedContainer'
 import { CircleContainer } from 'shared/components/CircleContainer';
-import { ChatSession, useChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { ChatSession, useChatSession, useActiveSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
 
 const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => {
@@ -23,7 +23,8 @@ const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => 
 
 export default function ChatsArea({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
   const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
-  const Container = styled(BorderedContainer)`height: 72px`
+  const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
+  const { setActiveSession } = useActiveSession()
 
   if (chatSession == null) {
     return null
@@ -34,7 +35,7 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
       justify="space-evenly"
       alignItems="center"
       direction="row"
-
+      onClick={() => setActiveSession(session_id)}
     >
       <CircleContainer lg={3} xl={3} style={{
         opacity: userBelongsToSession === false ? '50%' : null
@@ -45,7 +46,7 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
         style={{
           opacity: userBelongsToSession === false ? '50%' : null
         }}>
-        <span>{chatSession.title}</span>
+        <span><b>{chatSession.title}</b></span>
         <span>{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'archived'}</span>
       </Grid>
       <Grid container xs={4} sm={5} md={4} lg={3} xl={3}
@@ -57,7 +58,7 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
           opacity: '50%'
         }}>{timeStampToTimeConverter(chatSession.lastMessage.timeStamp)}</span>
         <CircleContainer width="27" height="27" border="4" style={{ opacity: '100%' }}>
-          <span >{chatSession.unreadMessages}</span>
+          <span>{chatSession.unreadMessages}</span>
         </CircleContainer>
       </Grid>
     </Container>

@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { BorderedContainer } from 'shared/components/BorderedContainer'
-import { useUser } from '../../../../shared/hooks/UserHooks'
+import { useUser } from 'shared/hooks/UserHooks'
 import ChatContent from './ChatContent'
 
 export default function ChatsArea() {

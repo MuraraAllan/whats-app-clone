@@ -20,9 +20,9 @@ export default function UserArea() {
       direction="row"
     >
       <CircleContainer>
-        <PersonIcon style={{ width: '100%', height: '100%' }} />
+        <PersonIcon style={{ width: '80%', height: '80%' }} />
       </CircleContainer>
-      <Grid xs={7} sm={8} md={9} lg={9} xl={10}>
+      <Grid xs={7} sm={8} md={8} lg={9} xl={9}>
         <span>[{user.userName}]</span>
       </Grid>
       <Grid item>

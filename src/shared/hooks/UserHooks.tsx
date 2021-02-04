@@ -1,5 +1,6 @@
+
 import { useContext } from "react";
-import { LoggedUserContext } from "../context/UserContext";
+import { LoggedUserContext } from "../context/LoggedUserContext";
 
 function useUser() {
   const userContext = useContext(LoggedUserContext)

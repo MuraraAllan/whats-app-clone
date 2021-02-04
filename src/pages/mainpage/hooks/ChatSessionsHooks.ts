@@ -1,7 +1,7 @@
-import React, { useReducer, useMemo, useState, useEffect } from 'react'
-import { User } from 'shared/context/UserContext'
+import React, { useReducer, useMemo, useContext, useEffect } from 'react'
+import { User } from 'shared/context/LoggedUserContext'
 import { chatSessionsMock } from 'mocks/chatSessions'
-
+import { ActiveSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveSessionContext'
 
 interface InlineButtons {
   label: string,
@@ -45,7 +45,6 @@ type Action = { type: 'add_message', session_id: string } | { type: 'update_fetc
 function ChatSessionsReducer(state: ChatSessions, action: Action) {
   switch (action.type) {
     case 'update_fetched': {
-      console.log('received an action to update', action.state)
       return {
         sessions: [...action.state]
       }
@@ -109,15 +108,19 @@ function useChatSession(session_id: string, user_id?: string) {
 
 function useActiveSession() {
   const { chatSessions } = useChatSessions()
-  const [activeSession, setActive] = useState<ChatSession | null>(null)
-
+  const context = useContext<ChatSessionContextType | null>(ActiveSessionContext)
+  if (context == null) {
+    throw new Error('Missing active session context. something wrong')
+  }
+  const activeSession = context.state
   const setActiveSession = (session_id: string) => {
     Object.values(chatSessions.sessions).forEach(session => {
       if (session.session_id === session_id) {
-        return setActive(session)
+        context.setActiveSession({ ...session })
       }
     })
   };
+
 
   return { activeSession, setActiveSession }
 }
