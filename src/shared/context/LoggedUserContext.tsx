@@ -14,6 +14,9 @@ type UserProviderProps = { children: React.ReactNode }
 
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
+// we are retrieving from MockData, mimicking user logged in
+// and it's propertys
+
 function LoggedUserProvider({ children }: UserProviderProps) {
   const [state,] = React.useState<User | null>(userWithChatSessions)
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { useUser } from 'shared/hooks/UserHooks'
 import ChatContent from './ChatContent'
+import { useUser } from 'shared/hooks/UserHooks'
 
 export default function ChatsArea() {
   const user = useUser()

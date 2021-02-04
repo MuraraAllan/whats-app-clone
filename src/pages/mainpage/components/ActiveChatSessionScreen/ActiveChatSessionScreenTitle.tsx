@@ -3,13 +3,14 @@ import Grid from '@material-ui/core/Grid';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components';
 
-import { BorderedContainer } from 'shared/components/BorderedContainer';
-import { ChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
-import { CircleContainer } from 'shared/components/CircleContainer';
-import { useUser } from 'shared/hooks/UserHooks';
+import { BorderedContainer, CircleContainer } from 'shared/components';
+
+import { useUser } from 'shared/hooks';
+import { useActiveSession } from 'pages/mainpage/hooks'
 
 
-export function ActiveMessageScreenTitle({ activeSession }: { activeSession: ChatSession }) {
+export default function ActiveChatSessionScreenTitle() {
+  const { activeSession } = useActiveSession()
   const user = useUser()
 
   const usersInChat = useMemo(() => {

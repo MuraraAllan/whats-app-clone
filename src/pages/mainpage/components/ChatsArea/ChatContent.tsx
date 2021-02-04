@@ -1,11 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import styled from 'styled-components'
 
-import { BorderedContainer } from 'shared/components/BorderedContainer'
-import { CircleContainer } from 'shared/components/CircleContainer';
-import { ChatSession, useChatSession, useActiveSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { BorderedContainer, CircleContainer } from 'shared/components/'
+import { ChatSession, useChatSession, useActiveSession } from 'pages/mainpage/hooks/'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
 
 const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => {
@@ -15,7 +14,7 @@ const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => 
       : lastMessage.textMessage.substring(0, 10).concat('...')
   }
   if (lastMessage.inlineButtons != null) {
-    return lastMessage.inlineButtons[0].label.substring(0, 10).concat('....')
+    return lastMessage.inlineButtons[0].label.substring(0, 10).concat('...')
   }
   return null
 }
@@ -23,13 +22,13 @@ const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => 
 
 export default function ChatsArea({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
   const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
-  const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
   const { setActiveSession } = useActiveSession()
 
   if (chatSession == null) {
     return null
   }
 
+  const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
   return (
     <Container container
       justify="space-evenly"

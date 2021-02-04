@@ -27,7 +27,7 @@ UserArea
 
 FilterArea 
 
-ActiveMessageScreen should useRegisterForm and when displayed should overwrite the screen it also should be able to clear out the state of displayed.
+ActiveChatSessionScreen should useRegisterForm and when displayed should overwrite the screen it also should be able to clear out the state of displayed.
 
 
 MessagesArea
@@ -41,7 +41,7 @@ registerForm
 userHook - LoggedUserContext data extractor;
 ChatSessionHooks  {
   useChatSessions : reducer that controls all chatSessions and share a path to addMessages (later we will have a path in firebase, becoming then a memoized subscription)
-  useChatSession : give access to specific chat session information and if loggedUser belongs or not to that chat; It is memoized and should be used only with the result of ActiveSessionContext.session_id; 
+  useChatSession : give access to specific chat session information and if loggedUser belongs or not to that chat; It should with an session_id; 
   useActiveSession : ActiveSessionContext data extractor;
 }
 

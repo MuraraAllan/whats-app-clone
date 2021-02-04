@@ -18,6 +18,7 @@ export default interface Message {
 
 // unreadMessages would be the result of storing last time each user opened that chat in an intersection
 // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
+// we also need a key to filter out the timestamp where the user stopped belonging to some chat session
 
 export interface ChatSession {
   session_id: string,
@@ -63,6 +64,10 @@ function useChatSessions() {
     if (chatSessionsMock == null) {
       return
     }
+    // this is mimicking a subscription which brings us active chat sessions that this user has
+    // backend would provide which chatSessions user has so we are able to download messages
+    // and check whether or not the user belongs to that chat and the time he leaved
+
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
   }, [chatSessionsMock])
 
@@ -74,16 +79,16 @@ function useChatSession(session_id: string, user_id?: string) {
   const { chatSessions } = useChatSessions()
 
   const chatSession = useMemo(() => {
-    let localSession: ChatSession | null = null
-    Object.values(chatSessions.sessions).forEach((session: ChatSession) => {
-      if (session.session_id === session_id) {
-        localSession = session
-      }
-    })
-    if (localSession == null) {
+    if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
       return null
     }
-    return localSession as ChatSession
+    const localSession = Object.values(chatSessions.sessions).reduce<ChatSession | null>((prev: ChatSession | null, session: ChatSession) => {
+      if (session.session_id === session_id) {
+        return session
+      }
+      return prev
+    }, null)
+    return localSession
   }, [session_id, chatSessions])
 
   const userBelongsToSession = useMemo(() => {

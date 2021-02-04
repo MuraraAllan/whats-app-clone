@@ -1,14 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { ActiveChatSessionScreenActionBar, ActiveChatSessionScreenBody, ActiveChatSessionScreenTitle } from './'
+import { BorderedContainer } from 'shared/components'
+import { useActiveSession } from 'pages/mainpage/hooks'
 
-import { ActiveMessageScreenBody } from './ActiveMessageScreenBody'
-import { ActiveMessageScreenActionBar } from './ActiveMessageScreenActionBar'
-import { ActiveMessageScreenTitle } from './ActiveMessageScreenTitle'
-import { BorderedContainer } from 'shared/components/BorderedContainer'
-import { useActiveSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
-
-export default function ActiveMessageScreen() {
+export default function ActiveChatSessionScreen() {
   const { activeSession } = useActiveSession()
 
   if (activeSession == null) {
@@ -24,14 +21,14 @@ export default function ActiveMessageScreen() {
   return (
     <>
       <Container item>
-        <ActiveMessageScreenTitle activeSession={activeSession} />
+        <ActiveChatSessionScreenTitle />
       </Container>
       <FitIntoContainer container direction="column">
         <FullWidthContainer container sm={11} md={11} lg={11} xl={11}>
-          <ActiveMessageScreenBody />
+          <ActiveChatSessionScreenBody />
         </FullWidthContainer>
         <FullWidthContainer container sm={1} md={1} lg={1} xl={1}  >
-          <ActiveMessageScreenActionBar />
+          <ActiveChatSessionScreenActionBar />
         </FullWidthContainer>
       </FitIntoContainer>
     </>

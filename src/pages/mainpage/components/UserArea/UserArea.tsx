@@ -1,13 +1,11 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
-import PersonIcon from '@material-ui/icons/Person';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import PersonIcon from '@material-ui/icons/Person';
 import styled from 'styled-components';
 
-import { BorderedContainer } from 'shared/components/BorderedContainer';
-
+import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useUser } from 'shared/hooks/UserHooks';
-import { CircleContainer } from 'shared/components/CircleContainer';
 
 
 export default function UserArea() {
