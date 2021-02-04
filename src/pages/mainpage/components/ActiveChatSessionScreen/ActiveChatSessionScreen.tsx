@@ -24,7 +24,7 @@ export default function ActiveChatSessionScreen() {
         <ActiveChatSessionScreenTitle />
       </Container>
       <FitIntoContainer container direction="column">
-        <FullWidthContainer container sm={11} md={11} lg={11} xl={11}>
+        <FullWidthContainer container direction="column" sm={11} md={11} lg={11} xl={11}>
           <ActiveChatSessionScreenBody />
         </FullWidthContainer>
         <FullWidthContainer container sm={1} md={1} lg={1} xl={1}  >
