@@ -1,7 +1,9 @@
 import React, { useReducer, useMemo, useContext, useEffect } from 'react'
-import { User } from 'shared/context/LoggedUserContext'
-import { chatSessionsMock } from 'mocks/chatSessions'
+
 import { ActiveSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveSessionContext'
+import { chatSessionsMock } from 'mocks/chatSessions'
+import { User } from 'shared/context/LoggedUserContext'
+import { useUser } from 'shared/hooks'
 
 interface InlineButtons {
   label: string,
@@ -67,7 +69,7 @@ function useChatSessions() {
     // this is mimicking a subscription which brings us active chat sessions that this user has
     // backend would provide which chatSessions user has so we are able to download messages
     // and check whether or not the user belongs to that chat and the time he leaved
-
+    console.log('UPDATED')
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
   }, [chatSessionsMock])
 
@@ -92,18 +94,18 @@ function useChatSession(session_id: string, user_id?: string) {
   }, [session_id, chatSessions])
 
   const userBelongsToSession = useMemo(() => {
-    let belongs: boolean = false
     if (session_id == null || user_id == null || chatSession == null) {
-      return belongs
+      return false
     }
-
-    Object.values(chatSession.participants).forEach((participant) => {
-      if (participant.user_id === user_id) {
-        belongs = true
+    const belongs = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
+      if (session.session_id === session_id) {
+        return session
       }
-    })
+      return prev
+    }, null)
+
     return belongs
-  }, [session_id, user_id, chatSession])
+  }, [session_id, user_id, chatSession, chatSessions.sessions])
 
   return {
     chatSession,
@@ -113,6 +115,7 @@ function useChatSession(session_id: string, user_id?: string) {
 
 function useActiveSession() {
   const { chatSessions } = useChatSessions()
+  const { user_id } = useUser()
   const context = useContext<ChatSessionContextType | null>(ActiveSessionContext)
   if (context == null) {
     throw new Error('Missing active session context. something wrong')
@@ -126,8 +129,23 @@ function useActiveSession() {
     })
   };
 
+  const userBelongsToActiveSession = useMemo(() => {
+    if (activeSession == null || activeSession.session_id == null || user_id == null) {
+      return false
+    }
 
-  return { activeSession, setActiveSession }
+    const belongs = Object.values(activeSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+      if (participant.user_id === user_id) {
+        return true
+      }
+      return prev
+    }, false)
+
+    return belongs
+  }, [user_id, activeSession])
+
+
+  return { activeSession, setActiveSession, userBelongsToActiveSession }
 }
 
 export { useChatSessions, useActiveSession, useChatSession }

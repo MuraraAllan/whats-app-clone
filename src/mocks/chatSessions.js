@@ -82,12 +82,23 @@ export const chatSessionsMock = [
       { user_id: "1", userName: 'Karen' },
     ],
     unreadMessages: 1,
+    messages: [{
+      message_id: '3a',
+      textMessage: "any",
+      user: { user_id: "1", userName: 'Karen' },
+      timeStamp: 1612275839631,
+    }, {
+      message_id: '3B',
+      textMessage: "any 2",
+      user: { user_id: "1", userName: 'Karen' },
+      timeStamp: 1612275839631,
+    }],
     lastMessage:
     {
       message_id: '3a',
       textMessage: "any",
       user: { user_id: "1", userName: 'Karen' },
       timeStamp: 1612275839631,
-    }
+    },
   },
 ]
