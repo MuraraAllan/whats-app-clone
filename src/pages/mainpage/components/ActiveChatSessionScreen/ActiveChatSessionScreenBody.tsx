@@ -19,8 +19,6 @@ export default function ActiveChatSessionScreenBody() {
     return null
   }
   const GridPadded = styled(Grid)`padding: 10px`
-  console.log('user is', user)
-  console.log('active session is', activeSession)
   // message can use 70 % of width 
   // inline buttons can use entire screen 
   const UserAvatarWithName = ({ message }: { message: Message }) => (

@@ -1,4 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
+
+import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 
@@ -15,6 +17,12 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // our backend will propagate all user's chat rooms
 function ActiveSessionProvider({ children }: ActiveSessionProviderProps) {
   const [state, setActiveSession] = React.useState<ChatSessionType | null>(null)
+
+  // we are initializing defualt activeSession as the register chat;
+  // wenever a user already registered it should not default setActiveSession
+  useEffect(() => {
+    setActiveSession(chatSessionsMock[1])
+  }, [])
 
   return (
     <ActiveSessionContext.Provider value={{ state, setActiveSession }}>

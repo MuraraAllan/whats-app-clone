@@ -69,9 +69,8 @@ function useChatSessions() {
     // this is mimicking a subscription which brings us active chat sessions that this user has
     // backend would provide which chatSessions user has so we are able to download messages
     // and check whether or not the user belongs to that chat and the time he leaved
-    console.log('UPDATED')
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [chatSessionsMock])
+  }, [])
 
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
   return { chatSessions, addMessage }
