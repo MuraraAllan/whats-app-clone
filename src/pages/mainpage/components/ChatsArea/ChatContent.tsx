@@ -23,7 +23,7 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 
 export default function ChatsArea({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
   const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
-  const { setActiveSession } = useActiveSession()
+  const { activeSession, setActiveSession } = useActiveSession()
 
   if (chatSession == null) {
     return (<> </>)
@@ -35,6 +35,7 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
       justify="space-evenly"
       alignItems="center"
       direction="row"
+      style={{ backgroundColor: activeSession != null && activeSession.session_id === session_id ? "#80808066" : 'white' }}
       onClick={() => setActiveSession(session_id)}
     >
       <CircleContainer style={{
