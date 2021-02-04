@@ -21,7 +21,7 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 }
 
 
-export default function ChatsArea({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
+export default function ChatsContent({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
   const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
   const { activeSession, setActiveSession } = useActiveSession()
 

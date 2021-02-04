@@ -10,7 +10,7 @@ import { useActiveSession } from 'pages/mainpage/hooks'
 
 
 export default function ActiveChatSessionScreenTitle() {
-  const { activeSession } = useActiveSession()
+  const { activeSession, userBelongsToActiveSession } = useActiveSession()
   const user = useUser()
 
   const usersInChat = useMemo(() => {
@@ -41,7 +41,7 @@ export default function ActiveChatSessionScreenTitle() {
       </CircleContainer>
       <LimitedContainer container direction="column">
         <span><b>{activeSession.title}</b></span>
-        <span>{usersInChat}</span>
+        <span>{userBelongsToActiveSession ? usersInChat : "You can't see users in this chat session"}</span>
       </LimitedContainer>
     </Container>
   )
