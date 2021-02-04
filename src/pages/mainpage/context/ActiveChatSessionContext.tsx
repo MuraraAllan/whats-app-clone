@@ -9,13 +9,13 @@ export interface ChatSessionContextType {
   setActiveSession: Dispatch<SetStateAction<ChatSessionType | null>>
 }
 
-export const ActiveSessionContext = React.createContext<ChatSessionContextType | null>(null)
+export const ActiveChatSessionContext = React.createContext<ChatSessionContextType | null>(null)
 
 type ActiveSessionProviderProps = { children: React.ReactNode }
 
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
-function ActiveSessionProvider({ children }: ActiveSessionProviderProps) {
+function ActiveChatSessionProvider({ children }: ActiveSessionProviderProps) {
   const [state, setActiveSession] = React.useState<ChatSessionType | null>(null)
 
   // we are initializing defualt activeSession as the register chat;
@@ -25,12 +25,12 @@ function ActiveSessionProvider({ children }: ActiveSessionProviderProps) {
   }, [])
 
   return (
-    <ActiveSessionContext.Provider value={{ state, setActiveSession }}>
+    <ActiveChatSessionContext.Provider value={{ state, setActiveSession }}>
       {children}
-    </ActiveSessionContext.Provider>
+    </ActiveChatSessionContext.Provider>
   )
 }
 
 
 
-export { ActiveSessionProvider }
+export { ActiveChatSessionProvider }

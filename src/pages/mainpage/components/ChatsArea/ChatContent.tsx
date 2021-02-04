@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Grid from '@material-ui/core/Grid';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components'
@@ -24,6 +24,7 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 export default function ChatsContent({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
   const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
   const { activeSession, setActiveSession } = useActiveSession()
+  const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
 
   if (chatSession == null) {
     return (<> </>)
@@ -35,7 +36,7 @@ export default function ChatsContent({ session_id, user_id }: { session_id: stri
       justify="space-evenly"
       alignItems="center"
       direction="row"
-      style={{ backgroundColor: activeSession != null && activeSession.session_id === session_id ? "#80808066" : 'white' }}
+      style={{ backgroundColor: isCurrentActiveSession ? "#80808066" : 'white' }}
       onClick={() => setActiveSession(session_id)}
     >
       <CircleContainer style={{

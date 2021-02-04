@@ -1,11 +1,11 @@
 import ChatsArea from './ChatsArea'
 import FilterArea from './FilterArea'
 import UserArea from './UserArea'
-import { ActiveChatSessionScreen } from './ActiveChatSessionScreen'
+import { ActiveChatSession } from './ActiveChatSession'
 
 export {
   ChatsArea,
   FilterArea,
   UserArea,
-  ActiveChatSessionScreen
+  ActiveChatSession
 }

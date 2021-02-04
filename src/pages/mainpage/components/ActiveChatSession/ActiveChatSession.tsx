@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ActiveChatSessionScreenActionBar, ActiveChatSessionScreenBody, ActiveChatSessionScreenTitle } from './'
+import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTitle } from '.'
 import { BorderedContainer } from 'shared/components'
 // import { useActiveSession } from 'pages/mainpage/hooks'
 
@@ -24,14 +24,14 @@ export default function ActiveChatSessionScreen() {
   return (
     <>
       <Container item>
-        <ActiveChatSessionScreenTitle />
+        <ActiveChatSessionTitle />
       </Container>
       <FitIntoContainer container direction="column">
         <FullWidthContainer container direction="column" sm={11} md={11} lg={11} xl={11}>
-          <ActiveChatSessionScreenBody />
+          <ActiveChatSessionBody />
         </FullWidthContainer>
         <FullWidthContainer container sm={1} md={1} lg={1} xl={1}  >
-          <ActiveChatSessionScreenActionBar />
+          <ActiveChatSessionActionBar />
         </FullWidthContainer>
       </FitIntoContainer>
     </>

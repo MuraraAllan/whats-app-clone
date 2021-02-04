@@ -1,23 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
+import { CircleContainer } from 'shared/components'
+import Message from 'pages/mainpage/hooks/ChatSessionsHooks';
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import TextMessageDisplay from './TextMessageDisplay'
 import { useActiveSession } from 'pages/mainpage/hooks'
-import { useUser } from 'shared/hooks'
-import { CircleContainer } from '../../../../shared/components'
-import styled from 'styled-components'
-import Message from '../../hooks/ChatSessionsHooks';
 
 
-export default function ActiveChatSessionScreenBody() {
+
+
+
+export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveSession()
-  const user = useUser()
 
   if (activeSession == null) {
     return null
   }
+  // align gridPadded to the flex-end when message.user === loggedUser
   const GridPadded = styled(Grid)`padding: 10px`
   // message can use 70 % of width 
   // inline buttons can use entire screen 

@@ -1,6 +1,6 @@
-import { ActiveSessionProvider } from './ActiveSessionContext'
+import { ActiveChatSessionProvider } from './ActiveChatSessionContext'
 
 
 export {
-  ActiveSessionProvider
+  ActiveChatSessionProvider
 }

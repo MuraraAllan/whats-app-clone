@@ -1,6 +1,6 @@
 import React, { useReducer, useMemo, useContext, useEffect } from 'react'
 
-import { ActiveSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveSessionContext'
+import { ActiveChatSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveChatSessionContext'
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { User } from 'shared/context/LoggedUserContext'
 import { useUser } from 'shared/hooks'
@@ -83,12 +83,14 @@ function useChatSession(session_id: string, user_id?: string) {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
       return null
     }
+
     const localSession = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
       if (session.session_id === session_id) {
         return session
       }
       return prev
     }, null)
+
     return localSession
   }, [session_id, chatSessions])
 
@@ -96,6 +98,7 @@ function useChatSession(session_id: string, user_id?: string) {
     if (session_id == null || user_id == null || chatSession == null) {
       return false
     }
+
     const belongs = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
       if (session.session_id === session_id) {
         return session
@@ -115,12 +118,17 @@ function useChatSession(session_id: string, user_id?: string) {
 function useActiveSession() {
   const { chatSessions } = useChatSessions()
   const { user_id } = useUser()
-  const context = useContext<ChatSessionContextType | null>(ActiveSessionContext)
+  const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
+
   if (context == null) {
     throw new Error('Missing active session context. something wrong')
   }
+
   const activeSession = context.state
   const setActiveSession = (session_id: string) => {
+    if (activeSession?.session_id === session_id) {
+      return
+    }
     Object.values(chatSessions.sessions).forEach(session => {
       if (session.session_id === session_id) {
         context.setActiveSession({ ...session })
