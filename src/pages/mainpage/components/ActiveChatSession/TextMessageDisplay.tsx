@@ -10,9 +10,6 @@ import InlineButtonsDisplay from './InlineButtonsDisplay'
 
 
 export default function TextMessageDisplay({ message }: { message: Message }) {
-  // message can use 70 % of width 
-  // inline buttons can use entire screen for right
-
   const MessageContainer = styled(BorderedContainer)`max-width: 65%; overflow: hidden; padding: 10px;  background-color: #80808066;`
 
   return (

@@ -1,11 +1,11 @@
+import { ActiveChatSession } from './ActiveChatSession'
 import ChatsArea from './ChatsArea'
 import FilterArea from './FilterArea'
 import UserArea from './UserArea'
-import { ActiveChatSession } from './ActiveChatSession'
 
 export {
+  ActiveChatSession,
   ChatsArea,
   FilterArea,
   UserArea,
-  ActiveChatSession
 }

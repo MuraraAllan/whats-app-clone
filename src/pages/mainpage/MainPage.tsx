@@ -8,7 +8,6 @@ import { FullHeightBorderedContainer } from 'shared/components'
 export default function MainPage() {
   return (
     <Grid container direction='row'>
-
       <ActiveChatSessionProvider>
         {/* LEFT AREA CONTAINER */}
         <FullHeightBorderedContainer direction="column" container xs={6} sm={5} md={3} lg={3} xl={2} >

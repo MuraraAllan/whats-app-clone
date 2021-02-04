@@ -22,8 +22,8 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 
 
 export default function ChatsContent({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
-  const { userBelongsToSession, chatSession } = useChatSession(session_id, user_id)
   const { activeSession, setActiveSession } = useActiveSession()
+  const { chatSession, userBelongsToSession } = useChatSession(session_id, user_id)
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
 
   if (chatSession == null) {
@@ -31,6 +31,7 @@ export default function ChatsContent({ session_id, user_id }: { session_id: stri
   }
 
   const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
+
   return (
     <Container container
       justify="space-evenly"

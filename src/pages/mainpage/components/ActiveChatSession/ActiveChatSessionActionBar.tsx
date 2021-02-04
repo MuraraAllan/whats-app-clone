@@ -4,9 +4,9 @@ import CameraAlt from '@material-ui/icons/CameraAlt'
 import Grid from '@material-ui/core/Grid'
 import Mic from '@material-ui/icons/Mic'
 import Send from '@material-ui/icons/Send'
+import styled from 'styled-components'
 
 import { useActiveSession } from 'pages/mainpage/hooks'
-import styled from 'styled-components'
 
 export default function ActiveChatSessionActionBar() {
   const { userBelongsToActiveSession } = useActiveSession()
@@ -27,13 +27,13 @@ export default function ActiveChatSessionActionBar() {
         <AttachFile fontSize="large" style={{ transform: "rotate(-45deg)" }} />
       </Grid>
       <FullHeightContainer container xs={8} sm={7} md={8} lg={8} xl={8} alignItems="center">
+        {/* implement i18n */}
         <input placeholder="Escreva uma mensagem..." style={{ border: '2px solid', width: '100%', height: '50%' }} />
       </FullHeightContainer>
       <Grid item>
         <Mic fontSize="large" />
       </Grid>
       <Grid item>
-        {/* implement i18n */}
         <Send fontSize="large" style={{ transform: "rotate(-45deg)", marginBottom: '7px' }} />
       </Grid>
     </FullHeightContainer>
