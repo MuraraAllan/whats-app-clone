@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 
-export const BorderedContainer = styled(Grid)`border: ${(p: { border?: string }) => p.border ? `${p.border}px solid` : "1px solid"};`
+export const BorderedContainer = styled(Grid)`border: ${(p: { border?: string | number }) => p.border ? `${p.border}px solid` : "1px solid"};`
 
 export const FullHeightBorderedContainer = styled(Grid)`
 border: 1px solid;

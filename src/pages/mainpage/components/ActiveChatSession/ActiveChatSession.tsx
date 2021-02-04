@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTitle } from '.'
 import { BorderedContainer } from 'shared/components'
+
 // import { useActiveSession } from 'pages/mainpage/hooks'
 
 export default function ActiveChatSessionScreen() {
@@ -18,7 +19,8 @@ export default function ActiveChatSessionScreen() {
   // }
 
   const Container = styled(BorderedContainer)`height: 72px;`
-  const FitIntoContainer = styled(BorderedContainer)`height: calc(100vh - 74px)`
+  const ActionContainer = styled(BorderedContainer)`height:60px;`
+  const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px)`
   const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 
   return (
@@ -26,14 +28,14 @@ export default function ActiveChatSessionScreen() {
       <Container item>
         <ActiveChatSessionTitle />
       </Container>
-      <FitIntoContainer container direction="column">
-        <FullWidthContainer container direction="column" sm={11} md={11} lg={11} xl={11}>
+      <CalcContainer container direction="column">
+        <FullWidthContainer container direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
           <ActiveChatSessionBody />
         </FullWidthContainer>
-        <FullWidthContainer container sm={1} md={1} lg={1} xl={1}  >
-          <ActiveChatSessionActionBar />
-        </FullWidthContainer>
-      </FitIntoContainer>
+      </CalcContainer>
+      <ActionContainer item border={2}>
+        <ActiveChatSessionActionBar />
+      </ActionContainer>
     </>
   )
 }

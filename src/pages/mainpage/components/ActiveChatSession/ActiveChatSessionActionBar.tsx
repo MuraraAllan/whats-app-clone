@@ -1,12 +1,41 @@
 import React from 'react'
+import AttachFile from '@material-ui/icons/AttachFile'
+import CameraAlt from '@material-ui/icons/CameraAlt'
+import Grid from '@material-ui/core/Grid'
+import Mic from '@material-ui/icons/Mic'
+import Send from '@material-ui/icons/Send'
+
 import { useActiveSession } from 'pages/mainpage/hooks'
+import styled from 'styled-components'
 
 export default function ActiveChatSessionActionBar() {
-  const { activeSession, userBelongsToActiveSession } = useActiveSession()
+  const { userBelongsToActiveSession } = useActiveSession()
+
   if (userBelongsToActiveSession === false) {
     return (
       <div style={{ width: '100%', height: '100%', backgroundColor: '#80808066' }} />
     )
   }
-  return <span>action bar</span>
+  const FullHeightContainer = styled(Grid)`height: 100%`
+
+  return (
+    <FullHeightContainer container justify="space-evenly" alignItems="center">
+      <Grid item>
+        <CameraAlt fontSize="large" />
+      </Grid>
+      <Grid item>
+        <AttachFile fontSize="large" style={{ transform: "rotate(-45deg)" }} />
+      </Grid>
+      <FullHeightContainer container xs={8} sm={7} md={8} lg={8} xl={8} alignItems="center">
+        <input placeholder="Escreva uma mensagem..." style={{ border: '2px solid', width: '100%', height: '50%' }} />
+      </FullHeightContainer>
+      <Grid item>
+        <Mic fontSize="large" />
+      </Grid>
+      <Grid item>
+        {/* implement i18n */}
+        <Send fontSize="large" style={{ transform: "rotate(-45deg)", marginBottom: '7px' }} />
+      </Grid>
+    </FullHeightContainer>
+  )
 }
