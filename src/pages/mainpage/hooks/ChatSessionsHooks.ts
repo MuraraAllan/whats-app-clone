@@ -20,7 +20,7 @@ export default interface Message {
 // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
 // we also need a key to filter out the timestamp where the user stopped belonging to some chat session
 
-export interface ChatSession {
+export interface ChatSessionType {
   session_id: string,
   title: string,
   participants: User[],
@@ -32,10 +32,10 @@ export interface ChatSession {
 }
 
 interface ChatSessions {
-  sessions: ChatSession[] | []
+  sessions: ChatSessionType[] | []
 }
 
-type Action = { type: 'add_message', session_id: string } | { type: 'update_fetched', state: ChatSession[] }
+type Action = { type: 'add_message', session_id: string } | { type: 'update_fetched', state: ChatSessionType[] }
 
 // user context will carry reducer actions to add messages into our group chats
 // ideally our backend would take care of this functionality, but we want to structure
@@ -82,7 +82,7 @@ function useChatSession(session_id: string, user_id?: string) {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
       return null
     }
-    const localSession = Object.values(chatSessions.sessions).reduce<ChatSession | null>((prev: ChatSession | null, session: ChatSession) => {
+    const localSession = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
       if (session.session_id === session_id) {
         return session
       }

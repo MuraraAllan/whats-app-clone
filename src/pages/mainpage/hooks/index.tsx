@@ -1,4 +1,3 @@
-import { useChatSessions, useActiveSession, useChatSession } from './ChatSessionsHooks'
+import { useChatSessions, useActiveSession, useChatSession, ChatSessionType } from './ChatSessionsHooks'
 
-
-export { useChatSessions, useActiveSession, useChatSession }
+export { useChatSessions, useActiveSession, useChatSession, }

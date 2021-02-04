@@ -4,16 +4,17 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
-import { ChatSession, useChatSession, useActiveSession } from 'pages/mainpage/hooks/'
+import { useChatSession, useActiveSession } from 'pages/mainpage/hooks/'
+import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
 
-const findLastMessageChatPreview = (lastMessage: ChatSession['lastMessage']) => {
-  if (lastMessage.textMessage != null) {
+const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
+  if (lastMessage?.textMessage != null) {
     const breakLine = lastMessage.textMessage.substring(0, 10).indexOf('\n')
     return breakLine !== -1 ? lastMessage.textMessage.substring(0, breakLine).concat('...')
       : lastMessage.textMessage.substring(0, 10).concat('...')
   }
-  if (lastMessage.inlineButtons != null) {
+  if (lastMessage?.inlineButtons != null) {
     return lastMessage.inlineButtons[0].label.substring(0, 10).concat('...')
   }
   return null
@@ -25,7 +26,7 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
   const { setActiveSession } = useActiveSession()
 
   if (chatSession == null) {
-    return null
+    return (<> </>)
   }
 
   const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
@@ -36,14 +37,14 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
       direction="row"
       onClick={() => setActiveSession(session_id)}
     >
-      <CircleContainer lg={3} xl={3} style={{
-        opacity: userBelongsToSession === false ? '50%' : null
+      <CircleContainer style={{
+        opacity: userBelongsToSession === false ? '50%' : '100%'
       }}>
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>
       <Grid container xs={5} sm={4} md={5} lg={6} xl={6} direction="column"
         style={{
-          opacity: userBelongsToSession === false ? '50%' : null
+          opacity: userBelongsToSession === false ? '50%' : '100%'
         }}>
         <span><b>{chatSession.title}</b></span>
         <span>{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'archived'}</span>
@@ -55,8 +56,8 @@ export default function ChatsArea({ session_id, user_id }: { session_id: string,
       >
         <span style={{
           opacity: '50%'
-        }}>{timeStampToTimeConverter(chatSession.lastMessage.timeStamp)}</span>
-        <CircleContainer width="27" height="27" border="4" style={{ opacity: '100%' }}>
+        }}>{chatSession.lastMessage != null ? timeStampToTimeConverter(chatSession.lastMessage.timeStamp) : null}</span>
+        <CircleContainer width={27} height={27} border={4} opacity='100%'>
           <span>{chatSession.unreadMessages}</span>
         </CircleContainer>
       </Grid>

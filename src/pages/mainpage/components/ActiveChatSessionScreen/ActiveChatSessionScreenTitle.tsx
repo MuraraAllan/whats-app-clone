@@ -14,7 +14,7 @@ export default function ActiveChatSessionScreenTitle() {
   const user = useUser()
 
   const usersInChat = useMemo(() => {
-    if (user == null) {
+    if (user == null || activeSession == null) {
       return null
     }
     //this is a pontential spot for i18n
@@ -22,6 +22,10 @@ export default function ActiveChatSessionScreenTitle() {
     allUsers.sort((a, b) => a.localeCompare(b))
     return allUsers.join(',')
   }, [activeSession, user])
+
+  if (user == null || activeSession == null) {
+    return null
+  }
 
   const Container = styled(BorderedContainer)`height: 72px`
   const LimitedContainer = styled(Grid)`max-width: 50%`
@@ -32,7 +36,7 @@ export default function ActiveChatSessionScreenTitle() {
       alignItems="center"
       direction="row"
     >
-      <CircleContainer container style={{ marginLeft: '10px', marginRight: '10px' }}>
+      <CircleContainer style={{ marginLeft: '10px', marginRight: '10px' }}>
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>
       <LimitedContainer container direction="column">

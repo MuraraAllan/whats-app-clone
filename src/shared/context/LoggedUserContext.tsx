@@ -1,11 +1,11 @@
 import React from 'react'
-import { ChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { userWithChatSessions } from 'mocks/userData'
 
 export interface User {
   user_id: string,
   userName: string,
-  chatSessions?: ChatSession[],
+  chatSessions?: ChatSessionType[],
 }
 
 export const LoggedUserContext = React.createContext<User | null>(null)
