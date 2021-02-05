@@ -1,3 +1,5 @@
+import { chatSessionsMock } from 'mocks/chatSessions'
+
 // useChatSessions()
 // LATER : expect that a dispatched message is included in the chatSessions object
 
@@ -6,7 +8,7 @@
 // expect userBelongToChat to be false when that user does not belong to chatSession participants
 
 
-// useActiveSession 
+// useActiveChatSession 
 // expect that a user 
 // expect that a rendered component which uses useActiveChatSession receives the values same as mockSession of that session_+id
 // expect userBelongsToActiveSession to be false when that user does not belong to chatSession participants

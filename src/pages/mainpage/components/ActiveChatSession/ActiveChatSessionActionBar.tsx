@@ -6,10 +6,10 @@ import Mic from '@material-ui/icons/Mic'
 import Send from '@material-ui/icons/Send'
 import styled from 'styled-components'
 
-import { useActiveSession } from 'pages/mainpage/hooks'
+import { useActiveChatSession } from 'pages/mainpage/hooks'
 
 export default function ActiveChatSessionActionBar() {
-  const { userBelongsToActiveSession } = useActiveSession()
+  const { userBelongsToActiveSession } = useActiveChatSession()
 
   if (userBelongsToActiveSession === false) {
     return (

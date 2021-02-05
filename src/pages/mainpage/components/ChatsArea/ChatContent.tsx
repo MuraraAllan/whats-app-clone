@@ -4,7 +4,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
-import { useChatSession, useActiveSession } from 'pages/mainpage/hooks/'
+import { useChatSession, useActiveChatSession } from 'pages/mainpage/hooks/'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
 
@@ -22,7 +22,7 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 
 
 export default function ChatsContent({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
-  const { activeSession, setActiveSession } = useActiveSession()
+  const { activeSession, setActiveSession } = useActiveChatSession()
   const { chatSession, userBelongsToSession } = useChatSession(session_id, user_id)
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
 

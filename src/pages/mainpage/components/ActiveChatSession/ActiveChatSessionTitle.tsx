@@ -5,11 +5,11 @@ import styled from 'styled-components';
 
 import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useUser } from 'shared/hooks';
-import { useActiveSession } from 'pages/mainpage/hooks'
+import { useActiveChatSession } from 'pages/mainpage/hooks'
 
 
 export default function ActiveChatSessionTitle() {
-  const { activeSession, userBelongsToActiveSession } = useActiveSession()
+  const { activeSession, userBelongsToActiveSession } = useActiveChatSession()
   const user = useUser()
 
   const usersInChat = useMemo(() => {

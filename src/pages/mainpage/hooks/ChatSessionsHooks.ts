@@ -115,7 +115,7 @@ function useChatSession(session_id: string, user_id?: string) {
   }
 }
 
-function useActiveSession() {
+function useActiveChatSession() {
   const { chatSessions } = useChatSessions()
   const { user_id } = useUser()
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
@@ -155,4 +155,4 @@ function useActiveSession() {
   return { activeSession, setActiveSession, userBelongsToActiveSession }
 }
 
-export { useChatSessions, useActiveSession, useChatSession }
+export { useChatSessions, useActiveChatSession, useChatSession }
