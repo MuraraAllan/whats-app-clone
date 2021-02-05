@@ -8,7 +8,7 @@ import { useChatSession, useActiveChatSession } from 'pages/mainpage/hooks/'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
 
-const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
+export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
   if (lastMessage?.textMessage != null) {
     const breakLine = lastMessage.textMessage.substring(0, 10).indexOf('\n')
     return breakLine !== -1 ? lastMessage.textMessage.substring(0, breakLine).concat('...')
@@ -20,23 +20,24 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
   return null
 }
 
+const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
 export default function ChatsContent({ session_id }: { session_id: string }): React.ReactElement {
-  const { activeSession, setActiveSession } = useActiveChatSession()
   const { chatSession, userBelongsToSession } = useChatSession(session_id)
+  const { activeSession, setActiveSession } = useActiveChatSession()
+
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
 
-  if (chatSession == null) {
-    return (<> </>)
+  if (chatSession == null || activeSession == null) {
+    return (<div></div>)
   }
-
-  const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
   return (
     <Container container
       justify="space-evenly"
       alignItems="center"
       direction="row"
+      data-testid="chatAreaContainer"
       style={{ backgroundColor: isCurrentActiveSession ? "#80808066" : 'white' }}
       onClick={() => setActiveSession(session_id)}
     >
@@ -45,15 +46,15 @@ export default function ChatsContent({ session_id }: { session_id: string }): Re
       }}>
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>
-      <Grid container xs={5} sm={4} md={5} lg={6} xl={6} direction="column"
+      <Grid container item xs={5} sm={4} md={5} lg={6} xl={6} direction="column"
         style={{
           opacity: userBelongsToSession === false ? '50%' : '100%'
         }}>
-        <span><b>{chatSession.title}</b></span>
+        <span data-testid="chatAreaTitle"><b>{chatSession.title}</b></span>
         { /* implement i18n */}
-        <span>{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'disabled'}</span>
+        <span data-testid="chatAreaLastMessage">{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'disabled'}</span>
       </Grid>
-      <Grid container xs={4} sm={5} md={4} lg={3} xl={3}
+      <Grid container item xs={4} sm={5} md={4} lg={3} xl={3}
         justify="space-evenly"
         direction="column"
         alignItems="flex-end"
@@ -62,10 +63,9 @@ export default function ChatsContent({ session_id }: { session_id: string }): Re
           opacity: '50%'
         }}>{chatSession.lastMessage != null ? timeStampToTimeConverter(chatSession.lastMessage.timeStamp) : null}</span>
         <CircleContainer width={27} height={27} border={4} opacity='100%'>
-          <span>{chatSession.unreadMessages}</span>
+          <span data-testid="chatAreaUnreadMessages">{chatSession.unreadMessages}</span>
         </CircleContainer>
       </Grid>
     </Container>
-
   )
 }

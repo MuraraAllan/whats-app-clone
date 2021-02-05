@@ -77,8 +77,8 @@ function useChatSessions() {
 }
 
 function useChatSession(session_id: string) {
-  const { chatSessions } = useChatSessions()
   const { user_id } = useUser()
+  const { chatSessions } = useChatSessions()
 
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
@@ -100,15 +100,15 @@ function useChatSession(session_id: string) {
       return false
     }
 
-    const belongs = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
-      if (session.session_id === session_id) {
-        return session
+    const belongs = Object.values(chatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+      if (participant.user_id === user_id) {
+        return true
       }
       return prev
-    }, null)
+    }, false)
 
     return belongs
-  }, [session_id, user_id, chatSession, chatSessions.sessions])
+  }, [session_id, user_id, chatSession])
 
   return {
     chatSession,
@@ -117,8 +117,9 @@ function useChatSession(session_id: string) {
 }
 
 function useActiveChatSession() {
-  const { chatSessions } = useChatSessions()
   const { user_id } = useUser()
+  const { chatSessions } = useChatSessions()
+
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
 
   if (context == null) {

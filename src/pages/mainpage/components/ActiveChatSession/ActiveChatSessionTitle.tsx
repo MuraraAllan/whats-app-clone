@@ -7,6 +7,8 @@ import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useUser } from 'shared/hooks';
 import { useActiveChatSession } from 'pages/mainpage/hooks'
 
+const Container = styled(BorderedContainer)`height: 72px`
+const LimitedContainer = styled(Grid)`max-width: 50%`
 
 export default function ActiveChatSessionTitle() {
   const { activeSession, userBelongsToActiveSession } = useActiveChatSession()
@@ -19,15 +21,12 @@ export default function ActiveChatSessionTitle() {
     // implement i18n
     const allUsers = activeSession.participants.map(participant => participant.user_id === user.user_id ? 'Eu' : participant.userName)
     allUsers.sort((a, b) => a.localeCompare(b))
-    return allUsers.join(',')
+    return allUsers.join(', ')
   }, [activeSession, user])
 
   if (user == null || activeSession == null) {
     return null
   }
-
-  const Container = styled(BorderedContainer)`height: 72px`
-  const LimitedContainer = styled(Grid)`max-width: 50%`
 
   return (
     <Container container
@@ -40,9 +39,9 @@ export default function ActiveChatSessionTitle() {
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>
       <LimitedContainer container direction="column">
-        <span><b>{activeSession.title}</b></span>
+        <span data-testid="activeChatSessionTitleTitle"><b>{activeSession.title}</b></span>
         {/* implement i18n */}
-        <span>{userBelongsToActiveSession ? usersInChat : "You can't see users in this chat session"}</span>
+        <span data-testid="activeChatSessionTitleUsers">{userBelongsToActiveSession ? usersInChat : "You can't see users in this chat session"}</span>
       </LimitedContainer>
     </Container>
   )

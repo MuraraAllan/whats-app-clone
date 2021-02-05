@@ -9,6 +9,8 @@ import InlineButtonsDisplay from './InlineButtonsDisplay'
 import TextMessageDisplay from './TextMessageDisplay'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
 
+const GridPadded = styled(Grid)`padding: 10px`
+
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
 
@@ -16,7 +18,6 @@ export default function ActiveChatSessionBody() {
     return null
   }
   // align gridPadded to the flex-end when message.user === loggedUser
-  const GridPadded = styled(Grid)`padding: 10px`
   const UserAvatarWithName = ({ message }: { message: Message }) => (
     <CircleContainer container wrap="nowrap" direction="column" width={55} height={55}>
       <PersonIcon viewBox="0 0 24 14" style={{ width: '70%', height: '70%' }} />
@@ -34,10 +35,10 @@ export default function ActiveChatSessionBody() {
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
 
   return <>
-    {activeSession?.messages?.map(message => {
+    {activeSession?.messages?.map((message, index) => {
       if (message.textMessage != null) {
         return (
-          <GridPadded container direction="row" >
+          <GridPadded key={index} container direction="row" >
             <UserAvatarWithName message={message} />
             <TextMessageDisplay message={message} />
           </GridPadded>
@@ -45,7 +46,7 @@ export default function ActiveChatSessionBody() {
       }
       if (message.inlineButtons != null) {
         return (
-          <GridPadded container direction="row" >
+          <GridPadded key={index} container direction="row" >
             <UserAvatarWithName message={message} />
             <InlineButtonsDisplay inlineButtons={message.inlineButtons} />
           </GridPadded>
