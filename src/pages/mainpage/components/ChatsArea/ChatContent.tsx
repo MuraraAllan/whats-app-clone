@@ -21,9 +21,9 @@ const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage'])
 }
 
 
-export default function ChatsContent({ session_id, user_id }: { session_id: string, user_id: string }): React.ReactElement {
+export default function ChatsContent({ session_id }: { session_id: string }): React.ReactElement {
   const { activeSession, setActiveSession } = useActiveChatSession()
-  const { chatSession, userBelongsToSession } = useChatSession(session_id, user_id)
+  const { chatSession, userBelongsToSession } = useChatSession(session_id)
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
 
   if (chatSession == null) {

@@ -15,7 +15,7 @@ export default function ChatsArea() {
       {
         user.chatSessions.map(session => {
           return (
-            <ChatContent session_id={session.session_id} user_id={user.user_id} />
+            <ChatContent session_id={session.session_id} />
           )
         })
       }

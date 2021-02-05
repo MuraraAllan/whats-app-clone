@@ -76,8 +76,9 @@ function useChatSessions() {
   return { chatSessions, addMessage }
 }
 
-function useChatSession(session_id: string, user_id?: string) {
+function useChatSession(session_id: string) {
   const { chatSessions } = useChatSessions()
+  const { user_id } = useUser()
 
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
