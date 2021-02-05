@@ -16,6 +16,7 @@ export default function ActiveChatSessionActionBar() {
       <div style={{ width: '100%', height: '100%', backgroundColor: '#80808066' }} />
     )
   }
+
   const FullHeightContainer = styled(Grid)`height: 100%`
 
   return (

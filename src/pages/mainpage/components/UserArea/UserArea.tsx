@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useUser } from 'shared/hooks/UserHooks';
 
-
 export default function UserArea() {
   const Container = styled(BorderedContainer)`height: 72px`
   const user = useUser()

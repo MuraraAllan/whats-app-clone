@@ -16,7 +16,7 @@ export default function ActiveChatSessionTitle() {
     if (user == null || activeSession == null) {
       return null
     }
-    //this is a pontential spot for i18n
+    // implement i18n
     const allUsers = activeSession.participants.map(participant => participant.user_id === user.user_id ? 'Eu' : participant.userName)
     allUsers.sort((a, b) => a.localeCompare(b))
     return allUsers.join(',')

@@ -50,7 +50,8 @@ export default function ChatsContent({ session_id, user_id }: { session_id: stri
           opacity: userBelongsToSession === false ? '50%' : '100%'
         }}>
         <span><b>{chatSession.title}</b></span>
-        <span>{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'archived'}</span>
+        { /* implement i18n */}
+        <span>{userBelongsToSession ? findLastMessageChatPreview(chatSession.lastMessage) : 'disabled'}</span>
       </Grid>
       <Grid container xs={4} sm={5} md={4} lg={3} xl={3}
         justify="space-evenly"

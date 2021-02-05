@@ -17,6 +17,7 @@ export default function ActiveChatSessionScreen() {
   //     <span>Pick a chat on the left to start chating...</span>
   //   </div>
   // }
+
   const ActionContainer = styled(BorderedContainer)`height:60px;`
   // We need to calculate how much is left in user screen, considering that
   // ActionBar and Title will use 74px and 60 px, it should be all screen - 134px
