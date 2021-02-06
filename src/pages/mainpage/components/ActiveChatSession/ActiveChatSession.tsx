@@ -30,7 +30,7 @@ export default function ActiveChatSessionScreen() {
         <ActiveChatSessionTitle />
       </Container>
       <CalcContainer container direction="column">
-        <FullWidthContainer container direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
+        <FullWidthContainer container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
           <ActiveChatSessionBody />
         </FullWidthContainer>
       </CalcContainer>

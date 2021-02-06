@@ -6,6 +6,7 @@ import Mic from '@material-ui/icons/Mic'
 import Send from '@material-ui/icons/Send'
 import styled from 'styled-components'
 
+import { BorderedInput } from 'shared/components'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
 
 const FullHeightContainer = styled(Grid)`height: 100%`
@@ -29,7 +30,7 @@ export default function ActiveChatSessionActionBar() {
       </Grid>
       <FullHeightContainer container item xs={8} sm={7} md={8} lg={9} xl={10} alignItems="center">
         {/* implement i18n */}
-        <input placeholder="Escreva uma mensagem..." style={{ border: '2px solid', width: '100%', height: '50%' }} />
+        <BorderedInput height={50} border={2} placeholder="Escreva uma mensagem..." />
       </FullHeightContainer>
       <Grid item>
         <Mic fontSize="large" />

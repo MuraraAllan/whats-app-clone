@@ -7,8 +7,9 @@ import styled from 'styled-components';
 import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useUser } from 'shared/hooks/UserHooks';
 
+const Container = styled(BorderedContainer)`height: 72px`
+
 export default function UserArea() {
-  const Container = styled(BorderedContainer)`height: 72px`
   const user = useUser()
   return (
     <Container container
@@ -19,7 +20,7 @@ export default function UserArea() {
       <CircleContainer>
         <PersonIcon style={{ width: '80%', height: '80%' }} />
       </CircleContainer>
-      <Grid xs={7} sm={8} md={8} lg={9} xl={9}>
+      <Grid item xs={7} sm={8} md={8} lg={9} xl={9}>
         <span>[{user.userName}]</span>
       </Grid>
       <Grid item>

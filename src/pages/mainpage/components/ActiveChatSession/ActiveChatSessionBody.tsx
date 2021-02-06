@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
@@ -18,8 +18,8 @@ export default function ActiveChatSessionBody() {
     return null
   }
   // align gridPadded to the flex-end when message.user === loggedUser
-  const UserAvatarWithName = ({ message }: { message: Message }) => (
-    <CircleContainer container wrap="nowrap" direction="column" width={55} height={55}>
+  const UserAvatarWithName = ({ message, style }: { message: Message, style?: CSSProperties }) => (
+    <CircleContainer style={style} container wrap="nowrap" direction="column" width={55} height={55}>
       <PersonIcon viewBox="0 0 24 14" style={{ width: '70%', height: '70%' }} />
       <span style={{ marginBottom: '10px' }}>{message.user.userName}</span>
     </CircleContainer>
@@ -47,7 +47,7 @@ export default function ActiveChatSessionBody() {
       if (message.inlineButtons != null) {
         return (
           <GridPadded key={index} container direction="row" >
-            <UserAvatarWithName message={message} />
+            <UserAvatarWithName message={message} style={{ marginRight: '4px' }} />
             <InlineButtonsDisplay inlineButtons={message.inlineButtons} />
           </GridPadded>
         )

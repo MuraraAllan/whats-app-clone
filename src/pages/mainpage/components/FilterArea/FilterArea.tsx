@@ -1,17 +1,14 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
 
-import { BorderedContainer } from 'shared/components';
-import Button from '@material-ui/core/Button';
-import { useUser } from 'shared/hooks'
+import { BorderedContainer, BorderedInput } from 'shared/components';
+import { ShadowedButton } from 'shared/components/ShadowedButton';
 
 export default function FilterArea() {
 
   return (
-    <BorderedContainer spacing={2}>
-      <Input style={{ maxWidth: '50%' }} />
-      <Button variant="contained">Filter</Button>
+    <BorderedContainer container justify="center" alignItems="center">
+      <BorderedInput placeholder="..." border={2} width={70} height={65} />
+      <ShadowedButton width={20} height={75} marginLeft={2} marginTop={5} marginBottom={5}>Filter</ShadowedButton>
     </BorderedContainer>
   )
 } 
