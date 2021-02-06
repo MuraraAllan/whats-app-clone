@@ -1,7 +1,9 @@
-import React, { useReducer, useMemo, useState } from 'react'
-import { User } from 'shared/context/UserContext'
-import { chatSessionsMock } from 'mocks/chatSessions'
+import React, { useReducer, useMemo, useContext, useEffect } from 'react'
 
+import { ActiveChatSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveChatSessionContext'
+import { chatSessionsMock } from 'mocks/chatSessions'
+import { User } from 'shared/context/LoggedUserContext'
+import { useUser } from 'shared/hooks'
 
 interface InlineButtons {
   label: string,
@@ -18,23 +20,24 @@ export default interface Message {
 
 // unreadMessages would be the result of storing last time each user opened that chat in an intersection
 // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
+// we also need a key to filter out the timestamp where the user stopped belonging to some chat session
 
-export interface ChatSession {
+export interface ChatSessionType {
   session_id: string,
   title: string,
   participants: User[],
   messages?: Message[],
   chatImage?: File,
-  unreadMessages?: number,
+  unreadMessages: number,
   lastReadTimestamp?: number,
   lastMessage?: Message
 }
 
 interface ChatSessions {
-  sessions: ChatSession[] | []
+  sessions: ChatSessionType[] | []
 }
 
-type Action = { type: 'add_message', session_id: string }
+type Action = { type: 'add_message', session_id: string } | { type: 'update_fetched', state: ChatSessionType[] }
 
 // user context will carry reducer actions to add messages into our group chats
 // ideally our backend would take care of this functionality, but we want to structure
@@ -44,6 +47,11 @@ type Action = { type: 'add_message', session_id: string }
 
 function ChatSessionsReducer(state: ChatSessions, action: Action) {
   switch (action.type) {
+    case 'update_fetched': {
+      return {
+        sessions: [...action.state]
+      }
+    }
     case 'add_message': {
       console.log('received an action to add message', action.session_id)
       return state
@@ -52,40 +60,53 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
 }
 
 function useChatSessions() {
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
+
+  useEffect(() => {
+    if (chatSessionsMock == null) {
+      return
+    }
+    // this is mimicking a subscription which brings us active chat sessions that this user has
+    // backend would provide which chatSessions user has so we are able to download messages
+    // and check whether or not the user belongs to that chat and the time he leaved
+    dispatch({ type: 'update_fetched', state: chatSessionsMock })
+  }, [])
+
   const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
   return { chatSessions, addMessage }
 }
 
-function useChatSession(session_id: string, user_id?: string) {
+function useChatSession(session_id: string) {
+  const { user_id } = useUser()
   const { chatSessions } = useChatSessions()
 
   const chatSession = useMemo(() => {
-    let localSession: ChatSession | null = null
-    Object.values(chatSessions.sessions).forEach((session: ChatSession) => {
-      if (session.session_id === session_id) {
-        localSession = session
-      }
-    })
-    if (localSession == null) {
-      throw new Error("Session not found")
+    if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
+      return null
     }
-    return localSession as ChatSession
+
+    const localSession = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
+      if (session.session_id === session_id) {
+        return session
+      }
+      return prev
+    }, null)
+
+    return localSession
   }, [session_id, chatSessions])
 
   const userBelongsToSession = useMemo(() => {
-    let belongs: boolean = false
-    console.log('user id is', user_id)
-    console.log('chat sessuion is', chatSession)
-    if (session_id == null || user_id == null) {
-      return belongs
+    if (session_id == null || user_id == null || chatSession == null) {
+      return false
     }
 
-    Object.values(chatSession.participants).forEach((participant) => {
+    const belongs = Object.values(chatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
       if (participant.user_id === user_id) {
-        belongs = true
+        return true
       }
-    })
+      return prev
+    }, false)
+
     return belongs
   }, [session_id, user_id, chatSession])
 
@@ -95,19 +116,45 @@ function useChatSession(session_id: string, user_id?: string) {
   }
 }
 
-function useActiveSession() {
+function useActiveChatSession() {
+  const { user_id } = useUser()
   const { chatSessions } = useChatSessions()
-  const [activeSession, setActive] = useState<ChatSession | null>(null)
 
+  const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
+
+  if (context == null) {
+    throw new Error('Missing active session context. something wrong')
+  }
+
+  const activeSession = context.state
   const setActiveSession = (session_id: string) => {
+    if (activeSession?.session_id === session_id) {
+      return
+    }
     Object.values(chatSessions.sessions).forEach(session => {
       if (session.session_id === session_id) {
-        return setActive(session)
+        context.setActiveSession({ ...session })
       }
     })
   };
 
-  return { activeSession, setActiveSession }
+  const userBelongsToActiveSession = useMemo(() => {
+    if (activeSession == null || activeSession.session_id == null || user_id == null) {
+      return false
+    }
+
+    const belongs = Object.values(activeSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+      if (participant.user_id === user_id) {
+        return true
+      }
+      return prev
+    }, false)
+
+    return belongs
+  }, [user_id, activeSession])
+
+
+  return { activeSession, setActiveSession, userBelongsToActiveSession }
 }
 
-export { useChatSessions, useActiveSession, useChatSession }
+export { useChatSessions, useActiveChatSession, useChatSession }

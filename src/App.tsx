@@ -1,6 +1,6 @@
 import React from 'react';
 import MainPage from './pages/mainpage/MainPage';
-import { LoggedUserProvider } from './shared/context/UserContext';
+import { LoggedUserProvider } from './shared/context/LoggedUserContext';
 
 
 function App() {
