@@ -17,7 +17,7 @@ export const chatSessionsMock = [
         { label: "Ficha de crédito. R$ 0,20" }
       ],
       user: { user_id: "2", userName: 'KYC' },
-      timeStamp: 1612367524552,
+      timeStamp: 1612648789136,
     },
     messages: [
       {

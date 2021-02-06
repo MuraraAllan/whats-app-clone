@@ -9,7 +9,7 @@ export const timeStampToTimeConverter = (messageTimestamp: number) => {
   const isToday = messageDate.getDate() === now.getDate() && messageDate.getMonth() === now.getMonth() && messageDate.getFullYear() === now.getFullYear()
 
   if (isToday) {
-    return messageDate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return messageDate.toLocaleString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
   return messageDate.toLocaleDateString()
 }

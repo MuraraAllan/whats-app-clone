@@ -41,7 +41,7 @@ registerForm
 userHook - LoggedUserContext data extractor;
 ChatSessionHooks  {
   useChatSessions : reducer that controls all chatSessions and share a path to addMessages (later we will have a path in firebase, becoming then a memoized subscription)
-  useChatSession : give access to specific chat session information and if loggedUser belongs or not to that chat; It should with an session_id; 
+  useChatSession : give access to specific chat session information and if loggedUser belongs or not to that chat; 
   useActiveChatSession : ActiveSessionContext data extractor;
 }
 
