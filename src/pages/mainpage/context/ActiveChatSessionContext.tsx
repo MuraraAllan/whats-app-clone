@@ -17,7 +17,6 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // our backend will propagate all user's chat rooms
 function ActiveChatSessionProvider({ children }: ActiveSessionProviderProps) {
   const [state, setActiveSession] = React.useState<ChatSessionType | null>(null)
-
   // we are initializing defualt activeSession as the register chat;
   // wenever a user already registered it should not default setActiveSession
   useEffect(() => {
