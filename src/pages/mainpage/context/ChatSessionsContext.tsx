@@ -1,15 +1,12 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { Dispatch, useReducer } from 'react'
 
-import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { User } from 'shared/context/LoggedUserContext'
 
 
-
 export interface ChatSessionContextType {
   chatSessions: ChatSessions | null,
-  addMessage: (session_id: string, textMessage: string, user: User) => void,
-  addMessageWithFile: (session_id: string, textMessage: string, user: User) => void
+  dispatch: Dispatch<Action>
 
 }
 
@@ -55,31 +52,9 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // our backend will propagate all user's chat rooms
 function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
   const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
-  useEffect(() => {
-    if (chatSessionsMock == null || dispatch == null) {
-      return
-    }
-    // this is mimicking a subscription which brings us active chat sessions that this user has
-    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
 
-    dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [])
-
-  const addMessage = (session_id: string, textMessage: string, user: User) => {
-    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
-      return
-    }
-    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }
-
-  const addMessageWithFile = (session_id: string, textMessage: string, user: User) => {
-    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
-      return
-    }
-    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }
   return (
-    <ChatSessionsContext.Provider value={{ chatSessions, addMessage, addMessageWithFile }}>
+    <ChatSessionsContext.Provider value={{ chatSessions, dispatch }}>
       {children}
     </ChatSessionsContext.Provider>
   )
