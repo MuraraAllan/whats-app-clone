@@ -1,8 +1,9 @@
 import { act } from "react-dom/test-utils"
 import { render } from "@testing-library/react"
 
-import { MockUserAndActiveSessionProvider, useActiveChatSessionMock } from "shared/test-utils"
 import ActiveChatSessionTitle from "./ActiveChatSessionTitle"
+import { MockProviders, useActiveChatSessionMock } from "shared/test-utils"
+
 
 // expect to find the names of participants and the ActiveChatSession title
 // expect that a user which not belongs to this ActiveChatSession can't see user names
@@ -10,9 +11,9 @@ import ActiveChatSessionTitle from "./ActiveChatSessionTitle"
 describe('ActiveChatSessionTitle', () => {
   test('expect to find the names of participants and the ActiveChatSession title', () => {
     const { getByTestId } = render(
-      <MockUserAndActiveSessionProvider>
+      <MockProviders>
         <ActiveChatSessionTitle />
-      </MockUserAndActiveSessionProvider>
+      </MockProviders>
     )
     expect(getByTestId('activeChatSessionTitleTitle').textContent).toEqual("Sala de chat 2")
     expect(getByTestId('activeChatSessionTitleUsers').textContent).toEqual("Eu, Karen")

@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils"
 
 import ChatsContent, { findLastMessageChatPreview } from "./ChatContent"
 import { chatSessionsMock } from 'mocks/chatSessions'
-import { MockUserAndActiveSessionProvider, useActiveChatSessionMock } from "shared/test-utils"
+import { MockProviders, useActiveChatSessionMock } from "shared/test-utils"
 
 // expect to render a chat session with title, lastMessage and unreadMessagesAmount when user belong to chatSession
 // expect to render chat with title, disabled  and unreadMessagesAmount when the user does not belong to chatSession
@@ -12,9 +12,9 @@ import { MockUserAndActiveSessionProvider, useActiveChatSessionMock } from "shar
 describe('ChatContent.tsx', () => {
   test('should render session with title, lastMessage and unreadMessagesAmount when user belong to chatSession', () => {
     const { getByTestId } = render(
-      <MockUserAndActiveSessionProvider>
+      <MockProviders>
         <ChatsContent session_id="2" />
-      </MockUserAndActiveSessionProvider>
+      </MockProviders>
     )
 
     const sessionToTest = chatSessionsMock[1]
@@ -26,9 +26,9 @@ describe('ChatContent.tsx', () => {
 
   test('chat with title, disabled  and unreadMessagesAmount when the user does not belong to chatSession', () => {
     const { getByTestId } = render(
-      <MockUserAndActiveSessionProvider>
+      <MockProviders>
         <ChatsContent session_id="3" />
-      </MockUserAndActiveSessionProvider>
+      </MockProviders>
     )
 
     const sessionToTest = chatSessionsMock[2]

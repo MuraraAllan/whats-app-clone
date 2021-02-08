@@ -3,14 +3,53 @@ import { render } from '@testing-library/react';
 import { useEffect } from 'react';
 
 import { chatSessionsMock } from 'mocks/chatSessions'
-import { LoggedUserProvider } from 'shared/context/LoggedUserContext';
-import { useActiveChatSessionMock } from 'shared/test-utils';
-import { useChatSession } from './ChatSessionsHooks'
-
+import { MockProviders } from 'shared/test-utils'
+import { ChatSessions, useChatSession } from './ChatSessionsHooks'
+import { useChatSessions } from '.';
+import { User } from 'shared/context/LoggedUserContext';
 
 // useChatSessions()
-// LATER : expect that a dispatched message is included in the chatSessions object
+// expect that a dispatched message is included in the chatSessions object
+function useChatSessionsMock() {
+  const returnChatSessions = {} as ChatSessions
+  let addMessageMock = (session_id: string, textMessage: string, user: User) => null
 
+  function TestComponent() {
+    const { addMessage, chatSessions } = useChatSessions()
+
+    useEffect(() => {
+      Object.assign(returnChatSessions, chatSessions)
+      addMessageMock = addMessage as any
+    }, [chatSessions, addMessage])
+
+    return null
+  }
+
+  render(
+    <MockProviders>
+      <TestComponent />
+    </MockProviders>
+  )
+
+  return { returnChatSessions, addMessageMock }
+}
+
+describe('useChatSessions', () => {
+  test('expect that a addMessage does not add invalid messages', () => {
+    const { addMessageMock, returnChatSessions } = useChatSessionsMock()
+    act(() => {
+      addMessageMock("", "", { user_id: "3333", userName: 'test user' })
+    })
+    expect(returnChatSessions?.sessions[0].messages?.length ?? "0").toBe(2)
+  })
+  test('expect that addMessage adds a message', () => {
+    const { addMessageMock, returnChatSessions } = useChatSessionsMock()
+    act(() => {
+      addMessageMock("1", "anything to test", { user_id: "3333", userName: 'test user' })
+    })
+    expect(returnChatSessions?.sessions[0].messages?.length ?? "0").toBe(3)
+  })
+})
 
 // useChatSession 
 // expect that a rendered component which uses useChatSessions receives the values same as mockSession of that session_id
@@ -31,9 +70,9 @@ function useChatSessionMock(session_id: string) {
   }
 
   render(
-    <LoggedUserProvider>
+    <MockProviders>
       <TestComponent />
-    </LoggedUserProvider>
+    </MockProviders>
   )
 
   return { returnChatSession, userBelongs }
@@ -57,45 +96,3 @@ describe('useChatSession', () => {
   })
 })
 
-// useActiveChatSession 
-// expect activeSession to be register chat (chat 2) by default 
-// later : expect activeSession to be register chat (chat 2) by default for unregistered users
-// later : expect activeSession to be null for registered users
-// expect that after act setActiveSession
-
-// expect userBelongsToActiveSession to be false when that user does not belong to chatSession participants
-
-
-
-describe('useActiveChatSession', () => {
-  test('hook returns chat 2 by default', () => {
-    const { returnChatSession, userBelongs } = useActiveChatSessionMock()
-
-    expect(returnChatSession.session_id).toEqual('2')
-    expect(typeof userBelongs.belongs).toBe('boolean')
-    expect(userBelongs.belongs).toBe(true)
-  })
-
-  test('hook returns active chat session data accuratelly', () => {
-    const { returnChatSession, userBelongs, mockSetactiveSession } = useActiveChatSessionMock()
-
-    act(() => {
-      mockSetactiveSession("1")
-    })
-
-    expect(returnChatSession).toEqual(chatSessionsMock[0])
-    expect(typeof userBelongs.belongs).toBe('boolean')
-    expect(userBelongs.belongs).toEqual(true)
-  })
-
-  test('userBelongsToActiveSession should be false', () => {
-    const { userBelongs, mockSetactiveSession } = useActiveChatSessionMock()
-
-    act(() => {
-      mockSetactiveSession("3")
-    })
-
-    expect(typeof userBelongs.belongs).toBe('boolean')
-    expect(userBelongs.belongs).toEqual(false)
-  })
-})

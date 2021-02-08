@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from 'react'
 import { render } from '@testing-library/react'
 
-import { ActiveChatSessionProvider } from 'pages/mainpage/context'
+import { ActiveChatSessionProvider, ChatSessionsProvider } from 'pages/mainpage/context'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { LoggedUserProvider } from './context/LoggedUserContext'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
@@ -26,19 +26,21 @@ export function useActiveChatSessionMock(Component?: React.ReactNode) {
   }
 
   const { getByTestId, getAllByText, getByText } = render(
-    <MockUserAndActiveSessionProvider>
+    <MockProviders>
       <TestComponent />
-    </MockUserAndActiveSessionProvider>
+    </MockProviders>
   )
   return { returnChatSession, userBelongs, mockSetactiveSession, getByTestId, getAllByText, getByText }
 }
 
-export function MockUserAndActiveSessionProvider({ children }: { children: ReactNode }) {
+export function MockProviders({ children }: { children: ReactNode }) {
   return (
     <LoggedUserProvider>
-      <ActiveChatSessionProvider>
-        {children}
-      </ActiveChatSessionProvider>
+      <ChatSessionsProvider>
+        <ActiveChatSessionProvider>
+          {children}
+        </ActiveChatSessionProvider>
+      </ChatSessionsProvider>
     </LoggedUserProvider>
   )
 }

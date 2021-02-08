@@ -7,6 +7,7 @@ import { User } from 'shared/context/LoggedUserContext'
 export interface ChatSessionContextType {
   chatSessions: ChatSessions | null,
   dispatch: Dispatch<Action>
+
 }
 
 type Action = { type: 'add_textMessage', session_id: string, textMessage: string, user: User } | { type: 'update_fetched', state: ChatSessionType[] }
@@ -17,7 +18,7 @@ type Action = { type: 'add_textMessage', session_id: string, textMessage: string
 // we will ignore PrivateChatSessions but we are ready to receive also PrivateChatSessions
 // which would share types with GroupChatSessions 
 
-function ChatSessionsReducer(state: ChatSessions, action: Action) {
+export function ChatSessionsReducer(state: ChatSessions, action: Action) {
   switch (action.type) {
     case 'update_fetched': {
       return {
@@ -34,8 +35,7 @@ function ChatSessionsReducer(state: ChatSessions, action: Action) {
       }
       localMessages.sessions.forEach((session) => {
         if (action.session_id === session.session_id) {
-          console.log('found oput session, adding')
-          // session.lastMessage = newMessage
+          session.lastMessage = newMessage
           session.messages?.push(newMessage)
         }
       })
