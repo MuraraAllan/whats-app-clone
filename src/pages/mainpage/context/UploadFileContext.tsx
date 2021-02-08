@@ -1,9 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 
-import { chatSessionsMock } from 'mocks/chatSessions'
-import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
-
-
 interface UploadingFileController {
   isUploadingFile: boolean | null
   uploadingFile: Blob | null
