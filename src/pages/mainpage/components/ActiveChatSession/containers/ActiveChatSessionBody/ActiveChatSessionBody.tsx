@@ -4,9 +4,8 @@ import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { CircleContainer } from 'shared/components'
-import InlineButtonsDisplay from './InlineButtonsDisplay'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import TextMessageDisplay from './TextMessageDisplay'
+import { TextMessageDisplay, InlineButtonsDisplay } from './components'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
 
@@ -29,12 +28,16 @@ export default function ActiveChatSessionBody() {
   // message can use 70 % of width 
   // inline buttons can use entire screen 
 
+
+  // should render DisplayMessages when 
   // iterate over all messages;   
   // render textMessagethe and inlineButtons if present
   // render inlineButtons if present
   // when we implement sendAudio we should look for the presence in Message Object
   // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
+
+
 
   return <>
     {activeSession?.messages?.map((message, index) => {

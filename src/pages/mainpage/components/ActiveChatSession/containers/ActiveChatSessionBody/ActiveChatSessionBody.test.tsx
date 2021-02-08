@@ -1,11 +1,9 @@
 import { act } from 'react-dom/test-utils'
 import { render } from '@testing-library/react'
 
-import { ActiveChatSessionBody } from './'
+import { ActiveChatSessionBody } from '.'
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { MockProviders, useActiveChatSessionMock } from 'shared/test-utils'
-
-
 
 // this is mostly an integration test,  this Container bases its behaviors on childrens
 // although we are already testing children behaviors, it is good to test the logic on this Container

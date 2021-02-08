@@ -13,9 +13,8 @@ const LimitedContainer = styled(Grid)`max-width: 50%`
 export default function ActiveChatSessionTitle() {
   const { activeSession, userBelongsToActiveSession } = useActiveChatSession()
   const user = useUser()
-
   const usersInChat = useMemo(() => {
-    if (user == null || activeSession == null) {
+    if (user == null || activeSession == null || activeSession.participants == null) {
       return null
     }
     // implement i18n
