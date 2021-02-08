@@ -6,12 +6,14 @@ import PersonIcon from '@material-ui/icons/Person';
 import { CircleContainer } from 'shared/components'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { TextMessageDisplay, InlineButtonsDisplay } from './components'
-import { useActiveChatSession } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useUploadFile } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
+import FileUploaderPreview from './components/FileUploaderPreview';
 
 const GridPadded = styled(Grid)`padding: 10px;`
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
+  const { uploadingFile, isUploadingFile } = useUploadFile()
   const user = useUser()
 
   if (activeSession == null) {
@@ -28,6 +30,11 @@ export default function ActiveChatSessionBody() {
   // message can use 70 % of width 
   // inline buttons can use entire screen 
 
+
+  // should render FilePreview if uploadingFile != null
+  if (uploadingFile != null || isUploadingFile) {
+    return (<FileUploaderPreview />)
+  }
 
   // should render DisplayMessages when 
   // iterate over all messages;   
