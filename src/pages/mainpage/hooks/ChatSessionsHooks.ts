@@ -1,16 +1,16 @@
-import React, { useReducer, useMemo, useContext, useEffect } from 'react'
+import { useMemo, useContext, useEffect } from 'react'
 
-import { ActiveChatSessionContext, ChatSessionContextType } from 'pages/mainpage/context/ActiveChatSessionContext'
 import { chatSessionsMock } from 'mocks/chatSessions'
-import { User } from 'shared/context/LoggedUserContext'
+import { ChatSessionsContext } from 'pages/mainpage/context/ChatSessionsContext'
 import { useUser } from 'shared/hooks'
+import { User } from 'shared/context/LoggedUserContext'
 
 interface InlineButtons {
   label: string,
   onClickAction?: Function
 }
 
-export default interface Message {
+export interface Message {
   message_id: string,
   textMessage?: string,
   inlineButtons?: InlineButtons[],
@@ -33,46 +33,31 @@ export interface ChatSessionType {
   lastMessage?: Message
 }
 
-interface ChatSessions {
+export interface ChatSessions {
   sessions: ChatSessionType[] | []
 }
 
-type Action = { type: 'add_message', session_id: string } | { type: 'update_fetched', state: ChatSessionType[] }
 
-// user context will carry reducer actions to add messages into our group chats
-// ideally our backend would take care of this functionality, but we want to structure
-// minimalist impact and work when adding the tasks 
-// we will ignore PrivateChatSessions but we are ready to receive also PrivateChatSessions
-// which would share types with GroupChatSessions 
-
-function ChatSessionsReducer(state: ChatSessions, action: Action) {
-  switch (action.type) {
-    case 'update_fetched': {
-      return {
-        sessions: [...action.state]
-      }
-    }
-    case 'add_message': {
-      console.log('received an action to add message', action.session_id)
-      return state
-    }
-  }
-}
 
 function useChatSessions() {
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
-
+  const { chatSessions, dispatch } = useContext(ChatSessionsContext)
   useEffect(() => {
-    if (chatSessionsMock == null) {
+    if (chatSessionsMock == null || dispatch == null) {
       return
     }
     // this is mimicking a subscription which brings us active chat sessions that this user has
-    // backend would provide which chatSessions user has so we are able to download messages
-    // and check whether or not the user belongs to that chat and the time he leaved
+    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
+
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
   }, [])
 
-  const addMessage = (session_id: string) => dispatch({ type: 'add_message', session_id })
+  const addMessage = (session_id: string, textMessage: string, user: User) => {
+    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
+      return
+    }
+    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
+  }
+
   return { chatSessions, addMessage }
 }
 
@@ -116,45 +101,5 @@ function useChatSession(session_id: string) {
   }
 }
 
-function useActiveChatSession() {
-  const { user_id } = useUser()
-  const { chatSessions } = useChatSessions()
 
-  const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
-
-  if (context == null) {
-    throw new Error('Missing active session context. something wrong')
-  }
-
-  const activeSession = context.state
-  const setActiveSession = (session_id: string) => {
-    if (activeSession?.session_id === session_id) {
-      return
-    }
-    Object.values(chatSessions.sessions).forEach(session => {
-      if (session.session_id === session_id) {
-        context.setActiveSession({ ...session })
-      }
-    })
-  };
-
-  const userBelongsToActiveSession = useMemo(() => {
-    if (activeSession == null || activeSession.session_id == null || user_id == null) {
-      return false
-    }
-
-    const belongs = Object.values(activeSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
-      if (participant.user_id === user_id) {
-        return true
-      }
-      return prev
-    }, false)
-
-    return belongs
-  }, [user_id, activeSession])
-
-
-  return { activeSession, setActiveSession, userBelongsToActiveSession }
-}
-
-export { useChatSessions, useActiveChatSession, useChatSession }
+export { useChatSessions, useChatSession }
