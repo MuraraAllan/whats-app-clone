@@ -3,21 +3,21 @@ import styled from 'styled-components'
 import { Grid } from '@material-ui/core'
 
 import { BorderedContainer } from 'shared/components'
-import Message from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 
-const MessageContainer = styled(BorderedContainer)`max-width: 65%; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
+const MessageContainer = styled(BorderedContainer)`max-width: 90%; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
 
-export default function TextMessageDisplay({ message }: { message: Message }) {
+export default function TextMessageDisplay({ message, isCurrentUserMessage }: { message: Message, isCurrentUserMessage: boolean }) {
 
   return (
-    <Grid container direction="column" style={{ maxWidth: '80%' }}>
+    <Grid data-testid="textMessageDisplayGrid" container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
       <MessageContainer>
-        <span data-testid="textMessageDisplay" style={{ whiteSpace: 'pre-wrap' }}>
+        <span data-testid="textMessageDisplay" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
           {message.textMessage}
         </span>
       </MessageContainer>
-      {message.inlineButtons != null ? <InlineButtonsDisplay inlineButtons={message.inlineButtons} /> : null}
+      {message.inlineButtons != null ? <InlineButtonsDisplay inlineButtons={message.inlineButtons} isCurrentUserMessage={isCurrentUserMessage} /> : null}
     </Grid>
   )
 }

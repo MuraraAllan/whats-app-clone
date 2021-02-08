@@ -4,15 +4,16 @@ import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { CircleContainer } from 'shared/components'
-import Message from 'pages/mainpage/hooks/ChatSessionsHooks';
 import InlineButtonsDisplay from './InlineButtonsDisplay'
+import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import TextMessageDisplay from './TextMessageDisplay'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
+import { useUser } from 'shared/hooks';
 
-const GridPadded = styled(Grid)`padding: 10px`
-
+const GridPadded = styled(Grid)`padding: 10px;`
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
+  const user = useUser()
 
   if (activeSession == null) {
     return null
@@ -28,8 +29,9 @@ export default function ActiveChatSessionBody() {
   // message can use 70 % of width 
   // inline buttons can use entire screen 
 
-  // iterate over all messages, if there is a message with textMessage then render the message and it's inlineButtons if present
-  // if not check for inlineButtons, render inlineButtons if present
+  // iterate over all messages;   
+  // render textMessagethe and inlineButtons if present
+  // render inlineButtons if present
   // when we implement sendAudio we should look for the presence in Message Object
   // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
@@ -37,18 +39,20 @@ export default function ActiveChatSessionBody() {
   return <>
     {activeSession?.messages?.map((message, index) => {
       if (message.textMessage != null) {
+        const isCurrentUserMessage = message.user.user_id === user.user_id
         return (
-          <GridPadded key={index} container direction="row" >
-            <UserAvatarWithName message={message} />
-            <TextMessageDisplay message={message} />
+          <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
+            {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
+            <TextMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />
           </GridPadded>
         )
       }
       if (message.inlineButtons != null) {
+        const isCurrentUserMessage = message.user.user_id === user.user_id
         return (
-          <GridPadded key={index} container direction="row" >
-            <UserAvatarWithName message={message} style={{ marginRight: '4px' }} />
-            <InlineButtonsDisplay inlineButtons={message.inlineButtons} />
+          <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"}>
+            {isCurrentUserMessage === false ? <UserAvatarWithName message={message} style={{ marginRight: '4px' }} /> : null}
+            <InlineButtonsDisplay inlineButtons={message.inlineButtons} isCurrentUserMessage={isCurrentUserMessage} />
           </GridPadded>
         )
       }
