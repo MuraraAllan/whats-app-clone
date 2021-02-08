@@ -37,28 +37,9 @@ export interface ChatSessions {
   sessions: ChatSessionType[] | []
 }
 
-
-
 function useChatSessions() {
-  const { chatSessions, dispatch } = useContext(ChatSessionsContext)
-  useEffect(() => {
-    if (chatSessionsMock == null || dispatch == null) {
-      return
-    }
-    // this is mimicking a subscription which brings us active chat sessions that this user has
-    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
-
-    dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [])
-
-  const addMessage = (session_id: string, textMessage: string, user: User) => {
-    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
-      return
-    }
-    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }
-
-  return { chatSessions, addMessage }
+  const { chatSessions, addMessage, addMessageWithFile } = useContext(ChatSessionsContext)
+  return { chatSessions, addMessage, addMessageWithFile }
 }
 
 function useChatSession(session_id: string) {
