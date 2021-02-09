@@ -3,6 +3,7 @@ import { BorderedInput } from './BorderedInput'
 import { CircleContainer } from './CircleContainer'
 import { FullHeightContainer } from './FullHeightContainer'
 import { RotatedAttachFile } from './RotatedAttachFile'
+import { RotatedSend } from './RotatedSend'
 
 export {
   BorderedContainer,
@@ -10,5 +11,6 @@ export {
   BorderedInput,
   FullHeightBorderedContainer,
   FullHeightContainer,
-  RotatedAttachFile
+  RotatedAttachFile,
+  RotatedSend
 }

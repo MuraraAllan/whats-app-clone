@@ -1,12 +1,13 @@
 import React from 'react'
-import { Grid, makeStyles } from '@material-ui/core'
+import styled from 'styled-components'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core'
+
 import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import styled from 'styled-components'
 import { useUploadFile } from 'pages/mainpage/hooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
-
 
 const filePreviewStyles = makeStyles((theme) => {
   return {

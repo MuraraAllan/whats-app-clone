@@ -110,8 +110,6 @@ export function useUploadFileDND() {
     }
   }, [fileDropRef, setUploadingFile])
 
-  document.addEventListener('dragover', function (e) { e.preventDefault(); }, false);
-
   return {
     fileDropRef
   }

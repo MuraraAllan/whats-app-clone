@@ -4,23 +4,28 @@ import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
+import FileUploaderPreview from './components/FileUploaderPreview';
+import { InlineButtonsDisplay, TextMessageDisplay } from './components'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import { TextMessageDisplay, InlineButtonsDisplay } from './components'
 import { useActiveChatSession, useUploadFile, useUploadFileDND } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
-import FileUploaderPreview from './components/FileUploaderPreview';
 
-const GridPadded = styled(Grid)`padding: 10px;`
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
+const GridPadded = styled(Grid)`padding: 10px;`
 
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
-  const { uploadingFile } = useUploadFile()
   const { fileDropRef } = useUploadFileDND()
+  const { uploadingFile } = useUploadFile()
   const user = useUser()
 
   if (activeSession == null) {
     return null
+  }
+
+  // should render FilePreview if uploadingFile != null
+  if (uploadingFile != null) {
+    return (<FileUploaderPreview />)
   }
 
   // align gridPadded to the flex-end when message.user === loggedUser
@@ -33,12 +38,6 @@ export default function ActiveChatSessionBody() {
 
   // message can use 70 % of width 
   // inline buttons can use entire screen 
-
-
-  // should render FilePreview if uploadingFile != null
-  if (uploadingFile != null) {
-    return (<FileUploaderPreview />)
-  }
 
   // should render DisplayMessages when 
   // iterate over all messages;   

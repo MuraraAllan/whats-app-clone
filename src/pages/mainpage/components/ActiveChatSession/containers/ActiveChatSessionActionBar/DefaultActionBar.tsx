@@ -2,12 +2,12 @@ import React, { useCallback, useState } from 'react'
 import CameraAlt from '@material-ui/icons/CameraAlt'
 import Grid from '@material-ui/core/Grid'
 import Mic from '@material-ui/icons/Mic'
-import Send from '@material-ui/icons/Send'
 
-import { BorderedInput, RotatedAttachFile } from 'shared/components'
+import { BorderedInput, RotatedAttachFile, RotatedSend } from 'shared/components'
+import { FullHeightContainer } from 'shared/components/FullHeightContainer'
 import { useActiveChatSession, useChatSessions, useUploadFileInput } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks'
-import { FullHeightContainer } from 'shared/components/FullHeightContainer'
+
 
 export default function DefaultActionBar() {
   const { activeSession } = useActiveChatSession()
@@ -45,7 +45,7 @@ export default function DefaultActionBar() {
         <Mic fontSize="large" />
       </Grid>
       <Grid item >
-        <Send data-testid="activeChatSessionActionBarSendButton" onClick={() => dispatchAndClear()} fontSize="large" style={{ transform: "rotate(-45deg)", marginBottom: '7px' }} />
+        <RotatedSend marginBottom="7px" data-testid="activeChatSessionActionBarSendButton" onClick={() => dispatchAndClear()} fontSize="large" />
       </Grid>
     </FullHeightContainer>
   )
