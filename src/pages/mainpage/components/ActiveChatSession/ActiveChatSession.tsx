@@ -11,7 +11,7 @@ const ActionContainer = styled(BorderedContainer)`min-height:60px;`
 // ActionBar and Title will use 74px and 60 px, it should be all screen - 134px
 const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px); overflow-x: hidden; overflow-y: auto;`
 const Container = styled(BorderedContainer)`height: 72px;`
-const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
+
 
 export default function ActiveChatSessionScreen() {
   // this is not the most ideal scenario as it forces re-render ActiveChatSessionScreen and childrens each time activeSession switchs
@@ -31,9 +31,7 @@ export default function ActiveChatSessionScreen() {
       </Container>
       <UploadFileProvider>
         <CalcContainer container >
-          <FullWidthContainer container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
-            <ActiveChatSessionBody />
-          </FullWidthContainer>
+          <ActiveChatSessionBody />
         </CalcContainer>
         <ActionContainer item border={2}>
           <ActiveChatSessionActionBar />

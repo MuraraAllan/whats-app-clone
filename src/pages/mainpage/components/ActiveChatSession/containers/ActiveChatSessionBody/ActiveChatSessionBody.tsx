@@ -3,22 +3,26 @@ import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
-import { CircleContainer } from 'shared/components'
+import { BorderedContainer, CircleContainer } from 'shared/components'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { TextMessageDisplay, InlineButtonsDisplay } from './components'
-import { useActiveChatSession, useUploadFile } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useUploadFile, useUploadFileDND } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
 import FileUploaderPreview from './components/FileUploaderPreview';
 
 const GridPadded = styled(Grid)`padding: 10px;`
+const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
+
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
-  const { uploadingFile, isUploadingFile } = useUploadFile()
+  const { uploadingFile } = useUploadFile()
+  const { fileDropRef } = useUploadFileDND()
   const user = useUser()
 
   if (activeSession == null) {
     return null
   }
+
   // align gridPadded to the flex-end when message.user === loggedUser
   const UserAvatarWithName = ({ message, style }: { message: Message, style?: CSSProperties }) => (
     <CircleContainer style={style} container wrap="nowrap" direction="column" width={55} height={55}>
@@ -32,7 +36,7 @@ export default function ActiveChatSessionBody() {
 
 
   // should render FilePreview if uploadingFile != null
-  if (uploadingFile != null || isUploadingFile) {
+  if (uploadingFile != null) {
     return (<FileUploaderPreview />)
   }
 
@@ -45,8 +49,7 @@ export default function ActiveChatSessionBody() {
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
 
 
-
-  return <>
+  return <FullWidthContainer ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
       if (message.textMessage != null) {
         const isCurrentUserMessage = message.user.user_id === user.user_id
@@ -69,5 +72,5 @@ export default function ActiveChatSessionBody() {
 
       return <div></div>
     })}
-  </>
+  </FullWidthContainer>
 }
