@@ -4,20 +4,12 @@ import Send from '@material-ui/icons/Send'
 
 import { BorderedInput } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useActiveChatSession, useChatSessions, useUploadFile } from 'pages/mainpage/hooks'
-import { useUser } from 'shared/hooks'
-
+import { useUploadFile } from 'pages/mainpage/hooks'
 
 
 export default function DefaultActionBar() {
-  const { activeSession } = useActiveChatSession()
-  const { addMessage } = useChatSessions()
-  const { setIsUploadingFile } = useUploadFile()
-
-  const user = useUser()
+  const { finishUploadingFile } = useUploadFile()
   const [inputState, setInputState] = useState<string>('')
-
-  const session_id = activeSession?.session_id ?? '0'
 
   // should render defaultActionBar when isSendingFile is false
   // should render sendFilesActionBar when isSendingFile is true
@@ -31,9 +23,7 @@ export default function DefaultActionBar() {
         <BorderedInput
           onKeyDown={(ev) => {
             if (ev.key === "Enter") {
-              addMessage(session_id, inputState, user)
-              setInputState('')
-              setIsUploadingFile(false)
+              finishUploadingFile(inputState)
             }
           }}
           value={inputState}
@@ -44,11 +34,7 @@ export default function DefaultActionBar() {
           placeholder="Escreva um label para o arquivo." />
       </Grid>
       <Grid item style={{ alignSelf: 'center' }} container xs={1} sm={1} md={1} lg={1} xl={1}>
-        <Send data-testid="activeChatSessionActionBarSendButton" onClick={() => {
-          addMessage(session_id, inputState, user)
-          setInputState('')
-          setIsUploadingFile(false)
-        }} fontSize="large" style={{ transform: "rotate(-45deg)", marginBottom: '35px' }} />
+        <Send data-testid="activeChatSessionActionBarSendButton" onClick={() => finishUploadingFile(inputState)} fontSize="large" style={{ transform: "rotate(-45deg)", marginBottom: '35px' }} />
       </Grid>
     </FullHeightContainer>
   )
