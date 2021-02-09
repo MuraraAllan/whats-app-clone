@@ -10,6 +10,7 @@ export function useActiveChatSession() {
   const { user_id } = useUser()
   const { chatSessions } = useChatSessions()
 
+
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
   if (context == null) {
     throw new Error('Missing active session context. something wrong')

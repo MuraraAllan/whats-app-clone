@@ -3,21 +3,31 @@ import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
-import { CircleContainer } from 'shared/components'
-import InlineButtonsDisplay from './InlineButtonsDisplay'
+import { BorderedContainer, CircleContainer } from 'shared/components'
+import FileUploaderPreview from './components/FileUploaderPreview';
+import { InlineButtonsDisplay, TextMessageDisplay } from './components'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import TextMessageDisplay from './TextMessageDisplay'
-import { useActiveChatSession } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useUploadFile, useUploadFileDND } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
 
+const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 const GridPadded = styled(Grid)`padding: 10px;`
+
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
+  const { fileDropRef } = useUploadFileDND()
+  const { uploadingFile } = useUploadFile()
   const user = useUser()
 
   if (activeSession == null) {
     return null
   }
+
+  // should render FilePreview if uploadingFile != null
+  if (uploadingFile != null) {
+    return (<FileUploaderPreview />)
+  }
+
   // align gridPadded to the flex-end when message.user === loggedUser
   const UserAvatarWithName = ({ message, style }: { message: Message, style?: CSSProperties }) => (
     <CircleContainer style={style} container wrap="nowrap" direction="column" width={55} height={55}>
@@ -29,6 +39,7 @@ export default function ActiveChatSessionBody() {
   // message can use 70 % of width 
   // inline buttons can use entire screen 
 
+  // should render DisplayMessages when 
   // iterate over all messages;   
   // render textMessagethe and inlineButtons if present
   // render inlineButtons if present
@@ -36,7 +47,8 @@ export default function ActiveChatSessionBody() {
   // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
 
-  return <>
+
+  return <FullWidthContainer ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
       if (message.textMessage != null) {
         const isCurrentUserMessage = message.user.user_id === user.user_id
@@ -59,5 +71,5 @@ export default function ActiveChatSessionBody() {
 
       return <div></div>
     })}
-  </>
+  </FullWidthContainer>
 }

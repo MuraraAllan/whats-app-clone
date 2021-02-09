@@ -8,6 +8,8 @@ interface ShadowedButtonProps {
   margin?: string
 }
 
+// remember to check why buttons are growing when no textMessage
+// rememberr to check cross-browser compatibility
 export const ShadowedButton = styled(Button)`
 border: ${(p: ShadowedButtonProps) => p.border ? `${p.border}px solid` : "2px solid black"};
 line-height: 1;
