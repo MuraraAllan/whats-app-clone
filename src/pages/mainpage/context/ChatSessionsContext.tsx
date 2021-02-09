@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react'
 
 import { chatSessionsMock } from 'mocks/chatSessions'
-import { ChatSessions, ChatSessionType, Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { User } from 'shared/context/LoggedUserContext'
 
 
@@ -9,10 +9,10 @@ import { User } from 'shared/context/LoggedUserContext'
 export interface ChatSessionContextType {
   chatSessions: ChatSessions | null,
   addMessage: (session_id: string, textMessage: string, user: User) => void,
-  addMessageWithFile: (session_id: string, textMessage: string, user: User) => void
+  addMessageWithFile: (session_id: string, textMessage: string, file: UploadingFileType, user: User) => void
 }
 
-type Action = { type: 'add_textMessage', session_id: string, textMessage: string, user: User } | { type: 'update_fetched', state: ChatSessionType[] }
+type Action = { type: 'add_textMessage', session_id: string, textMessage: string, user: User, file?: UploadingFileType } | { type: 'update_fetched', state: ChatSessionType[] }
 
 // ChatSessions context will carry reducer actions to add messages into our group chats
 // ideally our backend would take care of this functionality, but we want to structure
@@ -33,7 +33,8 @@ export function ChatSessionsReducer(state: ChatSessions, action: Action) {
         message_id: `new_message_${(Math.random() + Math.random() * 8).toString()}`,
         textMessage: action.textMessage,
         timeStamp: new Date().getTime(),
-        user: action.user
+        user: action.user,
+        file: action.file
       }
       localMessages.sessions.forEach((session) => {
         if (action.session_id === session.session_id) {
@@ -71,11 +72,11 @@ function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
     dispatch({ type: 'add_textMessage', session_id, textMessage, user })
   }
 
-  const addMessageWithFile = (session_id: string, textMessage: string, user: User) => {
-    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
-      return
+  const addMessageWithFile = (session_id: string, textMessage: string, file: UploadingFileType, user: User) => {
+    if (textMessage == null || user == null || session_id == null || file == null) {
+      return null
     }
-    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
+    dispatch({ type: 'add_textMessage', session_id, textMessage, user, file })
   }
   return (
     <ChatSessionsContext.Provider value={{ chatSessions, addMessage, addMessageWithFile }}>

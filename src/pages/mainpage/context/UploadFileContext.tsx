@@ -1,13 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
+import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 interface UploadingFileController {
-  isUploadingFile: boolean | null
-  uploadingFile: Blob | null
+  uploadingFile: UploadingFileType | null
 }
 
 interface Dispatchers {
-  setIsUploadingFile: Dispatch<SetStateAction<boolean | null>>
-  setUploadingFile: Dispatch<SetStateAction<Blob | null>>
+  setUploadingFile: Dispatch<SetStateAction<UploadingFileType | null>>
 }
 
 type UploadFilesControlType = UploadingFileController & Dispatchers
@@ -20,13 +19,10 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
-  const [isUploadingFile, setIsUploadingFile] = useState<boolean | null>(null)
-  const [uploadingFile, setUploadingFile] = useState<Blob | null>(null)
+  const [uploadingFile, setUploadingFile] = useState<UploadingFileType | null>(null)
 
   return (
     <UploadFileContext.Provider value={{
-      isUploadingFile,
-      setIsUploadingFile,
       uploadingFile,
       setUploadingFile
     }}>

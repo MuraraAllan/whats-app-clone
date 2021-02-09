@@ -4,6 +4,11 @@ import { ChatSessionsContext } from 'pages/mainpage/context/ChatSessionsContext'
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
 
+export type UploadingFileType = {
+  content: Blob | null
+  name: string
+}
+
 interface InlineButtons {
   label: string,
   onClickAction?: Function
@@ -13,6 +18,7 @@ export interface Message {
   message_id: string,
   textMessage?: string,
   inlineButtons?: InlineButtons[],
+  file?: UploadingFileType
   timeStamp: number,
   user: User
 }
