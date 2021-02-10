@@ -4,12 +4,13 @@ import { ActiveChatSessionContext, ChatSessionContextType } from "../context/Act
 import { useChatSessions } from "./ChatSessionsHooks"
 import { useUser } from "shared/hooks"
 import { User } from 'shared/context/LoggedUserContext'
+import { UploadFileContext } from "../context/UploadFileContext"
 
 
 export function useActiveChatSession() {
   const { user_id } = useUser()
   const { chatSessions } = useChatSessions()
-
+  const { uploadingFile } = useContext(UploadFileContext) ?? {}
 
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
   if (context == null) {
@@ -24,7 +25,7 @@ export function useActiveChatSession() {
   }, [context.state, chatSessions])
 
   const setActiveSession = (session_id: string) => {
-    if (activeSession?.session_id === session_id) {
+    if (activeSession?.session_id === session_id || uploadingFile != null) {
       return
     }
     Object.values(chatSessions?.sessions ?? []).forEach(session => {

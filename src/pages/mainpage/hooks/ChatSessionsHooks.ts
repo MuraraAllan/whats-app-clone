@@ -16,9 +16,10 @@ interface InlineButtons {
 
 export interface Message {
   message_id: string,
-  textMessage?: string,
+  textMessage?: string | null,
   inlineButtons?: InlineButtons[],
   file?: UploadingFileType
+  picture?: UploadingFileType
   timeStamp: number,
   user: User
 }
@@ -35,7 +36,7 @@ export interface ChatSessionType {
   chatImage?: File,
   unreadMessages: number,
   lastReadTimestamp?: number,
-  lastMessage?: Message
+  lastMessage: Message
 }
 
 export interface ChatSessions {
@@ -43,8 +44,8 @@ export interface ChatSessions {
 }
 
 function useChatSessions() {
-  const { chatSessions, addMessage, addMessageWithFile } = useContext(ChatSessionsContext)
-  return { chatSessions, addMessage, addMessageWithFile }
+  const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture } = useContext(ChatSessionsContext)
+  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture }
 }
 
 function useChatSession(session_id: string) {

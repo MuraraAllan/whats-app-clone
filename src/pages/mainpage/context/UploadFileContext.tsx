@@ -1,12 +1,16 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { createRef, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 interface UploadingFileController {
   uploadingFile: UploadingFileType | null
+  isTakingPicture: boolean | null
+  videoRef: any
 }
 
 interface Dispatchers {
   setUploadingFile: Dispatch<SetStateAction<UploadingFileType | null>>
+  setIsTakingPicture: Dispatch<SetStateAction<boolean | null>>
+
 }
 
 type UploadFilesControlType = UploadingFileController & Dispatchers
@@ -19,12 +23,18 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
+
   const [uploadingFile, setUploadingFile] = useState<UploadingFileType | null>(null)
+  const [isTakingPicture, setIsTakingPicture] = useState<boolean | null>(null)
+  const videoRef = createRef<any>()
 
   return (
     <UploadFileContext.Provider value={{
       uploadingFile,
-      setUploadingFile
+      setUploadingFile,
+      isTakingPicture,
+      setIsTakingPicture,
+      videoRef,
     }}>
       {children}
     </UploadFileContext.Provider>
