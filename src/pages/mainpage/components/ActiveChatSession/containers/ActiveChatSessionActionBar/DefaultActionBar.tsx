@@ -5,27 +5,30 @@ import Mic from '@material-ui/icons/Mic'
 
 import { BorderedInput, RotatedAttachFile, RotatedSend } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useActiveChatSession, useChatSessions, useUploadFileInput } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useChatSessions, useUploadFileInput, useUploadFile } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks'
-
 
 export default function DefaultActionBar() {
   const { activeSession } = useActiveChatSession()
   const session_id = activeSession?.session_id ?? '0'
   const { addMessage } = useChatSessions()
   const [inputState, setInputState] = useState<string>('')
+  const { setIsTakingPicture } = useUploadFile()
   const { inputRef } = useUploadFileInput()
   const user = useUser()
 
   const dispatchAndClear = useCallback(() => {
-    addMessage(session_id, inputState, user)
-    setInputState('')
+    if (inputState.length > 0) {
+      addMessage({ session_id, textMessage: inputState, user })
+      setInputState('')
+    }
+    return null
   }, [inputState, session_id, user, addMessage])
 
   return (
     <FullHeightContainer container justify="space-evenly" alignItems="center">
       <Grid item>
-        <CameraAlt fontSize="large" />
+        <CameraAlt fontSize="large" onClick={() => setIsTakingPicture(true)} />
       </Grid>
       <Grid item>
         <input type="file" ref={inputRef} style={{ display: 'none' }} />
