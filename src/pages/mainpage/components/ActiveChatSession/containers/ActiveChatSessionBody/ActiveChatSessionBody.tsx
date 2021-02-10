@@ -1,12 +1,12 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
-import FileUploaderPreview from './components/FileUploaderPreview';
-import { InlineButtonsDisplay, TakePictureWithCam, TextMessageDisplay } from './components'
-import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import FilePreviewer from './components/FilePreviewer';
+import { TakePictureWithCam, TextMessageDisplay } from './components'
+import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { useActiveChatSession, useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
 
@@ -17,21 +17,29 @@ export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
   const { uploadingFile, isTakingPicture } = useUploadFile()
-  console.log('is taking picture', isTakingPicture)
-  console.log('uploading file', uploadingFile)
   const user = useUser()
+  const [filePreview, setFilePreview] = useState<UploadingFileType | null>(null)
+
+  useEffect(() => {
+    setFilePreview(null)
+  }, [activeSession, isTakingPicture, uploadingFile])
 
   if (activeSession == null) {
     return null
   }
 
+  if (filePreview != null) {
+    return (<FilePreviewer filePreview={filePreview} setFilePreview={setFilePreview} />)
+  }
+
+  // should render takePicture 
   if (isTakingPicture && uploadingFile == null) {
     return (<TakePictureWithCam />)
   }
 
   // should render FilePreview if uploadingFile != null
   if (uploadingFile != null) {
-    return (<FileUploaderPreview />)
+    return (<FilePreviewer />)
   }
 
   // align gridPadded to the flex-end when message.user === loggedUser
@@ -59,7 +67,7 @@ export default function ActiveChatSessionBody() {
       return (
         <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
-          <TextMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />
+          <TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />
         </GridPadded>
       )
     })}

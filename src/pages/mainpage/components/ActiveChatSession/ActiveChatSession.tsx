@@ -12,7 +12,6 @@ const ActionContainer = styled(BorderedContainer)`min-height:60px;`
 const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px); overflow-x: hidden; overflow-y: auto;`
 const Container = styled(BorderedContainer)`height: 72px;`
 
-
 export default function ActiveChatSessionScreen() {
   // this is not the most ideal scenario as it forces re-render ActiveChatSessionScreen and childrens each time activeSession switchs
   // although it is better to rerender and show something when a registered user recently logged in and don't have an ActiveSession yet
@@ -29,14 +28,12 @@ export default function ActiveChatSessionScreen() {
       <Container item>
         <ActiveChatSessionTitle />
       </Container>
-      <UploadFileProvider>
-        <CalcContainer container >
-          <ActiveChatSessionBody />
-        </CalcContainer>
-        <ActionContainer item border={2}>
-          <ActiveChatSessionActionBar />
-        </ActionContainer>
-      </UploadFileProvider>
+      <CalcContainer container >
+        <ActiveChatSessionBody />
+      </CalcContainer>
+      <ActionContainer item border={2}>
+        <ActiveChatSessionActionBar />
+      </ActionContainer>
     </>
   )
 }

@@ -1,10 +1,10 @@
-import FileUploaderPreview from './FileUploaderPreview'
+import FilePreviewer from './FilePreviewer'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import TakePictureWithCam from './TakePictureWithCam'
 import TextMessageDisplay from './TextMessageDisplay'
 
 export {
-  FileUploaderPreview,
+  FilePreviewer,
   InlineButtonsDisplay,
   TextMessageDisplay,
   TakePictureWithCam
