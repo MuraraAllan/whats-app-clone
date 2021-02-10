@@ -3,8 +3,8 @@ import { AttachFile } from '@material-ui/icons'
 
 
 interface RotatedAttachFileProps {
-  width?: number,
-  height?: number,
+  width?: number | string,
+  height?: number | string,
   backgroundColor?: string,
   border?: number,
   opacity?: string

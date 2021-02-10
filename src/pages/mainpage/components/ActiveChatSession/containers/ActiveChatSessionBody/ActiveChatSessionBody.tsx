@@ -1,13 +1,13 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
-import FileUploaderPreview from './components/FileUploaderPreview';
-import { InlineButtonsDisplay, TextMessageDisplay } from './components'
-import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import { useActiveChatSession, useUploadFile, useUploadFileDND } from 'pages/mainpage/hooks'
+import FilePreviewer from './components/FilePreviewer';
+import { TakePictureWithCam, TextMessageDisplay } from './components'
+import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import { useActiveChatSession, useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
 
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
@@ -16,16 +16,30 @@ const GridPadded = styled(Grid)`padding: 10px;`
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
-  const { uploadingFile } = useUploadFile()
+  const { uploadingFile, isTakingPicture } = useUploadFile()
   const user = useUser()
+  const [filePreview, setFilePreview] = useState<UploadingFileType | null>(null)
+
+  useEffect(() => {
+    setFilePreview(null)
+  }, [activeSession, isTakingPicture, uploadingFile])
 
   if (activeSession == null) {
     return null
   }
 
+  if (filePreview != null) {
+    return (<FilePreviewer filePreview={filePreview} setFilePreview={setFilePreview} />)
+  }
+
+  // should render takePicture 
+  if (isTakingPicture && uploadingFile == null) {
+    return (<TakePictureWithCam />)
+  }
+
   // should render FilePreview if uploadingFile != null
   if (uploadingFile != null) {
-    return (<FileUploaderPreview />)
+    return (<FilePreviewer />)
   }
 
   // align gridPadded to the flex-end when message.user === loggedUser
@@ -41,8 +55,7 @@ export default function ActiveChatSessionBody() {
 
   // should render DisplayMessages when 
   // iterate over all messages;   
-  // render textMessagethe and inlineButtons if present
-  // render inlineButtons if present
+
   // when we implement sendAudio we should look for the presence in Message Object
   // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
@@ -50,26 +63,13 @@ export default function ActiveChatSessionBody() {
 
   return <FullWidthContainer ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
-      if (message.textMessage != null) {
-        const isCurrentUserMessage = message.user.user_id === user.user_id
-        return (
-          <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
-            {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
-            <TextMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />
-          </GridPadded>
-        )
-      }
-      if (message.inlineButtons != null) {
-        const isCurrentUserMessage = message.user.user_id === user.user_id
-        return (
-          <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"}>
-            {isCurrentUserMessage === false ? <UserAvatarWithName message={message} style={{ marginRight: '4px' }} /> : null}
-            <InlineButtonsDisplay inlineButtons={message.inlineButtons} isCurrentUserMessage={isCurrentUserMessage} />
-          </GridPadded>
-        )
-      }
-
-      return <div></div>
+      const isCurrentUserMessage = message.user.user_id === user.user_id
+      return (
+        <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
+          {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
+          <TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />
+        </GridPadded>
+      )
     })}
   </FullWidthContainer>
 }
