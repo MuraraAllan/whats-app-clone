@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core'
 
 import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useUploadFile } from 'pages/mainpage/hooks'
+import { useTakePicture, useUploadFile } from 'pages/mainpage/hooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
 
@@ -39,35 +39,30 @@ const filePreviewStyles = makeStyles((theme) => {
   }
 })
 
-const FontWidthSpan = styled.span`font-weight: 600`
-
-export default function FileUploaderPreview() {
+export default function TakePictureWithCam() {
   // should render a header with Digite o label do arquivo and an close button
   // should render document preview, if it is a picture then preview image
   // otherwise render an attachment in the middle with file name under
-  const { setUploadingFile, uploadingFile, setIsTakingPicture, isTakingPicture } = useUploadFile()
+
+  const { setUploadingFile, uploadingFile, setIsTakingPicture } = useUploadFile()
+  const { videoRef } = useTakePicture()
+
   const classes = filePreviewStyles()
 
+
+  // return (<video ref={videoRef} id="video" />)
   return (
     <FullHeightContainer item container direction="row" >
-      <BorderedContainer alignItems="center" justify="space-between" container style={{ backgroundColor: '#80808066', height: '40px' }}>
+      <BorderedContainer alignItems="center" container style={{ backgroundColor: '#80808066', height: '40px' }}>
         {/* implement i18n */}
-        <Grid item>
-          <FontWidthSpan onClick={() => {
-            setUploadingFile(null);
-            setIsTakingPicture(false)
-          }} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
-
-          <FontWidthSpan > Digite o label do arquivo</FontWidthSpan>
-        </Grid>
-        {isTakingPicture ?
-          <Grid container xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
-            <FontWidthSpan onClick={() => setUploadingFile(null)} style={{ marginRight: '10px' }}>Tirar foto novamente</FontWidthSpan>
-          </Grid> : null}
+        <span onClick={() => setIsTakingPicture(false)} style={{ fontWeight: 600, padding: '10px', cursor: 'pointer' }}>x</span>
+        <span style={{ fontWeight: 600 }}> Tire uma foto</span>
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
         <BorderedContainer className={classes.filePreviewer}>
-          <RotatedAttachFile width={50} height={50} />
+          {/* <FancyCanvas ref={canvasRef as any} /> */}
+          <video ref={videoRef as any} />
+
         </BorderedContainer>
         <span style={{ padding: '10px' }}>{uploadingFile?.name}</span>
       </CalcContainer>
