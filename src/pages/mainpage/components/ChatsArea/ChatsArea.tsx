@@ -9,7 +9,7 @@ export default function ChatsArea() {
   if (user == null || user.chatSessions == null) {
     return null
   }
-
+  // iterate over all user messages and render its content as preview
   return (
     <>
       {
