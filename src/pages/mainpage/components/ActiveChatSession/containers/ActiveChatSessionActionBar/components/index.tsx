@@ -1,13 +1,13 @@
 import DefaultActionBar from './DefaultActionBar'
 import FileUploadLabelActionBar from './FileUploadLabelActionBar'
 import RecordAudioActionBar from './RecordAudioActionBar'
-import TakingPictureActionBar from './TakingPictureActionBar'
+import UploadPictureActionBar from './UploadPictureActionBar'
 import RegisteringFormActionBar from './RegisteringFormActionBar'
 
 export {
   DefaultActionBar,
   FileUploadLabelActionBar,
-  TakingPictureActionBar,
+  UploadPictureActionBar,
   RecordAudioActionBar,
   RegisteringFormActionBar
 }

@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from 'react'
 import { render } from '@testing-library/react'
 
-import { ActiveChatSessionProvider, ChatSessionsProvider } from 'pages/mainpage/context'
+import { ActiveChatSessionProvider, ChatSessionsProvider, UploadFileProvider } from 'pages/mainpage/context'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { LoggedUserProvider } from './context/LoggedUserContext'
 import { useActiveChatSession } from 'pages/mainpage/hooks'
@@ -38,7 +38,9 @@ export function MockProviders({ children }: { children: ReactNode }) {
     <LoggedUserProvider>
       <ChatSessionsProvider>
         <ActiveChatSessionProvider>
-          {children}
+          <UploadFileProvider>
+            {children}
+          </UploadFileProvider>
         </ActiveChatSessionProvider>
       </ChatSessionsProvider>
     </LoggedUserProvider>

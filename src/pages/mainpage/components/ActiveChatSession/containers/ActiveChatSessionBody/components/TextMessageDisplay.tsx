@@ -22,12 +22,12 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
     if (message.file != null) {
       const blobSRC = URL.createObjectURL(message.file.content);
       //</a>
-      return <a style={{ color: 'inherit', height: 'inherit', width: 'inherit' }} href={blobSRC} download={message.file.name}><RotatedAttachFile width={60} height={60} /></a>
+      return <a data-testid="TextMessageDisplayFile" style={{ color: 'inherit', height: 'inherit', width: 'inherit' }} href={blobSRC} download={message.file.name}><RotatedAttachFile width={60} height={60} /></a>
     }
     if (message.picture != null) {
       // later it will be an cloud bucket address
       const blobSRC = URL.createObjectURL(message.picture.content);
-      return <img onClick={() => setFilePreview(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+      return <img data-testid="TextMessageDisplayPicture" onClick={() => setFilePreview(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
     }
     return null
   }, [message.file, message.picture, setFilePreview])

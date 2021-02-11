@@ -1,2 +1,41 @@
 // TakePictureWithCam
 // should be tested when testing the photo button
+
+
+// possible actions :
+// simulate each possible action 
+
+// main page test : behaviors
+
+
+// RecordAudio 
+
+// StopRecording
+// click on Mic button
+// expect to have rendered RecordAudioActionBar data-test-id present
+// click on RecordAudioActionBarStop data-testid
+// expect to not have rendered AudioMessageDisplayObject data-test-id
+// expect to not have rendered RecordAudioActionBar
+
+// RecordAudio
+// click on DefaultActionBarRecordAudio data-testid
+// expect to have rendered RecordAudioActionBar data-test-id present
+// expect to have rendered AudioMessageDisplayObject data-testid
+// click on RecordAudioActionBarFinish data-testid
+// expect have rendered DefaultActionBar data-testid
+
+
+// TakeWebcamPicture 
+// 
+
+
+
+// UploadFile should
+
+// sendFile should 
+
+// isRegistering should 
+
+
+// LeftActionArea 
+// SwitchBetweenActiveChatSessions

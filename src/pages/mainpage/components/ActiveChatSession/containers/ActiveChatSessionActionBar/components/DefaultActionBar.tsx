@@ -25,9 +25,9 @@ export default function DefaultActionBar() {
   }, [inputState, session_id, user, addMessage])
 
   return (
-    <FullHeightContainer container justify="space-evenly" alignItems="center">
+    <FullHeightContainer data-testid="DefaultActionBar" container justify="space-evenly" alignItems="center">
       <Grid item>
-        <CameraAlt fontSize="large" onClick={() => setIsTakingPicture(true)} />
+        <CameraAlt data-testid="DefaultActionBarUploadPicture" fontSize="large" onClick={() => setIsTakingPicture(true)} />
       </Grid>
       <Grid item>
         <input type="file" ref={inputRef} style={{ display: 'none' }} />
@@ -36,6 +36,7 @@ export default function DefaultActionBar() {
       <FullHeightContainer container item xs={8} sm={7} md={8} lg={9} xl={10} alignItems="center">
         {/* implement i18n */}
         <BorderedInput
+          data-testid="DefaultActionBarInput"
           onKeyDown={(ev) => ev.key === "Enter" ? dispatchAndClear() : null}
           value={inputState}
           onChange={(ev) => setInputState(ev.target.value)}
@@ -44,10 +45,10 @@ export default function DefaultActionBar() {
           placeholder="Escreva uma mensagem..." />
       </FullHeightContainer>
       <Grid item>
-        <Mic fontSize="large" onClick={() => setIsRecordingAudio(true)} />
+        <Mic data-testid="DefaultActionBarRecordAudio" fontSize="large" onClick={() => setIsRecordingAudio(true)} />
       </Grid>
       <Grid item >
-        <RotatedSend marginBottom="7px" data-testid="activeChatSessionActionBarSendButton" onClick={() => dispatchAndClear()} fontSize="large" />
+        <RotatedSend data-testid="DefaultActionBarSend" marginBottom="7px" onClick={() => dispatchAndClear()} fontSize="large" />
       </Grid>
     </FullHeightContainer>
   )

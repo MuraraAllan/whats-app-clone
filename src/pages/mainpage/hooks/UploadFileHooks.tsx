@@ -4,6 +4,12 @@ import { useChatSessions } from ".";
 import { useActiveChatSession } from "./ActiveChatSessionHooks";
 import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
 
+
+// this hook is tested by e2e
+// useUploadFile computes only a callBack
+// the functions used are based on third hooks and already tested
+// the interactions with browser will be properly tested on cypress
+
 async function convertFromFileListToBlob(files: FileList) {
   if (files == null || files.item == null || files.length > 1) {
     return null
@@ -21,6 +27,7 @@ async function convertFromFileListToBlob(files: FileList) {
     name: file.name
   }
 }
+
 
 // useUploadFile
 // should retunr if user is uploading file ( used to display FileUploaderPreview - both for images and documents)
@@ -68,7 +75,7 @@ export function useUploadFile() {
       })
     }
     setUploadingFile(null)
-  }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture])
+  }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture, setIsTakingPicture])
 
   return {
     setUploadingFile,
@@ -156,9 +163,13 @@ export function useUploadFileDND() {
 export function useTakePicture() {
   const { isTakingPicture, setIsTakingPicture, setUploadingFile, finishUploadingFile } = useUploadFile()
   const ctx = useContext(UploadFileContext)
+  const [hasPermission, setHasPermission] = useState<boolean>(false)
   const { videoRef } = ctx ?? {}
 
   const takePicture = useCallback(() => {
+    if (!hasPermission) {
+      return
+    }
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
     canvas.setAttribute('width', '500');
@@ -172,7 +183,7 @@ export function useTakePicture() {
         })
       }, 'image/png', 1);
     }
-  }, [videoRef, setUploadingFile])
+  }, [videoRef, setUploadingFile, hasPermission])
 
   useLayoutEffect(() => {
     if (videoRef != null && videoRef.current != null) {
@@ -184,10 +195,10 @@ export function useTakePicture() {
         return true
       }
       asyncGetUserMedia().then(ret => {
-        // console.log('PERMISSION GRANTED', ret)
+        setHasPermission(true)
       }).catch(exc => {
         setIsTakingPicture(false)
-        alert("unable to obtain permissions or access video device")
+        alert("falha ao obeter permissoes de ou ao acessar o dispositivo de video")
       })
     }
   }, [videoRef, setIsTakingPicture])
@@ -214,7 +225,7 @@ export function useRecordAudio() {
     user
   } = useUploadFile()
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-
+  const [hasAudioPermission, setHasAudioPermission] = useState<boolean>(false)
   const finishRecordingAudio = useCallback(() => {
     if (mediaRecorder != null) {
       mediaRecorder?.stop()
@@ -226,7 +237,7 @@ export function useRecordAudio() {
     if (isRecordingAudio) {
       navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
         const chunks = [] as Blob[]
-
+        setHasAudioPermission(true)
         const mediaRecorder = new MediaRecorder(stream)
         mediaRecorder.start()
         mediaRecorder.onstop = (e: any) => {
@@ -236,6 +247,7 @@ export function useRecordAudio() {
             name: `Recording${Math.random() + 4 * Math.random()}`
           }
           if (activeSession != null) {
+
             addAudioMessage({ session_id: activeSession.session_id, audio, user })
           }
         }
@@ -245,7 +257,7 @@ export function useRecordAudio() {
 
         setMediaRecorder(mediaRecorder)
       }).catch(err => {
-        alert()
+        alert("falha ao obeter permissoes de ou ao acessar o dispositivo de audio")
         setIsRecordingAudio(false)
       })
 
@@ -262,6 +274,7 @@ export function useRecordAudio() {
   return {
     isRecordingAudio,
     setIsRecordingAudio,
-    finishRecordingAudio
+    finishRecordingAudio,
+    hasAudioPermission
   }
 }

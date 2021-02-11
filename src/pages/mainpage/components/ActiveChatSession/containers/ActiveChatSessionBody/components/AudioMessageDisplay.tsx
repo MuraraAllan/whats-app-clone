@@ -17,9 +17,9 @@ export default function AudioMessageDisplay({ message, isCurrentUserMessage }: {
   // also we check if the message contains inlineButtons so we can render them after the message
   const blobSRC = URL.createObjectURL(message.audio?.content);
   return (
-    <Grid data-testid="textMessageDisplayGrid" container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
+    <Grid container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
       <MessageContainer container direction="column" alignItems="center">
-        <span data-testid="textMessageDisplay" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+        <span style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
           <audio data-testid="AudioMessageDisplayObject" src={blobSRC} controls />
         </span>
       </MessageContainer>
