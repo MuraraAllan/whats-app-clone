@@ -1,11 +1,11 @@
-import FilePreviewer from './FilePreviewer'
+import FileViewer from './FileViewer'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import TakePictureWithCam from './TakePictureWithCam'
 import TextMessageDisplay from './TextMessageDisplay'
 import AudioMessageDisplay from './AudioMessageDisplay'
 
 export {
-  FilePreviewer,
+  FileViewer,
   InlineButtonsDisplay,
   TextMessageDisplay,
   TakePictureWithCam,

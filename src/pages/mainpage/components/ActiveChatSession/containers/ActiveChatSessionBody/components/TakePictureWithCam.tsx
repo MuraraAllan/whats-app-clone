@@ -39,8 +39,7 @@ export default function TakePictureWithCam() {
   // should render a header TireUmaFoto do arquivo and an close button
   // should render document preview, if it is a picture then preview image
   // otherwise render an attachment in the middle with file name under
-  const { setIsTakingPicture } = useUploadFile()
-  const { videoRef } = useTakePicture()
+  const { videoRef, setIsTakingPicture } = useTakePicture()
   const classes = filePreviewStyles()
 
   // return (<video ref={videoRef} id="video" />)

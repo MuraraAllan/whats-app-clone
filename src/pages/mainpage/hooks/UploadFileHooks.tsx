@@ -67,8 +67,8 @@ export function useUploadFile() {
         file: uploadingFile,
         user
       })
-      setUploadingFile(null)
     }
+    setUploadingFile(null)
   }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture])
 
   return {

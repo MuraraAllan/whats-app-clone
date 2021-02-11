@@ -21,7 +21,6 @@ export default function ActiveChatSessionActionBar() {
   // should render SingleButtonActionBar when isTakingPicture is true
   // should render audioActionBar when isSendingAudio is true
   // should render SingleButtonActionBar when isRegistering is true
-  console.log('IOS RED', isRecordingAudio)
   if (isRecordingAudio) {
     return (<RecordAudioActionBar />)
   }

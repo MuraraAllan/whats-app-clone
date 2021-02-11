@@ -9,7 +9,7 @@ import { UploadFileContext } from "pages/mainpage/context"
 export function useActiveChatSession() {
   const { chatSessions, user } = useChatSessions()
   const { user_id } = user
-  const { uploadingFile } = useContext(UploadFileContext) ?? {}
+  const { uploadingFile, isTakingPicture, isRecordingAudio } = useContext(UploadFileContext) ?? {}
 
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
   if (context == null) {
@@ -24,7 +24,7 @@ export function useActiveChatSession() {
   }, [context.state, chatSessions])
 
   const setActiveSession = (session_id: string) => {
-    if (activeSession?.session_id === session_id || uploadingFile != null) {
+    if (activeSession?.session_id === session_id || uploadingFile != null || isTakingPicture || isRecordingAudio) {
       return
     }
     Object.values(chatSessions?.sessions ?? []).forEach(session => {

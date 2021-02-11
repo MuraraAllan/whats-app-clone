@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid'
 import { BorderedInput, RotatedSend } from 'shared/components'
 import { useUploadFile } from 'pages/mainpage/hooks'
 
-
 export default function FileUploadLabelActionBar() {
   const { finishUploadingFile } = useUploadFile()
   const [inputState, setInputState] = useState<string>('')

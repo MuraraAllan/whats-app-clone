@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
-import FilePreviewer from './components/FilePreviewer';
-import { InlineButtonsDisplay, TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from './components'
+import { FileViewer } from './components/';
+import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from './components'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { useActiveChatSession, useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
@@ -13,14 +13,19 @@ import { useUser } from 'shared/hooks';
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 const GridPadded = styled(Grid)`padding: 10px;`
 
+// states :
+// withFileView (fileView != null will render FilePreview in view mode)
+// displayWebcamTakePicture (takingPicture and notUploadingFile will render TakePictureWithCam)
+// uploadingFile (will render FilePreviewer in Send mode)
+// displayingTextMessage (defaultState will render TextMessageDisplay)
 
-// control whether 
 export default function ActiveChatSessionBody() {
-  const { activeSession, user } = useActiveChatSession()
+  const { activeSession } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
   const { uploadingFile, isTakingPicture } = useUploadFile()
+  const user = useUser()
   const [filePreview, setFilePreview] = useState<UploadingFileType | null>(null)
-
+  // null FileViewer when user switch screens or dispatch some action
   useEffect(() => {
     setFilePreview(null)
   }, [activeSession, isTakingPicture, uploadingFile])
@@ -30,17 +35,15 @@ export default function ActiveChatSessionBody() {
   }
 
   if (filePreview != null) {
-    return (<FilePreviewer filePreview={filePreview} setFilePreview={setFilePreview} />)
+    return (<FileViewer filePreview={filePreview} setFilePreview={setFilePreview} />)
   }
 
-  // should render takePicture 
   if (isTakingPicture && uploadingFile == null) {
     return (<TakePictureWithCam />)
   }
 
-  // should render FilePreview if uploadingFile != null
   if (uploadingFile != null) {
-    return (<FilePreviewer />)
+    return (<FileViewer />)
   }
 
   // align gridPadded to the flex-end when message.user === loggedUser

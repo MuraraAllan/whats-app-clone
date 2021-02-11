@@ -42,11 +42,18 @@ const filePreviewStyles = makeStyles((theme) => {
 
 const FontWidthSpan = styled.span`font-weight: 600`
 
+// states :
+// isViewingUploadedFile (filePreview != null should render an image as filePreview is only available for imgs)
+// isPreViewingFileUpload (defaultState should render Attach icon and a container around)
+// isPreviewingWebcam (uploadingFile != null &)
 export default function FilePreview({ filePreview, setFilePreview }: { filePreview?: UploadingFileType, setFilePreview?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
-  // should render a header with Digite o label do arquivo and an close button
-  // should render document preview, if it is a picture then preview image
-  // otherwise render an attachment in the middle with file name under
-  const { setUploadingFile, uploadingFile, setIsTakingPicture, isTakingPicture } = useUploadFile()
+
+  const {
+    setUploadingFile,
+    uploadingFile,
+    setIsTakingPicture,
+    isTakingPicture
+  } = useUploadFile()
   const classes = filePreviewStyles()
   const displayFile = useMemo(() => {
     // if is taking picture or viewing file 
@@ -54,14 +61,17 @@ export default function FilePreview({ filePreview, setFilePreview }: { filePrevi
       const fileURL = URL.createObjectURL(filePreview?.content)
       return <img src={fileURL}></img>
     }
-    if (isTakingPicture) {
+    if (uploadingFile != null && isTakingPicture) {
       const fileURL = URL.createObjectURL(uploadingFile?.content)
       return <img src={fileURL}></img>
     }
-    return <BorderedContainer className={classes.filePreviewer}>
-      <RotatedAttachFile width={50} height={50} />
-    </BorderedContainer>
-  }, [uploadingFile, filePreview])
+    if (uploadingFile != null) {
+      return (<BorderedContainer className={classes.filePreviewer}>
+        <RotatedAttachFile width={50} height={50} />
+      </BorderedContainer>)
+    }
+    return null
+  }, [uploadingFile, filePreview, isTakingPicture, classes.filePreviewer])
 
   return (
     <FullHeightContainer item container direction="row" >
