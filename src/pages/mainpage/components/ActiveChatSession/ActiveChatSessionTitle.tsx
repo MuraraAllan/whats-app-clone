@@ -18,7 +18,7 @@ export default function ActiveChatSessionTitle() {
       return null
     }
     // implement i18n
-    const allUsers = activeSession.participants.map(participant => participant.user_id === user.user_id ? 'Eu' : participant.userName)
+    const allUsers = activeSession.participants.map((participant) => participant.user_id === user.user_id ? 'Eu' : participant.userName)
     allUsers.sort((a, b) => a.localeCompare(b))
     return allUsers.join(', ')
   }, [activeSession, user])

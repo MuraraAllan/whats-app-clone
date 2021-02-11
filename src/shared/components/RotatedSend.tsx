@@ -3,7 +3,7 @@ import { Send } from '@material-ui/icons'
 
 
 interface RotatedSendProps {
-  marginBottom: number | string
+  marginBottom?: number | string
 }
 
 
