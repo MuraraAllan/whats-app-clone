@@ -9,9 +9,12 @@ import { useActiveChatSession } from 'pages/mainpage/hooks'
 const Container = styled(BorderedContainer)`height: 72px`
 const LimitedContainer = styled(Grid)`max-width: 50%`
 
+
+// should render  the names of participants and the ActiveChatSession title
+// when user not belong to ActiveChatSession doesn't render participants names
+
 export default function ActiveChatSessionTitle() {
   const { activeSession, userBelongsToActiveSession, user } = useActiveChatSession()
-
   const usersInChat = useMemo(() => {
     if (user == null || activeSession == null || activeSession.participants == null) {
       return null

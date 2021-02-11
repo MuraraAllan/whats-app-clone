@@ -7,7 +7,7 @@ import { UploadFileContext } from "pages/mainpage/context"
 
 
 export function useActiveChatSession() {
-  const { chatSessions, user } = useChatSessions()
+  const { chatSessions, user, setIsRegisterFormOpen, isRegisteringFormOpen } = useChatSessions()
   const { user_id } = user
   const { uploadingFile, isTakingPicture, isRecordingAudio } = useContext(UploadFileContext) ?? {}
 
@@ -24,7 +24,8 @@ export function useActiveChatSession() {
   }, [context.state, chatSessions])
 
   const setActiveSession = (session_id: string) => {
-    if (activeSession?.session_id === session_id || uploadingFile != null || isTakingPicture || isRecordingAudio) {
+    // we can just block setActiveSession when there is some action happenning or we can just wipe out the actions
+    if (activeSession?.session_id === session_id || uploadingFile != null || isTakingPicture || isRecordingAudio || isRegisteringFormOpen) {
       return
     }
     Object.values(chatSessions?.sessions ?? []).forEach(session => {
@@ -54,6 +55,8 @@ export function useActiveChatSession() {
     activeSession,
     setActiveSession,
     userBelongsToActiveSession,
-    user
+    user,
+    setIsRegisterFormOpen,
+    isRegisteringFormOpen
   }
 }

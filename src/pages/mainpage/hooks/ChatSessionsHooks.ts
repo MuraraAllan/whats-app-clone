@@ -11,7 +11,7 @@ export type UploadingFileType = {
 
 interface InlineButtons {
   label: string,
-  onClickAction?: Function
+  onClickAction?: string
 }
 
 export interface Message {
@@ -46,8 +46,8 @@ export interface ChatSessions {
 
 function useChatSessions() {
   const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
-  const user = useUser()
-  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user }
+  const { user, setIsRegisterFormOpen, isRegisteringFormOpen } = useUser()
+  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user, setIsRegisterFormOpen, isRegisteringFormOpen }
 }
 
 

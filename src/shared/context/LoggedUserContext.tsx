@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { userWithChatSessions } from 'mocks/userData'
 
@@ -6,9 +6,19 @@ export interface User {
   user_id: string,
   userName: string,
   chatSessions?: ChatSessionType[],
+  isRegistering?: boolean
 }
 
-export const LoggedUserContext = React.createContext<User | null>(null)
+type RegisteringFormControl = {
+  isRegisteringFormOpen: boolean,
+  setIsRegisterFormOpen: Dispatch<SetStateAction<boolean>>
+}
+
+type UserContext = {
+  user: User
+} & RegisteringFormControl
+
+export const LoggedUserContext = React.createContext<UserContext | null>(null)
 
 type UserProviderProps = { children: React.ReactNode }
 
@@ -18,9 +28,11 @@ type UserProviderProps = { children: React.ReactNode }
 // and it's propertys
 
 function LoggedUserProvider({ children }: UserProviderProps) {
-  const [state,] = React.useState<User | null>(userWithChatSessions)
+  const [user,] = useState<User>(userWithChatSessions)
+  const [isRegisteringFormOpen, setIsRegisterFormOpen] = useState<boolean>(false)
+
   return (
-    <LoggedUserContext.Provider value={state}>
+    <LoggedUserContext.Provider value={{ user, isRegisteringFormOpen, setIsRegisterFormOpen }}>
       {children}
     </LoggedUserContext.Provider>
   )

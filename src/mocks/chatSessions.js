@@ -67,7 +67,7 @@ export const chatSessionsMock = [
         message_id: '2a',
         textMessage: "Olá \n Meu nome é Karen, eu sou o robô assistente de cadastro da Intersowa OTC \n Vamos dar início ao seu processo de cadastramento?",
         inlineButtons: [
-          { label: "Fazer meu Cadastro" },
+          { label: "Fazer meu Cadastro", onClickAction: "openRegisteringForm" },
           { label: "Informações sobre a Intersowa OTC" },
         ],
         user: { user_id: "1", userName: 'Karen' },

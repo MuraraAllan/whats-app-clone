@@ -5,25 +5,24 @@ import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
 import { FileViewer } from './components/';
-import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from './components'
+import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay, RegisteringForm } from './components'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import { useActiveChatSession, useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
-import { useUser } from 'shared/hooks';
+import { useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 const GridPadded = styled(Grid)`padding: 10px;`
 
 // states :
-// withFileView (fileView != null will render FilePreview in view mode)
-// displayWebcamTakePicture (takingPicture and notUploadingFile will render TakePictureWithCam)
-// uploadingFile (will render FilePreviewer in Send mode)
-// displayingTextMessage (defaultState will render TextMessageDisplay)
+// withFileView (fileView != null render FilePreview )
+// displayWebcamTakePicture (takingPicture and notUploadingFile render TakePictureWithCam)
+// uploadingFile (render FilePreviewer)
+// displayingTextMessage (defaultState will render MessageDisplay)
+// registering (will render RegisteringForm)
 
 export default function ActiveChatSessionBody() {
-  const { activeSession } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
-  const { uploadingFile, isTakingPicture } = useUploadFile()
-  const user = useUser()
+  const { uploadingFile, isTakingPicture, activeSession, user, isRegisteringFormOpen } = useUploadFile()
+
   const [fileView, setFileView] = useState<UploadingFileType | null>(null)
   // null FileViewer when user switch screens or dispatch some action
   useEffect(() => {
@@ -32,6 +31,10 @@ export default function ActiveChatSessionBody() {
 
   if (activeSession == null) {
     return null
+  }
+
+  if (isRegisteringFormOpen) {
+    return (<RegisteringForm />)
   }
 
   if (fileView != null) {

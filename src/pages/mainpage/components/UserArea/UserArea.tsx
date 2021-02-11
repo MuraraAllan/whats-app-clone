@@ -10,7 +10,7 @@ import { useUser } from 'shared/hooks/UserHooks';
 const Container = styled(BorderedContainer)`height: 72px`
 
 export default function UserArea() {
-  const user = useUser()
+  const { user } = useUser()
   return (
     <Container container
       justify="space-evenly"

@@ -4,7 +4,7 @@ import ChatContent from './ChatContent'
 import { useUser } from 'shared/hooks/UserHooks'
 
 export default function ChatsArea() {
-  const user = useUser()
+  const { user } = useUser()
 
   if (user == null || user.chatSessions == null) {
     return null

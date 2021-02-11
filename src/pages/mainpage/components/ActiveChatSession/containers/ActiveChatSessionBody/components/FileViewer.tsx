@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core'
 
-import { BorderedContainer, RotatedAttachFile } from 'shared/components'
+import { BorderedContainer, FontWidthSpan, RotatedAttachFile } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
 import { useUploadFile } from 'pages/mainpage/hooks'
+
 import { UploadingFileType } from '../../../../../hooks/ChatSessionsHooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
@@ -40,7 +41,6 @@ const filePreviewStyles = makeStyles((theme) => {
   }
 })
 
-const FontWidthSpan = styled.span`font-weight: 600`
 
 // states :
 // isViewingUploadedFile (filePreview != null should render an image as filePreview is only available for imgs)
@@ -66,6 +66,7 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
     if (uploadingFile != null && !isTakingPicture) {
       return true
     }
+    return false
   }, [uploadingFile, isTakingPicture])
 
   const isViewingWebcamFile = useMemo(() => {
@@ -73,8 +74,7 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
       return true
     }
     return false
-  }, [isTakingPicture, uploadingFile])
-
+  }, [uploadingFile, isTakingPicture])
   const classes = filePreviewStyles()
 
   const displayFile = useMemo(() => {
@@ -114,20 +114,19 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
             }
           }} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
           {/* implement i18n */}
-          {isViewingWebcamFile || isViewingUploadedFile ? (
+          {isViewingWebcamFile || isPreViewingFileUpload ? (
             <FontWidthSpan data-testid="FileViewerLabel">
               {isViewingWebcamFile ? "Tire uma foto" : "Digite o label do arquivo"}
             </FontWidthSpan>
           ) : null}
         </Grid>
-        {isViewingWebcamFile || isViewingUploadedFile ?
+        {isViewingWebcamFile || isPreViewingFileUpload ?
           <Grid container xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
             <FontWidthSpan data-testid="FileViewerTakeScreenShot" style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => setUploadingFile(null)} >Tirar foto novamente</FontWidthSpan>
           </Grid> : null}
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
         {displayFile}
-
       </CalcContainer>
     </FullHeightContainer >
   )

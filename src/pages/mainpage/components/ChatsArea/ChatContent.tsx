@@ -1,26 +1,36 @@
 import React, { useMemo } from 'react'
-import Grid from '@material-ui/core/Grid';
+import { AttachFile, CameraAlt, Mic } from '@material-ui/icons';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
 import { useChatSession, useActiveChatSession } from 'pages/mainpage/hooks/'
-import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
+
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
-import { AttachFile, CameraAlt, Mic } from '@material-ui/icons';
+import { ChatSessionType } from '../../hooks/ChatSessionsHooks';
+
 
 export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
-
+  if (lastMessage?.textMessage != null) {
+    const breakLine = lastMessage.textMessage.substring(0, 10).indexOf('\n')
+    return breakLine !== -1 ? lastMessage.textMessage.substring(0, breakLine).concat('...')
+      : lastMessage.textMessage.substring(0, 10).concat('...')
+  }
+  if (lastMessage?.inlineButtons != null) {
+    return lastMessage.inlineButtons[0].label.substring(0, 10).concat('...')
+  }
 }
-
 const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
 export default function ChatContent({ session_id }: { session_id: string }): React.ReactElement {
   const { chatSession, userBelongsToSession } = useChatSession(session_id)
   const { activeSession, setActiveSession } = useActiveChatSession()
-  // console.log('chat sesison is', chatSession)
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
   const chatPreview = useMemo(() => {
+    // if lastMessage has a file then we should check for its type
+    // and render a respective icon
+    // otherwise render text
     if (chatSession?.lastMessage == null) {
       return null
     }
@@ -37,13 +47,8 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
     if (lastMessage?.picture != null) {
       return <div style={{ display: 'flex', alignItems: 'center' }}><CameraAlt /> <span>Foto</span></div>
     }
-    if (lastMessage?.textMessage != null) {
-      const breakLine = lastMessage.textMessage.substring(0, 10).indexOf('\n')
-      return breakLine !== -1 ? lastMessage.textMessage.substring(0, breakLine).concat('...')
-        : lastMessage.textMessage.substring(0, 10).concat('...')
-    }
-    if (lastMessage?.inlineButtons != null) {
-      return lastMessage.inlineButtons[0].label.substring(0, 10).concat('...')
+    if (lastMessage?.textMessage != null || lastMessage.inlineButtons != null) {
+      return findLastMessageChatPreview(lastMessage)
     }
     return null
   }, [chatSession?.lastMessage])
@@ -51,6 +56,7 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
   if (chatSession == null || activeSession == null) {
     return (<div></div>)
   }
+
   // render a preview of the message containing the chat picture, title, lastMessagePreview and unreadMessages
   return (
     <Container container

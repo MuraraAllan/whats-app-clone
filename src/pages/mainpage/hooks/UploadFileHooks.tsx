@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useMemo, useState } from "react";
 
 import { useChatSessions } from ".";
-import { useUser } from "shared/hooks";
 import { useActiveChatSession } from "./ActiveChatSessionHooks";
 import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
 
@@ -27,11 +26,11 @@ async function convertFromFileListToBlob(files: FileList) {
 // should retunr if user is uploading file ( used to display FileUploaderPreview - both for images and documents)
 // should return a method for setUploadingFiles
 // should return current uploadingFile 
+
 export function useUploadFile() {
-  const { activeSession } = useActiveChatSession()
-  const { addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useChatSessions()
+  const { activeSession, user } = useActiveChatSession()
+  const { addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, addMessage, isRegisteringFormOpen } = useChatSessions()
   const context = useContext(UploadFileContext)
-  const user = useUser()
 
   if (context == null) {
     throw new Error('missing uploadFileHooks context. check it out')
@@ -80,8 +79,10 @@ export function useUploadFile() {
     isRecordingAudio,
     setIsRecordingAudio,
     addAudioMessage,
-    activeSessionID: activeSession?.session_id,
-    user
+    activeSession,
+    user,
+    addMessage,
+    isRegisteringFormOpen
   }
 }
 
@@ -153,9 +154,10 @@ export function useUploadFileDND() {
 // should convert picture into Blob and set uploadingFile 
 
 export function useTakePicture() {
-  const { isTakingPicture, setIsTakingPicture, setUploadingFile } = useUploadFile()
+  const { isTakingPicture, setIsTakingPicture, setUploadingFile, finishUploadingFile } = useUploadFile()
   const ctx = useContext(UploadFileContext)
   const { videoRef } = ctx ?? {}
+
   const takePicture = useCallback(() => {
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
@@ -194,7 +196,8 @@ export function useTakePicture() {
     isTakingPicture,
     setIsTakingPicture,
     videoRef,
-    takePicture
+    takePicture,
+    finishUploadingFile
   }
 }
 
@@ -207,7 +210,7 @@ export function useRecordAudio() {
     isRecordingAudio,
     setIsRecordingAudio,
     addAudioMessage,
-    activeSessionID,
+    activeSession,
     user
   } = useUploadFile()
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
@@ -220,7 +223,6 @@ export function useRecordAudio() {
   }, [mediaRecorder, setIsRecordingAudio])
 
   useLayoutEffect(() => {
-
     if (isRecordingAudio) {
       navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
         const chunks = [] as Blob[]
@@ -233,8 +235,8 @@ export function useRecordAudio() {
             content: file,
             name: `Recording${Math.random() + 4 * Math.random()}`
           }
-          if (activeSessionID != null) {
-            addAudioMessage({ session_id: activeSessionID, audio, user })
+          if (activeSession != null) {
+            addAudioMessage({ session_id: activeSession.session_id, audio, user })
           }
         }
         mediaRecorder.ondataavailable = (e) => {
@@ -255,7 +257,7 @@ export function useRecordAudio() {
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRecordingAudio, addAudioMessage, activeSessionID, setIsRecordingAudio, user])
+  }, [isRecordingAudio, addAudioMessage, activeSession, setIsRecordingAudio, user])
 
   return {
     isRecordingAudio,

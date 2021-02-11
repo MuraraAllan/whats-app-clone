@@ -20,14 +20,17 @@ export const UploadFileContext = React.createContext<UploadFilesControlType | nu
 
 type ActiveSessionProviderProps = { children: React.ReactNode }
 
-// user context will not carry any reducer nor actions
-// our backend will propagate all user's chat rooms
+// hold states of possible User Actions on ActiveChatSession
+// possible actions are upload audio from microphone, upload picture from webcam
+// upload file 
+// it alsos share a video reference for TakePictureWithCam to 
+
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
 
   const [uploadingFile, setUploadingFile] = useState<UploadingFileType | null>(null)
   const [isTakingPicture, setIsTakingPicture] = useState<boolean | null>(null)
   const [isRecordingAudio, setIsRecordingAudio] = useState<boolean | null>(null)
-  const videoRef = createRef<any>()
+  const videoRef = createRef<HTMLVideoElement>()
 
   return (
     <UploadFileContext.Provider value={{

@@ -12,6 +12,7 @@ const LimitedGrid = styled(Grid)`max-width: 100px;`
 export default function RecordAudioActionBar() {
   const { isRecordingAudio, setIsRecordingAudio, finishRecordingAudio } = useRecordAudio()
   const [counter, setCounter] = useState<number>(0)
+
   const timeRecording = useMemo(() => {
     const minutes = counter / 60;
     if (minutes >= 1) {
@@ -27,9 +28,6 @@ export default function RecordAudioActionBar() {
     }, 1000)
   }, [counter, isRecordingAudio])
 
-  console.log('RECORDING AUDIO')
-  // if user isTakingPicture then render CameraAlt
-  // if not render register
   return (
     // implement i18n
     <Grid style={{ height: '80px' }} container justify="center" alignItems="center">
@@ -46,8 +44,6 @@ export default function RecordAudioActionBar() {
         {/* implement i18n */}
         <span>gravando aúdio...</span>
       </Grid>
-
-      <span style={{ marginTop: '45px' }}>Tirar Foto</span>
     </Grid>
   )
 }

@@ -4,7 +4,7 @@ import { CircleContainer } from './CircleContainer'
 import { FullHeightContainer } from './FullHeightContainer'
 import { RotatedAttachFile } from './RotatedAttachFile'
 import { RotatedSend } from './RotatedSend'
-
+import { FontWidthSpan } from './FontWidthSpan'
 export {
   BorderedContainer,
   CircleContainer,
@@ -12,5 +12,6 @@ export {
   FullHeightBorderedContainer,
   FullHeightContainer,
   RotatedAttachFile,
-  RotatedSend
+  RotatedSend,
+  FontWidthSpan
 }

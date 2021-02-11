@@ -1,13 +1,17 @@
 import React from 'react'
 
-import { DefaultActionBar, FileUploadLabelActionBar } from './'
+import { DefaultActionBar, FileUploadLabelActionBar, TakingPictureActionBar, RecordAudioActionBar, RegisteringFormActionBar } from './components'
 import { useActiveChatSession, useUploadFile } from 'pages/mainpage/hooks'
-import SingleButtonActionBar from './SingleButtonActionBar'
-import RecordAudioActionBar from './RecordAudioActionBar'
 
+// states :
+// isRecordingAudio should Render RecordAudioActionBar
+// isPreviweingWebcamPicture (isTakingPicture && uploadingFile == null Render SingleButtonActionBar)
+// isUploadingFile (uploadingFile != null should render FileUploadLabelActionBar) 
+// isSendingTextMessageOrViewingFile
+// isRegistering
 
 export default function ActiveChatSessionActionBar() {
-  const { userBelongsToActiveSession } = useActiveChatSession()
+  const { userBelongsToActiveSession, isRegisteringFormOpen } = useActiveChatSession()
   const { uploadingFile, isTakingPicture, isRecordingAudio } = useUploadFile()
 
   //does'nt render an action bar if the user doesnt belong to that chat session
@@ -25,8 +29,13 @@ export default function ActiveChatSessionActionBar() {
     return (<RecordAudioActionBar />)
   }
 
+  if (isRegisteringFormOpen) {
+    return (<RegisteringFormActionBar />)
+  }
+
+  // render both SingleButtonActionBar for   
   if (isTakingPicture && uploadingFile == null) {
-    return (<SingleButtonActionBar />)
+    return (<TakingPictureActionBar />)
   }
 
   if (uploadingFile != null) {

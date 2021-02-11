@@ -5,17 +5,16 @@ import Mic from '@material-ui/icons/Mic'
 
 import { BorderedInput, RotatedAttachFile, RotatedSend } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useActiveChatSession, useChatSessions, useUploadFileInput, useUploadFile } from 'pages/mainpage/hooks'
-import { useUser } from 'shared/hooks'
+import { useActiveChatSession, useUploadFileInput, useUploadFile } from 'pages/mainpage/hooks'
+
+//
 
 export default function DefaultActionBar() {
-  const { activeSession } = useActiveChatSession()
+  const { activeSession, user } = useActiveChatSession()
   const session_id = activeSession?.session_id ?? '0'
-  const { addMessage } = useChatSessions()
   const [inputState, setInputState] = useState<string>('')
-  const { setIsTakingPicture, setIsRecordingAudio } = useUploadFile()
+  const { setIsTakingPicture, setIsRecordingAudio, addMessage } = useUploadFile()
   const { inputRef } = useUploadFileInput()
-  const user = useUser()
 
   const dispatchAndClear = useCallback(() => {
     if (inputState.length > 0) {
