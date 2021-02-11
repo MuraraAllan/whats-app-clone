@@ -8,8 +8,7 @@ import { UploadFileContext } from "../context/UploadFileContext"
 
 
 export function useActiveChatSession() {
-  const { user_id } = useUser()
-  const { chatSessions } = useChatSessions()
+  const { chatSessions, user: { user_id } } = useChatSessions()
   const { uploadingFile } = useContext(UploadFileContext) ?? {}
 
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)

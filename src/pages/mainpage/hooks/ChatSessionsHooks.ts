@@ -14,8 +14,6 @@ interface InlineButtons {
   onClickAction?: Function
 }
 
-// conver to UploadedFileType later
-// retrieve from bucket
 export interface Message {
   message_id: string,
   textMessage?: string | null,
@@ -48,13 +46,13 @@ export interface ChatSessions {
 
 function useChatSessions() {
   const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
-  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }
+  const user = useUser()
+  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user }
 }
 
 
 function useChatSession(session_id: string) {
-  const { user_id } = useUser()
-  const { chatSessions } = useChatSessions()
+  const { chatSessions, user: { user_id } } = useChatSessions()
 
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {

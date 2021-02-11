@@ -3,9 +3,12 @@ import styled from 'styled-components'
 
 import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTitle } from '.'
 import { BorderedContainer } from 'shared/components'
-import { UploadFileProvider } from 'pages/mainpage/context'
 
 // import { useActiveChatSession } from 'pages/mainpage/hooks'
+// ActiveChatSessionBody is the centered area in the screen.
+// ActiveChatSessionActionBar is the ActionBar down the screen.
+
+
 const ActionContainer = styled(BorderedContainer)`min-height:60px;`
 // We need to calculate how much is left in user screen, considering that
 // ActionBar and Title will use 74px and 60 px, it should be all screen - 134px

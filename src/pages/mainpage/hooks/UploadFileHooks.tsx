@@ -73,8 +73,8 @@ export function useUploadFile() {
         file: uploadingFile,
         user
       })
+      setUploadingFile(null)
     }
-    setUploadingFile(null)
   }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture])
 
   return {
@@ -231,8 +231,7 @@ export function useRecordAudio() {
         const mediaRecorder = new MediaRecorder(stream)
         mediaRecorder.start()
         mediaRecorder.onstop = (e: any) => {
-          console.log(chunks)
-          const file = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' })
+          const file = new Blob(chunks, { 'type': 'audio/ogg' })
           const audio = {
             content: file,
             name: `Recording${Math.random() + 4 * Math.random()}`

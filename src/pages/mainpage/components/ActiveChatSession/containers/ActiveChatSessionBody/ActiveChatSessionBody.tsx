@@ -5,7 +5,7 @@ import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
 import FilePreviewer from './components/FilePreviewer';
-import { TakePictureWithCam, TextMessageDisplay } from './components'
+import { InlineButtonsDisplay, TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from './components'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { useActiveChatSession, useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
@@ -13,6 +13,8 @@ import { useUser } from 'shared/hooks';
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 const GridPadded = styled(Grid)`padding: 10px;`
 
+
+// control whether 
 export default function ActiveChatSessionBody() {
   const { activeSession } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
@@ -56,19 +58,15 @@ export default function ActiveChatSessionBody() {
   // should render DisplayMessages when 
   // iterate over all messages;   
 
-  // when we implement sendAudio we should look for the presence in Message Object
-  // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
-  // this logic needs to be wrapped in a test that expects that container follows its logical behavior
-  console.log('messages', activeSession.messages)
-
   return <FullWidthContainer ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
       const isCurrentUserMessage = message.user.user_id === user.user_id
       return (
         <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
-          {message.audio != null ? <div>HELLO WORLD</div> : <TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />
-          }
+          {message.audio != null ?
+            (<AudioMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />) :
+            (<TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
         </GridPadded>
       )
     })}

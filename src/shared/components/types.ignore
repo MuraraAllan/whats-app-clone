@@ -1,0 +1,117 @@
+// export type UploadingFileType = {
+//   content: Blob | null
+//   name: string
+// }
+
+// interface InlineButtons {
+//   label: string,
+//   onClickAction?: Function
+// }
+
+// type ChatSessionData = {
+//   session_id: string,
+//   user: User,
+// }
+
+// type TextMessage = {
+//   textMessage: string | null,
+// } & SessionData
+
+// type TextMessageWithWebcamPicture = {
+//   file: UploadingFileType
+// } & TextMessage
+
+// interface AddMessageWithFileParams extends AddMessageParams {
+//   file: UploadingFileType
+// }
+
+// interface AddMessageWithWebcamPictureParams extends AddMessageParams {
+//   picture: UploadingFileType
+// }
+
+// interface AddAudioMessageParams {
+//   audio: UploadingFileType
+//   session_id: string,
+//   user: User
+// }
+
+// // conver to UploadedFileType later
+// // retrieve from bucket
+// export interface Message {
+//   message_id: string,
+//   textMessage?: string | null,
+//   inlineButtons?: InlineButtons[],
+//   file?: UploadingFileType
+
+//   timeStamp: number,
+//   user: User
+// }
+
+// // unreadMessages would be the result of storing last time each user opened that chat in an intersection
+// // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
+// // we also need a key to filter out the timestamp where the user stopped belonging to some chat session
+
+// export interface ChatSessionType {
+//   session_id: string,
+//   title: string,
+//   participants: User[],
+//   messages?: Message[],
+//   chatImage?: File,
+//   unreadMessages: number,
+//   lastReadTimestamp?: number,
+//   lastMessage: Message
+// }
+
+// export interface ChatSessions {
+//   sessions: ChatSessionType[] | []
+// }
+
+
+// export interface User {
+//   user_id: string,
+//   userName: string,
+//   chatSessions?: ChatSessionType[],
+// }
+
+
+// export type UploadingFileType = {
+//   content: Blob | null
+//   name: string
+// }
+
+// interface InlineButtons {
+//   label: string,
+//   onClickAction?: Function
+// }
+
+// // conver to UploadedFileType later
+// // retrieve from bucket
+// export interface Message {
+//   message_id: string,
+//   textMessage?: string | null,
+//   inlineButtons?: InlineButtons[],
+//   file?: UploadingFileType
+//   picture?: UploadingFileType
+//   audio?: UploadingFileType
+//   timeStamp: number,
+//   user: User
+// }
+
+// // unreadMessages would be the result of storing last time each user opened that chat in an intersection
+// // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
+// // we also need a key to filter out the timestamp where the user stopped belonging to some chat session
+
+// export interface ChatSessionType {
+//   session_id: string,
+//   title: string,
+//   participants: User[],
+//   messages?: Message[],
+//   chatImage?: File,
+//   unreadMessages: number,
+//   lastReadTimestamp?: number,
+//   lastMessage: Message
+// }
+
+// export interface ChatSessions {
+//   sessions: ChatSessionType[] | []
+// }

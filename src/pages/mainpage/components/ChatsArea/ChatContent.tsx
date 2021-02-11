@@ -7,7 +7,7 @@ import { BorderedContainer, CircleContainer } from 'shared/components/'
 import { useChatSession, useActiveChatSession } from 'pages/mainpage/hooks/'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
-import { AttachFile, CameraAlt } from '@material-ui/icons';
+import { AttachFile, CameraAlt, Mic } from '@material-ui/icons';
 
 export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
 
@@ -26,9 +26,14 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
     }
     const lastMessage = chatSession.lastMessage
 
+    if (lastMessage?.audio != null) {
+      return <div style={{ display: 'flex', alignItems: 'center' }}><Mic /> <span>Audio</span></div>
+    }
+
     if (lastMessage?.file != null) {
       return <div style={{ display: 'flex', alignItems: 'center' }}><AttachFile /> <span>Arquivo</span></div>
     }
+
     if (lastMessage?.picture != null) {
       return <div style={{ display: 'flex', alignItems: 'center' }}><CameraAlt /> <span>Foto</span></div>
     }
