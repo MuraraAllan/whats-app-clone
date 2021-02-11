@@ -24,18 +24,18 @@ export default function ActiveChatSessionBody() {
   const { fileDropRef } = useUploadFileDND()
   const { uploadingFile, isTakingPicture } = useUploadFile()
   const user = useUser()
-  const [filePreview, setFilePreview] = useState<UploadingFileType | null>(null)
+  const [fileView, setFileView] = useState<UploadingFileType | null>(null)
   // null FileViewer when user switch screens or dispatch some action
   useEffect(() => {
-    setFilePreview(null)
+    setFileView(null)
   }, [activeSession, isTakingPicture, uploadingFile])
 
   if (activeSession == null) {
     return null
   }
 
-  if (filePreview != null) {
-    return (<FileViewer filePreview={filePreview} setFilePreview={setFilePreview} />)
+  if (fileView != null) {
+    return (<FileViewer fileView={fileView} setFileView={setFileView} />)
   }
 
   if (isTakingPicture && uploadingFile == null) {
@@ -68,7 +68,7 @@ export default function ActiveChatSessionBody() {
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
           {message.audio != null ?
             (<AudioMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />) :
-            (<TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
+            (<TextMessageDisplay setFilePreview={setFileView} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
         </GridPadded>
       )
     })}

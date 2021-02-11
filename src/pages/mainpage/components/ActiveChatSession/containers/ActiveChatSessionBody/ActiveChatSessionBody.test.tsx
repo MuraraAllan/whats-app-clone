@@ -51,13 +51,5 @@ describe('ActiveChatSessionBody', () => {
   it('expect when defaultState and an AudioMessage it renders the AudioMessage', () => {
 
   })
-  // it("expect when ActiveChatSession doesn't have a textMessage but does have inlineButtons they render", () => {
-  //     const activeMessage = chatSessionsMock[0].lastMessage
-  //     const { mockSetactiveSession, getByText } = useActiveChatSessionMock(<ActiveChatSessionBody />)
-  //     act(() => {
-  //       mockSetactiveSession("1")
-  //     })
-  //     const messageToFind = activeMessage.inlineButtons != null ? activeMessage.inlineButtons[0].label : ""
-  //     expect(getByText(messageToFind)).toBeDefined()
-  //   })
+
 })

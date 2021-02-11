@@ -44,34 +44,62 @@ const FontWidthSpan = styled.span`font-weight: 600`
 
 // states :
 // isViewingUploadedFile (filePreview != null should render an image as filePreview is only available for imgs)
-// isPreViewingFileUpload (defaultState should render Attach icon and a container around)
-// isPreviewingWebcam (uploadingFile != null &)
-export default function FilePreview({ filePreview, setFilePreview }: { filePreview?: UploadingFileType, setFilePreview?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
+// isPreViewingFileUpload (uploadFile != null & !isTakingPicture should render Attach icon and a container around)
+// isPreviewingWebcam (uploadingFile != null & isTakingPicture)
 
+export default function FilePreview({ fileView, setFileView }: { fileView?: UploadingFileType, setFileView?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
   const {
     setUploadingFile,
     uploadingFile,
     setIsTakingPicture,
     isTakingPicture
   } = useUploadFile()
-  const classes = filePreviewStyles()
-  const displayFile = useMemo(() => {
-    // if is taking picture or viewing file 
-    if (filePreview != null) {
-      const fileURL = URL.createObjectURL(filePreview?.content)
-      return <img src={fileURL}></img>
+
+  const isViewingUploadedFile = useMemo(() => {
+    if (fileView != null) {
+      return true
     }
+    return false
+  }, [fileView])
+
+  const isPreViewingFileUpload = useMemo(() => {
+    if (uploadingFile != null && !isTakingPicture) {
+      return true
+    }
+  }, [uploadingFile, isTakingPicture])
+
+  const isViewingWebcamFile = useMemo(() => {
     if (uploadingFile != null && isTakingPicture) {
-      const fileURL = URL.createObjectURL(uploadingFile?.content)
-      return <img src={fileURL}></img>
+      return true
     }
-    if (uploadingFile != null) {
-      return (<BorderedContainer className={classes.filePreviewer}>
-        <RotatedAttachFile width={50} height={50} />
-      </BorderedContainer>)
+    return false
+  }, [isTakingPicture, uploadingFile])
+
+  const classes = filePreviewStyles()
+
+  const displayFile = useMemo(() => {
+    if (isViewingUploadedFile) {
+      const fileURL = URL.createObjectURL(fileView?.content)
+      return (<>
+        <img data-testid="FileViewerIsViewingUploadedFile" src={fileURL}></img>
+        <span style={{ padding: '10px' }}>{uploadingFile?.name}</span>
+      </>)
+    }
+    if (isViewingWebcamFile) {
+      const fileURL = URL.createObjectURL(uploadingFile?.content)
+      return <img data-testid="FileViewerIsViewingWebcamFile" src={fileURL}></img>
+    }
+    if (isPreViewingFileUpload) {
+      return (<>
+        <BorderedContainer data-testid="FileViewerIsPreviewingFileUpload" className={classes.filePreviewer}>
+          <RotatedAttachFile width={50} height={50} />
+        </BorderedContainer>
+        <span style={{ padding: '10px' }}>{uploadingFile?.name}</span>
+      </>)
     }
     return null
-  }, [uploadingFile, filePreview, isTakingPicture, classes.filePreviewer])
+  }, [uploadingFile, fileView, isViewingWebcamFile, isPreViewingFileUpload, isViewingUploadedFile, classes.filePreviewer])
+
 
   return (
     <FullHeightContainer item container direction="row" >
@@ -81,22 +109,25 @@ export default function FilePreview({ filePreview, setFilePreview }: { filePrevi
           <FontWidthSpan onClick={() => {
             setUploadingFile(null);
             setIsTakingPicture(false)
-            if (setFilePreview != null) {
-              setFilePreview(null)
+            if (setFileView != null) {
+              setFileView(null)
             }
           }} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
           {/* implement i18n */}
-          {filePreview == null ? <FontWidthSpan> {isTakingPicture ? "Tire uma foto" : "Digite o label do arquivo"}</FontWidthSpan> : null}
+          {isViewingWebcamFile || isViewingUploadedFile ? (
+            <FontWidthSpan data-testid="FileViewerLabel">
+              {isViewingWebcamFile ? "Tire uma foto" : "Digite o label do arquivo"}
+            </FontWidthSpan>
+          ) : null}
         </Grid>
-        {isTakingPicture ?
+        {isViewingWebcamFile || isViewingUploadedFile ?
           <Grid container xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
-            <FontWidthSpan style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => setUploadingFile(null)} >Tirar foto novamente</FontWidthSpan>
+            <FontWidthSpan data-testid="FileViewerTakeScreenShot" style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => setUploadingFile(null)} >Tirar foto novamente</FontWidthSpan>
           </Grid> : null}
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
         {displayFile}
 
-        <span style={{ padding: '10px' }}>{uploadingFile?.name}</span>
       </CalcContainer>
     </FullHeightContainer >
   )

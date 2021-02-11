@@ -9,7 +9,6 @@ import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
 
 export default function AudioMessageDisplay({ message, isCurrentUserMessage }: { message: Message, isCurrentUserMessage: boolean }) {
-
   // the way messages with files can be displayed is always 
   //   "FILE"  
   //  "fileName"
@@ -21,7 +20,7 @@ export default function AudioMessageDisplay({ message, isCurrentUserMessage }: {
     <Grid data-testid="textMessageDisplayGrid" container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
       <MessageContainer container direction="column" alignItems="center">
         <span data-testid="textMessageDisplay" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
-          <audio src={blobSRC} controls />
+          <audio data-testid="AudioMessageDisplayObject" src={blobSRC} controls />
         </span>
       </MessageContainer>
     </Grid>
