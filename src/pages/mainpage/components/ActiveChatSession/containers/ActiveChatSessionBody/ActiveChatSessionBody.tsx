@@ -71,7 +71,7 @@ export default function ActiveChatSessionBody() {
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
           {message.audio != null ?
             (<AudioMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />) :
-            (<TextMessageDisplay setFilePreview={setFileView} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
+            (<TextMessageDisplay setFileView={setFileView} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
         </GridPadded>
       )
     })}

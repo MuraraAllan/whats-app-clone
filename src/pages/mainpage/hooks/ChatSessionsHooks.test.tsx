@@ -4,23 +4,34 @@ import { useEffect } from 'react';
 
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { MockProviders } from 'shared/test-utils'
-import { ChatSessions, useChatSession } from './ChatSessionsHooks'
+import { ChatSessions, ChatSessionType, useChatSession } from './ChatSessionsHooks'
 import { useChatSessions } from '.';
 import { User } from 'shared/context/LoggedUserContext';
+import { ChatSessionContextType } from '../context/ChatSessionsContext';
 
 // useChatSessions()
 // expect that a dispatched message is included in the chatSessions object
 function useChatSessionsMock() {
-  const returnChatSessions = {} as ChatSessions
-  let addMessageMock = (session_id: string, textMessage: string, user: User) => null
-
+  const dispatchers = {} as ChatSessionContextType
+  const state = {} as ChatSessions
   function TestComponent() {
-    const { addMessage, chatSessions } = useChatSessions()
+    const {
+      addMessage,
+      addMessageWithFile,
+      addMessageWithWebcamPicture,
+      addAudioMessage,
+      chatSessions
+    } = useChatSessions()
 
     useEffect(() => {
-      Object.assign(returnChatSessions, chatSessions)
-      addMessageMock = addMessage as any
-    }, [chatSessions, addMessage])
+      Object.assign(state, chatSessions)
+      Object.assign(dispatchers, {
+        addMessage,
+        addMessageWithFile,
+        addMessageWithWebcamPicture,
+        addAudioMessage
+      })
+    }, [chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage])
 
     return null
   }
@@ -31,23 +42,68 @@ function useChatSessionsMock() {
     </MockProviders>
   )
 
-  return { returnChatSessions, addMessageMock }
+  return { dispatchers, state }
 }
 
 describe('useChatSessions', () => {
   test('expect that a addMessage does not add invalid messages', () => {
-    const { addMessageMock, returnChatSessions } = useChatSessionsMock()
+    const { dispatchers, state } = useChatSessionsMock()
     act(() => {
-      addMessageMock("", "", { user_id: "3333", userName: 'test user' })
+      dispatchers.addMessage({ session_id: "1", textMessage: null, user: { user_id: "3333", userName: 'test user' } })
     })
-    expect(returnChatSessions?.sessions[0].messages?.length ?? "0").toBe(2)
+    expect(state?.sessions[0].messages?.length ?? "0").toBe(2)
   })
   test('expect that addMessage adds a message', () => {
-    const { addMessageMock, returnChatSessions } = useChatSessionsMock()
+    const { dispatchers, state } = useChatSessionsMock()
     act(() => {
-      addMessageMock("1", "anything to test", { user_id: "3333", userName: 'test user' })
+      dispatchers.addMessage({ session_id: "1", textMessage: "anything to test", user: { user_id: "3333", userName: 'test user' } })
     })
-    expect(returnChatSessions?.sessions[0].messages?.length ?? "0").toBe(3)
+    expect(state?.sessions[0].messages?.length ?? "0").toBe(3)
+  })
+  test('expect that addMessageWithFile adds a message with File', () => {
+    const { dispatchers, state } = useChatSessionsMock()
+    act(() => {
+      const mockFile = { content: new Blob(), name: 'anymessagewithfiletest' }
+      dispatchers.addMessageWithFile({ session_id: "1", textMessage: "anything to test", user: { user_id: "3333", userName: 'test user' }, file: mockFile })
+    })
+    const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
+    expect(lengthOfTestedSessionMessagesArray).toBe(4)
+    const lastMessage = state?.sessions[0].lastMessage
+    console.log('last message', lastMessage.file)
+    expect(lastMessage).toHaveProperty("file")
+  })
+
+  test('expect that addMessageWithWebcamPicture adds a message with Picture', () => {
+    const { dispatchers, state } = useChatSessionsMock()
+    act(() => {
+      const mockFile = { content: new Blob(), name: 'anyfilewebcamtestmessage' }
+      dispatchers.addMessageWithWebcamPicture({
+        session_id: "1",
+        textMessage: "anything to test",
+        user: { user_id: "3333", userName: 'test user' },
+        picture: mockFile
+      })
+    })
+    const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
+    expect(lengthOfTestedSessionMessagesArray).toBe(5)
+    const lastMessage = state?.sessions[0].lastMessage
+    expect(lastMessage).toHaveProperty("picture")
+  })
+
+  test('expect that addAudioMessage adds a message with Audio', () => {
+    const { dispatchers, state } = useChatSessionsMock()
+    act(() => {
+      const mockFile = { content: new Blob(), name: 'anyaudiotestmessage1' }
+      dispatchers.addAudioMessage({
+        session_id: "1",
+        user: { user_id: "3333", userName: 'test user' },
+        audio: mockFile
+      })
+    })
+    const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
+    expect(lengthOfTestedSessionMessagesArray).toBe(6)
+    const lastMessage = state?.sessions[0].lastMessage
+    expect(lastMessage).toHaveProperty("audio")
   })
 })
 

@@ -9,15 +9,12 @@ import TextMessageDisplay from "./TextMessageDisplay"
 // expect when a message with inline buttons is called we display the inline buttons
 // expect when a message with file arrives it renders TextMessageDisplayFile 
 // expect when a message with picture arrives it renders TextMessageDisplayPicture
-
-
-
 describe('TextMessageDisplay', () => {
   test('expect when a message with textMessage is called we display the textMessage', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByTestId } = render(
       <MockProviders>
-        <TextMessageDisplay setFilePreview={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
+        <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
       </MockProviders>)
     expect(getByTestId('textMessageDisplay').textContent).toEqual(toDisplayMessage.textMessage)
   })
@@ -25,7 +22,7 @@ describe('TextMessageDisplay', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByTestId, getByText } = render(
       <MockProviders>
-        <TextMessageDisplay setFilePreview={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
+        <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
       </MockProviders>)
     expect(getByTestId('textMessageDisplay').textContent).toEqual(toDisplayMessage.textMessage)
     toDisplayMessage.inlineButtons?.forEach((inlineButton) => {
@@ -33,23 +30,47 @@ describe('TextMessageDisplay', () => {
     })
   })
   it('expect when a message with file arrives it renders TextMessageDisplayFile', () => {
-
+    // 
     // create mockFile
     // add new message with file 
     // expect to find data-testid TextMessageDisplayFile
-    throw Error('noop')
+    const toDisplayMessage = { ...chatSessionsMock[1].lastMessage } as any
+    delete toDisplayMessage.textMessage
+    const chunks = [] as Blob[]
+    const blob = new Blob(chunks, { 'type': 'application/vnd.ms-excel' })
+    toDisplayMessage.file = {
+      content: blob,
+      name: 'arquivoDeTesteExcel.xls'
+    }
+    global.URL.createObjectURL = jest.fn();
+    const { getByTestId, getByText } = render(
+      <MockProviders>
+        <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
+      </MockProviders>)
+    expect(getByTestId('TextMessageDisplayFile')).toBeDefined()
+    expect(getByText('arquivoDeTesteExcel.xls')).toBeDefined()
   })
   it('expect when a message with picture arrives it renders TextMessageDisplayPicture', () => {
-    // create mockFile
-    // add new message with picture 
-    // expect to find data-testid TextMessageDisplayPicture
-    throw Error('noop')
+    const toDisplayMessage = { ...chatSessionsMock[1].lastMessage } as any
+    delete toDisplayMessage.textMessage
+    const chunks = [] as Blob[]
+    const blob = new Blob(chunks, { 'type': 'image/jpeg' })
+    toDisplayMessage.picture = {
+      content: blob,
+      name: 'lalala'
+    }
+    global.URL.createObjectURL = jest.fn();
+    const { getByTestId } = render(
+      <MockProviders>
+        <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
+      </MockProviders>)
+    expect(getByTestId('TextMessageDisplayPicture')).toBeDefined()
   })
   test('expect when a messagefrom mesage.user === user a flex-end alignment is found', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByTestId } = render(
       <MockProviders>
-        <TextMessageDisplay setFilePreview={() => null} message={toDisplayMessage} isCurrentUserMessage={true} />
+        <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={true} />
       </MockProviders>)
     expect(getByTestId('textMessageDisplayGrid').style["alignItems"]).toContain("flex-end")
 

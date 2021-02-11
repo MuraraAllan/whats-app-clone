@@ -8,13 +8,13 @@ interface UploadingFileController {
   videoRef: any
 }
 
-interface Dispatchers {
+export interface UploadFileDispatchers {
   setUploadingFile: Dispatch<SetStateAction<UploadingFileType | null>>
   setIsTakingPicture: Dispatch<SetStateAction<boolean | null>>
   setIsRecordingAudio: Dispatch<SetStateAction<boolean | null>>
 }
 
-type UploadFilesControlType = UploadingFileController & Dispatchers
+type UploadFilesControlType = UploadingFileController & UploadFileDispatchers
 
 export const UploadFileContext = React.createContext<UploadFilesControlType | null>(null)
 

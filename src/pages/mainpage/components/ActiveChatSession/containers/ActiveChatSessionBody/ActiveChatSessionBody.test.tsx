@@ -19,7 +19,7 @@ import { MockProviders, } from 'shared/test-utils'
 // uploadingFile (will render FilePreviewer in Send mode)
 // displayingTextMessage (defaultState will render TextMessageDisplay)
 
-describe('ActiveChatSesisonBody', () => {
+describe('ActiveChatSessionBody', () => {
   it('expect that withFileView renders FileView', () => {
     // should render ActiveSessionBody and ActiveSessionActionBar and click on buttons to ensure
     //but this would be cover both for and e2e test and so decide between which

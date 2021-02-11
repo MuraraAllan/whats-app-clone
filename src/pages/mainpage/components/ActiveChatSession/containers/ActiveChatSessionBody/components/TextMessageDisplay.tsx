@@ -9,8 +9,13 @@ import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHoo
 
 const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
 
-export default function TextMessageDisplay({ message, isCurrentUserMessage, setFilePreview }: { message: Message, isCurrentUserMessage: boolean, setFilePreview: Dispatch<SetStateAction<UploadingFileType | null>> }) {
+interface TextMessageDisplayProps {
+  message: Message,
+  isCurrentUserMessage: boolean,
+  setFileView: Dispatch<SetStateAction<UploadingFileType | null>>
+}
 
+export default function TextMessageDisplay({ message, isCurrentUserMessage, setFileView }: TextMessageDisplayProps) {
   // the way messages with files can be displayed is always 
   //   "FILE"  
   //  "fileName"
@@ -27,10 +32,10 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
     if (message.picture != null) {
       // later it will be an cloud bucket address
       const blobSRC = URL.createObjectURL(message.picture.content);
-      return <img data-testid="TextMessageDisplayPicture" onClick={() => setFilePreview(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+      return <img data-testid="TextMessageDisplayPicture" onClick={() => setFileView(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
     }
     return null
-  }, [message.file, message.picture, setFilePreview])
+  }, [message.file, message.picture, setFileView])
 
   const fileName = message.file?.name ?? null
 

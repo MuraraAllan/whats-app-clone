@@ -137,7 +137,6 @@ function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
     }
     // this is mimicking a subscription which brings us active chat sessions that this user has
     // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
-
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
   }, [])
 
@@ -162,7 +161,6 @@ function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
     dispatch({ type: 'add_textMessageWithWebcamPicture', session_id, textMessage, user, picture })
   }
   const addAudioMessage = ({ session_id, audio, user }: AddAudioMessageParams) => {
-    console.log('fui chamadoooo')
     if (user == null || session_id == null || audio == null) {
       return null
     }
