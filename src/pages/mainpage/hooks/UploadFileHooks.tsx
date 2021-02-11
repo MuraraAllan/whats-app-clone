@@ -46,14 +46,8 @@ export function useUploadFile() {
     isRecordingAudio
   } = context
 
-  const finishRecordingFile = useCallback((audioChunks: Blob[]) => {
-    if (activeSession?.session_id == null || uploadingFile == null) {
-      return null
-    }
-    console.log('should finish recording')
-  }, [isRecordingAudio])
-
   // this should be moved into individual peaces to easier move around the code aka own hook
+  // doesn't make sense to be in the main context... will keep poluting around 
   const finishUploadingFile = useCallback((message: string | null) => {
     if (activeSession?.session_id == null || uploadingFile == null) {
       return null
@@ -85,7 +79,6 @@ export function useUploadFile() {
     setIsTakingPicture,
     isRecordingAudio,
     setIsRecordingAudio,
-    finishRecordingFile,
     addAudioMessage,
     activeSessionID: activeSession?.session_id,
     user
@@ -94,7 +87,7 @@ export function useUploadFile() {
 
 export function useUploadFileInput() {
   const inputRef = createRef<HTMLInputElement>()
-  const { setUploadingFile } = useUploadFile()
+  const { setUploadingFile, uploadingFile, isTakingPicture } = useUploadFile()
 
   useEffect(() => {
     if (inputRef != null && inputRef.current != null) {
@@ -111,7 +104,9 @@ export function useUploadFileInput() {
   }, [inputRef, setUploadingFile])
 
   return {
-    inputRef
+    inputRef,
+    uploadingFile,
+    isTakingPicture
   }
 }
 
@@ -141,6 +136,7 @@ export function useUploadFileDND() {
     if (fileDropRef != null && fileDropRef.current != null) {
       fileDropRef.current.addEventListener("drop", refListner);
     }
+
     return () => {
       document.removeEventListener('drop', globalListner)
       document.removeEventListener('drop', refListner)
@@ -174,7 +170,6 @@ export function useTakePicture() {
         })
       }, 'image/png', 1);
     }
-
   }, [videoRef, setUploadingFile])
 
   useLayoutEffect(() => {
@@ -225,9 +220,11 @@ export function useRecordAudio() {
   }, [mediaRecorder, setIsRecordingAudio])
 
   useLayoutEffect(() => {
+
     if (isRecordingAudio) {
       navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
         const chunks = [] as Blob[]
+
         const mediaRecorder = new MediaRecorder(stream)
         mediaRecorder.start()
         mediaRecorder.onstop = (e: any) => {
@@ -243,16 +240,19 @@ export function useRecordAudio() {
         mediaRecorder.ondataavailable = (e) => {
           chunks.push(e.data)
         }
+
         setMediaRecorder(mediaRecorder)
       }).catch(err => {
         alert()
         setIsRecordingAudio(false)
       })
+
       return () => {
         if (isRecordingAudio) {
           mediaRecorder?.stop()
         }
       }
+
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecordingAudio, addAudioMessage, activeSessionID, setIsRecordingAudio, user])

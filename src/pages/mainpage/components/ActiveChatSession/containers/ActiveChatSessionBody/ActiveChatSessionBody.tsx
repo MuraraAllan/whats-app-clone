@@ -16,10 +16,9 @@ const GridPadded = styled(Grid)`padding: 10px;`
 
 // control whether 
 export default function ActiveChatSessionBody() {
-  const { activeSession } = useActiveChatSession()
+  const { activeSession, user } = useActiveChatSession()
   const { fileDropRef } = useUploadFileDND()
   const { uploadingFile, isTakingPicture } = useUploadFile()
-  const user = useUser()
   const [filePreview, setFilePreview] = useState<UploadingFileType | null>(null)
 
   useEffect(() => {
