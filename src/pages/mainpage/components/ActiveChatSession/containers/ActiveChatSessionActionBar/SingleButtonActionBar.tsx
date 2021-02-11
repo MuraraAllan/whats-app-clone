@@ -10,7 +10,7 @@ import styled from 'styled-components'
 const PositionedCameraAlt = styled(CameraAlt)`width: 80%; height: 80%; `
 
 export default function SingleButtonActionBar() {
-  const { finishUploadingFile, isTakingPicture } = useUploadFile()
+  const { finishUploadingFile } = useUploadFile()
   const { takePicture } = useTakePicture()
   const [inputState, setInputState] = useState<string>('')
 

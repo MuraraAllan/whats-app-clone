@@ -3,11 +3,12 @@ import React from 'react'
 import { DefaultActionBar, FileUploadLabelActionBar } from './'
 import { useActiveChatSession, useUploadFile } from 'pages/mainpage/hooks'
 import SingleButtonActionBar from './SingleButtonActionBar'
+import RecordAudioActionBar from './RecordAudioActionBar'
 
 
 export default function ActiveChatSessionActionBar() {
   const { userBelongsToActiveSession } = useActiveChatSession()
-  const { uploadingFile, isTakingPicture } = useUploadFile()
+  const { uploadingFile, isTakingPicture, isRecordingAudio } = useUploadFile()
 
   //does'nt render an action bar if the user doesnt belong to that chat session
   if (userBelongsToActiveSession === false) {
@@ -20,6 +21,10 @@ export default function ActiveChatSessionActionBar() {
   // should render SingleButtonActionBar when isTakingPicture is true
   // should render audioActionBar when isSendingAudio is true
   // should render SingleButtonActionBar when isRegistering is true
+  console.log('IOS RED', isRecordingAudio)
+  if (isRecordingAudio) {
+    return (<RecordAudioActionBar />)
+  }
 
   if (isTakingPicture && uploadingFile == null) {
     return (<SingleButtonActionBar />)

@@ -13,7 +13,7 @@ export default function DefaultActionBar() {
   const session_id = activeSession?.session_id ?? '0'
   const { addMessage } = useChatSessions()
   const [inputState, setInputState] = useState<string>('')
-  const { setIsTakingPicture } = useUploadFile()
+  const { setIsTakingPicture, setIsRecordingAudio } = useUploadFile()
   const { inputRef } = useUploadFileInput()
   const user = useUser()
 
@@ -45,7 +45,7 @@ export default function DefaultActionBar() {
           placeholder="Escreva uma mensagem..." />
       </FullHeightContainer>
       <Grid item>
-        <Mic fontSize="large" />
+        <Mic fontSize="large" onClick={() => setIsRecordingAudio(true)} />
       </Grid>
       <Grid item >
         <RotatedSend marginBottom="7px" data-testid="activeChatSessionActionBarSendButton" onClick={() => dispatchAndClear()} fontSize="large" />

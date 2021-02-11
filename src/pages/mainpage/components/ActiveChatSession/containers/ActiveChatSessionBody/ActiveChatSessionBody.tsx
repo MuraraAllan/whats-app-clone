@@ -59,7 +59,7 @@ export default function ActiveChatSessionBody() {
   // when we implement sendAudio we should look for the presence in Message Object
   // and return it before rendering textMessages, side-effect is messages audio will not join the message loop 
   // this logic needs to be wrapped in a test that expects that container follows its logical behavior
-
+  console.log('messages', activeSession.messages)
 
   return <FullWidthContainer ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
@@ -67,7 +67,8 @@ export default function ActiveChatSessionBody() {
       return (
         <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
-          <TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />
+          {message.audio != null ? <div>HELLO WORLD</div> : <TextMessageDisplay setFilePreview={setFilePreview} message={message} isCurrentUserMessage={isCurrentUserMessage} />
+          }
         </GridPadded>
       )
     })}

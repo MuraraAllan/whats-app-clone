@@ -27,7 +27,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
     if (message.picture != null) {
       // later it will be an cloud bucket address
       const blobSRC = URL.createObjectURL(message.picture.content);
-      return <img onClick={() => setFilePreview(message.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+      return <img onClick={() => setFilePreview(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
     }
     return null
   }, [message.file, message.picture, setFilePreview])
