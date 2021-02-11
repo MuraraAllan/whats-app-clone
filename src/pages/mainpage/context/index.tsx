@@ -1,9 +1,10 @@
 import { ActiveChatSessionProvider, ActiveChatSessionContext } from './ActiveChatSessionContext'
 import { ChatSessionsProvider, } from './ChatSessionsContext'
-import { UploadFileProvider } from './UploadFileContext'
+import { UploadFileProvider, UploadFileContext } from './UploadFileContext'
 export {
   ActiveChatSessionProvider,
   ActiveChatSessionContext,
   ChatSessionsProvider,
-  UploadFileProvider
+  UploadFileProvider,
+  UploadFileContext
 }

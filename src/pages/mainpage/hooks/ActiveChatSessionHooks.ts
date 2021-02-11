@@ -2,13 +2,13 @@ import { useContext, useMemo } from "react"
 
 import { ActiveChatSessionContext, ChatSessionContextType } from "pages/mainpage/context/ActiveChatSessionContext"
 import { useChatSessions } from "pages/mainpage/hooks"
-import { useUser } from "shared/hooks"
 import { User } from 'shared/context/LoggedUserContext'
-import { UploadFileContext } from "../context/UploadFileContext"
+import { UploadFileContext } from "pages/mainpage/context"
 
 
 export function useActiveChatSession() {
-  const { chatSessions, user: { user_id } } = useChatSessions()
+  const { chatSessions, user } = useChatSessions()
+  const { user_id } = user
   const { uploadingFile } = useContext(UploadFileContext) ?? {}
 
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
@@ -50,5 +50,10 @@ export function useActiveChatSession() {
   }, [user_id, activeSession])
 
 
-  return { activeSession, setActiveSession, userBelongsToActiveSession }
+  return {
+    activeSession,
+    setActiveSession,
+    userBelongsToActiveSession,
+    user
+  }
 }
