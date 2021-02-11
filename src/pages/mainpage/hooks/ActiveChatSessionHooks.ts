@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react"
 
-import { ActiveChatSessionContext, ChatSessionContextType } from "../context/ActiveChatSessionContext"
-import { useChatSessions } from "./ChatSessionsHooks"
+import { ActiveChatSessionContext, ChatSessionContextType } from "pages/mainpage/context/ActiveChatSessionContext"
+import { useChatSessions } from "pages/mainpage/hooks"
 import { useUser } from "shared/hooks"
 import { User } from 'shared/context/LoggedUserContext'
 import { UploadFileContext } from "../context/UploadFileContext"

@@ -1,8 +1,8 @@
-import { useMemo, useContext } from 'react'
+import { useContext, useMemo } from 'react'
 
-import { ChatSessionsContext } from 'pages/mainpage/context/ChatSessionsContext'
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
+import { ChatSessionsContext } from '../context/ChatSessionsContext'
 
 export type UploadingFileType = {
   content: Blob | null
@@ -14,12 +14,15 @@ interface InlineButtons {
   onClickAction?: Function
 }
 
+// conver to UploadedFileType later
+// retrieve from bucket
 export interface Message {
   message_id: string,
   textMessage?: string | null,
   inlineButtons?: InlineButtons[],
   file?: UploadingFileType
   picture?: UploadingFileType
+  audio?: UploadingFileType
   timeStamp: number,
   user: User
 }
@@ -44,9 +47,10 @@ export interface ChatSessions {
 }
 
 function useChatSessions() {
-  const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture } = useContext(ChatSessionsContext)
-  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture }
+  const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
+  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }
 }
+
 
 function useChatSession(session_id: string) {
   const { user_id } = useUser()
@@ -89,4 +93,4 @@ function useChatSession(session_id: string) {
 }
 
 
-export { useChatSessions, useChatSession }
+export { useChatSession, useChatSessions }

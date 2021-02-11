@@ -1,6 +1,12 @@
-import { useChatSessions, useChatSession } from './ChatSessionsHooks'
+import { useChatSession, useChatSessions } from './ChatSessionsHooks'
 import { useActiveChatSession } from './ActiveChatSessionHooks'
-import { useUploadFile, useUploadFileDND, useUploadFileInput, useTakePicture } from './UploadFileHooks'
+import {
+  useUploadFile,
+  useUploadFileDND,
+  useUploadFileInput,
+  useTakePicture,
+  useRecordAudio
+} from './UploadFileHooks'
 
 export {
   useChatSessions,
@@ -9,5 +15,6 @@ export {
   useUploadFile,
   useUploadFileInput,
   useUploadFileDND,
-  useTakePicture
+  useTakePicture,
+  useRecordAudio
 }
