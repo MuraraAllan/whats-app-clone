@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
@@ -53,6 +53,10 @@ function useChatSessions() {
 
 function useChatSession(session_id: string) {
   const { chatSessions, user: { user_id } } = useChatSessions()
+
+  useEffect(() => {
+    console.log('chat sessions rerendering')
+  }, [chatSessions])
 
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {

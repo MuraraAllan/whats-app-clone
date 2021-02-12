@@ -74,20 +74,7 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
     }
   }, [isPlaying, audioRef])
 
-  const forwardAudio = useCallback(() => {
-    if (isPlaying && audioRef.current != null && progress != null && duration != null) {
-      audioRef.current.currentTime = progress + (duration * 10 / 100)
-    }
-  }, [isPlaying, progress, audioRef])
-
-  const rewindAudio = useCallback(() => {
-    if (isPlaying && audioRef.current != null && progress != null && duration != null) {
-      audioRef.current.currentTime = progress - (duration * 10 / 100)
-    }
-  }, [isPlaying, progress, audioRef])
-
   const timeState = useMemo(() => {
-
     if (currentTime != null && duration != null) {
       if (isPlaying) {
         return timeInSecondsRenderInMinute(currentTime)
@@ -109,6 +96,7 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
       audioRef.current.currentTime = parseInt(((duration * percentageClicked) / 100).toFixed())
     }
   }
+
   return (
     <>
       <PaddedBorderedContainer container item xs={9} sm={7} md={5} lg={3} xl={2} direction="column" alignItems="center">

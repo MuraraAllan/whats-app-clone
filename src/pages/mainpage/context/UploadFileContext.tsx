@@ -20,10 +20,11 @@ export const UploadFileContext = React.createContext<UploadFilesControlType | nu
 
 type ActiveSessionProviderProps = { children: React.ReactNode }
 
-// hold states of possible User Actions on ActiveChatSession
+// hold states of possible User Actions on ActiveChatSession (ActiveChatSessionState)
 // possible actions are upload audio from microphone, upload picture from webcam
 // upload file 
 // it alsos share a video reference for TakePictureWithCam to 
+
 
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
 

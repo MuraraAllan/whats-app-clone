@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core'
 
 import { BorderedContainer } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useTakePicture, useUploadFile } from 'pages/mainpage/hooks'
+import { useTakePicture } from 'pages/mainpage/hooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
 
@@ -47,10 +47,10 @@ export default function TakePictureWithCam() {
   const classes = filePreviewStyles()
 
   return (
-    <FullHeightContainer item container direction="row" >
+    <FullHeightContainer data-testid="takePictureWithCamContainer" item container direction="row" >
       <BorderedContainer alignItems="center" container style={{ backgroundColor: '#80808066', height: '40px' }}>
         {/* implement i18n */}
-        <span onClick={() => setIsTakingPicture(false)} style={{ fontWeight: 600, padding: '10px', cursor: 'pointer' }}>x</span>
+        <span data-testid="takePictureWithCamClose" onClick={() => setIsTakingPicture(false)} style={{ fontWeight: 600, padding: '10px', cursor: 'pointer' }}>x</span>
         <span style={{ fontWeight: 600 }}> Tire uma foto</span>
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
