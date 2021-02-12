@@ -7,6 +7,7 @@ export interface User {
   userName: string,
   chatSessions?: ChatSessionType[],
   isRegistering?: boolean
+  avatar?: string | Blob
 }
 
 type RegisteringFormControl = {

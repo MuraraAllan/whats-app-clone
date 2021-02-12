@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { RotatedSend, CircleContainer } from 'shared/components'
 import { useRecordAudio } from 'pages/mainpage/hooks'
+import { timeInSecondsRenderInMinute } from 'shared/utils';
 
 const ColoredHighlightOffIcon = styled(HighlightOffIcon)`color: #dc2e2e; width: 50px; height: 50px`
 const LimitedGrid = styled(Grid)`max-width: 100px;`
@@ -13,14 +14,7 @@ export default function RecordAudioActionBar() {
   const { isRecordingAudio, setIsRecordingAudio, finishRecordingAudio, hasAudioPermission } = useRecordAudio()
   const [counter, setCounter] = useState<number>(0)
 
-  const timeRecording = useMemo(() => {
-    const minutes = counter / 60;
-    if (minutes >= 1) {
-      const seconds = counter % 60;
-      return `${minutes.toFixed()}:${seconds.toString().padStart(2, '0')}`
-    }
-    return `0:${counter.toString().padStart(2, '0').substring(0, 2)}`
-  }, [counter])
+  const timeRecording = useMemo(() => timeInSecondsRenderInMinute(counter), [counter])
 
   useEffect(() => {
     setTimeout(() => {

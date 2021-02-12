@@ -30,7 +30,7 @@ export default function DefaultActionBar() {
         <CameraAlt data-testid="DefaultActionBarUploadPicture" fontSize="large" onClick={() => setIsTakingPicture(true)} />
       </Grid>
       <Grid item>
-        <input type="file" ref={inputRef} style={{ display: 'none' }} />
+        <input data-testid="DefaultActionBarHiddenInputFile" type="file" ref={inputRef} style={{ display: 'none' }} />
         <RotatedAttachFile onClick={() => inputRef.current?.click()} fontSize="large" />
       </Grid>
       <FullHeightContainer container item xs={8} sm={7} md={8} lg={9} xl={10} alignItems="center">

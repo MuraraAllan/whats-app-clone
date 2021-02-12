@@ -2,27 +2,33 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 
-
 import { BorderedContainer } from 'shared/components'
 import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import AudioPlayer from './AudioPlayer'
 
-const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
 
 export default function AudioMessageDisplay({ message, isCurrentUserMessage }: { message: Message, isCurrentUserMessage: boolean }) {
-  // the way messages with files can be displayed is always 
-  //   "FILE"  
-  //  "fileName"
-  // "textMessage"
-  // so we are going to render checking if file is present ( a picture is also a file, so distinguish between picture and files and render accordingly)
-  // also we check if the message contains inlineButtons so we can render them after the message
+  // useRef on audio to accesss audio property
+  // memoize ref.duration
+  // memoize ref.currentTime
+  // enable pause audio - test.stop()
+  // enable resume / play audio - test.play()
+
+
+  // draw user avatar
+  // draw arrow if ref is stoped
+  // draw stop button if ref
+
+
+  // if ref.played && ref.paused === false playing
+  // if ref.played && ref.paused === true stopped
+
+
   const blobSRC = URL.createObjectURL(message.audio?.content);
   return (
-    <Grid container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
-      <MessageContainer container direction="column" alignItems="center">
-        <span style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
-          <audio data-testid="AudioMessageDisplayObject" src={blobSRC} controls />
-        </span>
-      </MessageContainer>
+    // this is definitely repeated, look around if we can share on top component
+    <Grid container item direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
+      <AudioPlayer audioSrc={blobSRC} />
     </Grid>
   )
 }
