@@ -7,7 +7,7 @@ import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
-const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; margin-bottom: 5px; background-color: #80808066;`
+const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; background-color: #80808066;`
 
 interface TextMessageDisplayProps {
   message: Message,
@@ -27,7 +27,10 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
     if (message.file != null) {
       const blobSRC = URL.createObjectURL(message.file.content);
       //</a>
-      return <a data-testid="TextMessageDisplayFile" style={{ color: 'inherit', height: 'inherit', width: 'inherit' }} href={blobSRC} download={message.file.name}><RotatedAttachFile width={60} height={60} /></a>
+      return (
+        <a data-testid="TextMessageDisplayFile" style={{ color: 'inherit', height: 'inherit', width: 'inherit' }} href={blobSRC} download={message.file.name}>
+          <RotatedAttachFile width={60} height={60} />
+        </a>)
     }
     if (message.picture != null) {
       // later it will be an cloud bucket address
@@ -40,13 +43,13 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
   const fileName = message.file?.name ?? null
 
   return (
-    <Grid data-testid="textMessageDisplayGrid" container direction="column" style={{ maxWidth: '90%', alignItems: isCurrentUserMessage ? 'flex-end' : 'flex-start' }}>
+    <Grid data-testid="textMessageDisplayGrid" container item xs={12} sm={10} md={10} lg={9} xl={9} direction="column" alignItems={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
       {message.textMessage != null || DisplayFile != null ? (
         <MessageContainer container direction="column" alignItems="center">
           {DisplayFile != null ?
             (
               <Grid container direction="column" alignContent="center" style={{ textAlign: 'center' }}>
-                <BorderedContainer container justify="center" alignItems="center" margin={"auto"}  >
+                <BorderedContainer container limitWidth={"200px"} justify="center" alignItems="center" margin={"auto"}  >
                   {DisplayFile}
                 </BorderedContainer>
                 <span style={{ marginBottom: '5px' }}>{fileName}</span>
@@ -58,7 +61,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
           </span>
         </MessageContainer>)
         : null}
-      {message.inlineButtons != null ? <InlineButtonsDisplay inlineButtons={message.inlineButtons} isCurrentUserMessage={isCurrentUserMessage} /> : null}
+      {message.inlineButtons != null ? <InlineButtonsDisplay textMessage={message?.textMessage} inlineButtons={message.inlineButtons} isCurrentUserMessage={isCurrentUserMessage} /> : null}
     </Grid>
   )
 }

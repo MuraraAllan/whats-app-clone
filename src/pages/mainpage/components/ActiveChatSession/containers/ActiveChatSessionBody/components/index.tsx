@@ -4,6 +4,7 @@ import TakePictureWithCam from './TakePictureWithCam'
 import TextMessageDisplay from './TextMessageDisplay'
 import AudioMessageDisplay from './AudioMessageDisplay'
 import RegisteringForm from './RegisteringForm'
+import AudioPlayer from './AudioPlayer'
 
 export {
   FileViewer,
@@ -11,5 +12,6 @@ export {
   TextMessageDisplay,
   TakePictureWithCam,
   AudioMessageDisplay,
-  RegisteringForm
+  RegisteringForm,
+  AudioPlayer
 }

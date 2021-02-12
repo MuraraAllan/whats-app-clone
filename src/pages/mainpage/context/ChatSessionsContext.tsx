@@ -160,6 +160,7 @@ function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
     }
     dispatch({ type: 'add_textMessageWithWebcamPicture', session_id, textMessage, user, picture })
   }
+
   const addAudioMessage = ({ session_id, audio, user }: AddAudioMessageParams) => {
     if (user == null || session_id == null || audio == null) {
       return null

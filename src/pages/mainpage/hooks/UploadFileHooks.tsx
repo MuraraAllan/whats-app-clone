@@ -123,7 +123,7 @@ export function useUploadFileDND() {
   const fileDropRef = createRef<HTMLDivElement>()
   const { setUploadingFile } = useUploadFile()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function refListner(evt: any) {
       const files = evt.dataTransfer.files
       const file = await convertFromFileListToBlob(files)

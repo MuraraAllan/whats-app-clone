@@ -106,7 +106,7 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
       <BorderedContainer alignItems="center" justify="space-between" container style={{ backgroundColor: '#80808066', height: '40px' }}>
         {/* implement i18n */}
         <Grid item>
-          <FontWidthSpan onClick={() => {
+          <FontWidthSpan data-testid="FileViewerClose" onClick={() => {
             setUploadingFile(null);
             setIsTakingPicture(false)
             if (setFileView != null) {
@@ -120,9 +120,14 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
             </FontWidthSpan>
           ) : null}
         </Grid>
-        {isViewingWebcamFile || isPreViewingFileUpload ?
+        {isViewingWebcamFile ?
           <Grid container xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
-            <FontWidthSpan data-testid="FileViewerTakeScreenShot" style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => setUploadingFile(null)} >Tirar foto novamente</FontWidthSpan>
+            <FontWidthSpan
+              data-testid="FileViewerTakeScreenShot"
+              style={{ cursor: 'pointer', marginRight: '10px' }}
+              onClick={() => setUploadingFile(null)} >
+              Tirar foto novamente
+            </FontWidthSpan>
           </Grid> : null}
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
