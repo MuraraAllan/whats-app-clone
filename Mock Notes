@@ -2,12 +2,21 @@ Should fix relative imports on eslint config;
 
 file structure :
 
-// I do prefer to have a "pages" set folder where we would differ each by business logic;
+// have a "pages" set folder where we differ each by business logic;
 // isolate components that belong to specific page inside of pages
 // distribute components that are shared in components area on src
 
+
 pages/MainPage 
 components
+ ActiveChatSession {
+    ActiveChatSessionBody - container - renders the session body where user see results of the actions;
+    ActiveChatSessionActionBar - container - renders an action bar that allows user to interact with App;
+    ActiveChatSessionTitle - renders current ActiveChatSession title
+ }
+ ChatsArea - render all user messages and its contents;
+ FilterArea - render filtering area;
+ UserArea - renders userName, Avatar and button;
 
 
 packages
@@ -15,6 +24,8 @@ packages
 fa-icons
 material-ui
 styled-components
+
+
 
 
 
@@ -27,8 +38,6 @@ UserArea
 
 FilterArea 
 
-ActiveChatSessionScreen should useRegisterForm and when displayed should overwrite the screen it also should be able to clear out the state of displayed.
-
 
 MessagesArea
 
@@ -37,18 +46,30 @@ MessagesArea
 // we are implementing mocks of GroupChats only, so a user can have an archived ChatSession (as in he leaves the group or is expelished)
 
 CUSTOM HOOKS
-registerForm 
+
 userHook - LoggedUserContext data extractor;
 ChatSessionHooks  {
-  useChatSessions : reducer that controls all chatSessions and share a path to addMessages (later we will have a path in firebase, becoming then a memoized subscription)
+  useChatSessions : share path to addMessages, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage; functions responsible for dispatching messages and comunicate with firestore;
   useChatSession : give access to specific chat session information and if loggedUser belongs or not to that chat; 
+}
+useActiveChatSessionHooks { 
   useActiveChatSession : ActiveSessionContext data extractor;
 }
 
-CONTEXTS
-ActiveSessionContext - Implements a control to switch between messages; has an object containing all activeChats on server and their respective users; avoids rerendering MainPage when modifying current active message;
-LoggedUserContext - intended to control whether current used is logged in or not; has an object containing the user active chats;
+useUploadFileHooks {
+  useUploadFile : UploadFileContext data extractor, share finishUploadingFile used for dispatching useChatSessions actions for Messages and AudioMessages; share path to setUploadingFile, setIsTakingPicture, setIsRecordingAudio and the current file of those;
+  useUploadFileInput : returns a ref for an input to become file upload target. when something changes dispatch actions to upload file;
+  useUploadFileDND: returns a ref for an div to become file upload target. when something changes dispatch actions to upload file;
+  useTakePicture: iterates with the browser and finishs picture uploading; request stream of video from webcam, expose takePicture which creates a canvas with current video value and setUploadingFile;
+  useRecordAudio: iterates with the browser and finishs audio uploading; request stream of audio from mic, expose finishRecordingAudio which forces mediaRecorder to stop and convert all stored data into a blob, addAudioMessage with the blob;
+}
 
+CONTEXTS
+ChatSessionsContext - reducer that controls all chatSessions and 
+ActiveSessionContext - control to switch between messages; has an object containing all activeChats on server and their respective users; avoids rerendering MainPage when modifying current active message;
+LoggedUserContext - control whether current used is logged in or not; has an object containing the user active chats; also controls user is registering and registeringForm;
+UploadFileContext - abstract browser interactions with Camera, Microphone and File Upload. shared state which dictates behavior on ActiveChatSessionBody ActiveChatSessionActionBar
+   when uploadingFile != null it means user is adding WebcamPicture or UploadingFile 
 
 messages interface {
   it can have attachments, being an attachment of type different then sound,  which would still containg a textMessage, or it can have an audio message file type which would not have a textMessage
