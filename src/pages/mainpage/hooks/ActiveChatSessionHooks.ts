@@ -2,11 +2,39 @@ import { useContext, useMemo } from "react"
 
 import { ActiveChatSessionContext, ChatSessionContextType } from "pages/mainpage/context/ActiveChatSessionContext"
 import { useChatSessions } from "pages/mainpage/hooks"
-import { User } from 'shared/context/LoggedUserContext'
+import { User, RegisteringFormControl } from 'shared/context/LoggedUserContext'
 import { UploadFileContext } from "pages/mainpage/context"
 import { useUser } from "../../../shared/hooks"
 import { ChatSessionsContext } from "../context/ChatSessionsContext"
 
+interface ActiveChatSessionDispatchers {
+  setIsRegisterFormOpen: RegisteringFormControl["setIsRegisterFormOpen"]
+}
+
+
+export function useActiveChatSessionDispatchers() {
+  const { setIsRegisterFormOpen } = useUser()
+
+  return {
+    setIsRegisterFormOpen
+  } as ActiveChatSessionDispatchers
+}
+
+export function useGetActiveChatSession() {
+  const ctx = useContext(ChatSessionsContext)
+  console.log(ctx)
+  const { chatSessions } = ctx
+  const activeSession = useMemo(() => {
+    if (chatSessions == null) {
+      return null
+    }
+    return { ...chatSessions }
+  }, [chatSessions])
+
+  return {
+    activeSession
+  }
+}
 
 export function useActiveChatSession() {
   const { chatSessions, user, setIsRegisterFormOpen, isRegisteringFormOpen } = useChatSessions()
@@ -17,7 +45,7 @@ export function useActiveChatSession() {
   if (context == null) {
     throw new Error('Missing active session context. something wrong')
   }
-
+  const { setShouldDispatchForm, shouldDispatchForm } = context
   const activeSession = useMemo(() => {
     if (context.state == null || chatSessions == null) {
       return null
@@ -59,7 +87,9 @@ export function useActiveChatSession() {
     userBelongsToActiveSession,
     user,
     setIsRegisterFormOpen,
-    isRegisteringFormOpen
+    isRegisteringFormOpen,
+    setShouldDispatchForm,
+    shouldDispatchForm
   }
 }
 

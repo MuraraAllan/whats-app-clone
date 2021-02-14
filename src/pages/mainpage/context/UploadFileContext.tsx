@@ -1,11 +1,11 @@
-import React, { createRef, Dispatch, SetStateAction, useState } from 'react'
+import React, { createRef, Dispatch, MutableRefObject, SetStateAction, useState } from 'react'
 import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 interface UploadingFileController {
   uploadingFile: UploadingFileType | null
   isTakingPicture: boolean | null
   isRecordingAudio: boolean | null
-  videoRef: any
+  videoRef: MutableRefObject<HTMLVideoElement | null>
 }
 
 export interface UploadFileDispatchers {

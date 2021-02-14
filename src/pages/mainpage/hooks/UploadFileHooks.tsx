@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useMemo, useState, ChangeEvent } from "react";
 
 import { useChatSessions } from ".";
 import { useActiveChatSession } from "./ActiveChatSessionHooks";
@@ -93,21 +93,27 @@ export function useUploadFile() {
   }
 }
 
+type handleFileUploadProps = Event & {
+  target: HTMLInputElement
+}
+
 export function useUploadFileInput() {
   const inputRef = createRef<HTMLInputElement>()
   const { setUploadingFile, uploadingFile, isTakingPicture } = useUploadFile()
 
   useEffect(() => {
     if (inputRef != null && inputRef.current != null) {
-      async function handleFileUpload(evt: any) {
-        const file = await convertFromFileListToBlob(evt.target.files)
-        if (file == null) {
-          return null
+      async function handleFileUpload(evt: handleFileUploadProps) {
+        if (evt.target.files != null) {
+          const file = await convertFromFileListToBlob(evt.target.files)
+          if (file == null) {
+            return null
+          }
+          setUploadingFile({ content: file?.content, name: file?.name })
         }
-        setUploadingFile({ content: file?.content, name: file?.name })
         evt.preventDefault()
       }
-      inputRef.current.addEventListener("change", handleFileUpload)
+      inputRef.current.addEventListener("change", handleFileUpload as any)
     }
   }, [inputRef, setUploadingFile])
 
@@ -124,7 +130,7 @@ export function useUploadFileDND() {
   const { setUploadingFile } = useUploadFile()
 
   useLayoutEffect(() => {
-    async function refListner(evt: any) {
+    async function refListner(evt: Event & { dataTransfer: DataTransfer }) {
       const files = evt.dataTransfer.files
       const file = await convertFromFileListToBlob(files)
       if (file == null) {
@@ -134,7 +140,7 @@ export function useUploadFileDND() {
       evt.preventDefault()
     }
 
-    function globalListner(e: any) {
+    function globalListner(e: Event) {
       e.preventDefault()
       return null
     }
@@ -142,12 +148,12 @@ export function useUploadFileDND() {
     document.addEventListener('drop', globalListner, false)
 
     if (fileDropRef != null && fileDropRef.current != null) {
-      fileDropRef.current.addEventListener("drop", refListner);
+      fileDropRef.current.addEventListener("drop", refListner as any);
     }
 
     return () => {
       document.removeEventListener('drop', globalListner)
-      document.removeEventListener('drop', refListner)
+      document.removeEventListener('drop', refListner as any)
     }
   }, [fileDropRef, setUploadingFile])
 
@@ -174,7 +180,7 @@ export function useTakePicture() {
     const context = canvas.getContext('2d')
     canvas.setAttribute('width', '500');
     canvas.setAttribute('height', '500');
-    if (context != null && videoRef != null) {
+    if (context != null && videoRef?.current != null) {
       context.drawImage(videoRef.current, 0, 0, 600, 500)
       canvas.toBlob((blob) => {
         setUploadingFile({
@@ -190,8 +196,10 @@ export function useTakePicture() {
       const asyncGetUserMedia = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         // use any on videoRef so we can set srcObject
-        videoRef.current.srcObject = stream
-        videoRef.current?.play()
+        if (videoRef != null && videoRef.current != null) {
+          videoRef.current.srcObject = stream
+          videoRef.current?.play()
+        }
         return true
       }
       asyncGetUserMedia().then(ret => {
@@ -240,7 +248,7 @@ export function useRecordAudio() {
         setHasAudioPermission(true)
         const mediaRecorder = new MediaRecorder(stream)
         mediaRecorder.start()
-        mediaRecorder.onstop = (e: any) => {
+        mediaRecorder.onstop = (e: Event) => {
           const file = new Blob(chunks, { 'type': 'audio/ogg' })
           const audio = {
             content: file,

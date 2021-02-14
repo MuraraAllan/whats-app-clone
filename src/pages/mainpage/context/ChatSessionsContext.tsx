@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { ReactNode, useEffect, useReducer } from 'react'
 
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
@@ -126,10 +126,10 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
 export const ChatSessionsContext = React.createContext<ChatSessionContextType>({} as ChatSessionContextType)
 
-type ActiveSessionProviderProps = { children: React.ReactNode }
+type ChatSessionProviderProps = { children: ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
-function ChatSessionsProvider({ children }: ActiveSessionProviderProps) {
+function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
   const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
   useEffect(() => {
     if (chatSessionsMock == null || dispatch == null) {
