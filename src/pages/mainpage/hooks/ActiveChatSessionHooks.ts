@@ -94,6 +94,7 @@ export function useActiveChatSession() {
 }
 
 
+
 export function useNewActiveChatSession() {
   const { chatSessions } = useContext(ChatSessionsContext)
   const context = useContext<ChatSessionContextType | null>(ActiveChatSessionContext)
