@@ -19,7 +19,7 @@ export function useAudioPlayerHook() {
 
   useEffect(() => {
 
-    function addLoadedDataChangeEvent(ev: any) {
+    function addLoadedDataChangeEvent(ev: Event) {
       if (audioRef.current?.duration === Infinity && audioRef.current != null) {
         // set it to bigger than the actual duration
         audioRef.current.currentTime = 9999;

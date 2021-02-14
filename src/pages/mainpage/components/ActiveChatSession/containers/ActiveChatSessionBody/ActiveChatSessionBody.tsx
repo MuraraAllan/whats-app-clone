@@ -5,7 +5,8 @@ import PersonIcon from '@material-ui/icons/Person';
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
 import { FileViewer } from './components/';
-import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay, RegisteringForm } from './components'
+import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from 'pages/mainpage/components/ActiveChatSession/containers/ActiveChatSessionBody/components'
+import { RegisteringFormVisual } from 'pages/mainpage/forms'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 
@@ -34,7 +35,7 @@ export default function ActiveChatSessionBody() {
   }
 
   if (isRegisteringFormOpen) {
-    return (<RegisteringForm />)
+    return (<RegisteringFormVisual />)
   }
 
   if (fileView != null) {

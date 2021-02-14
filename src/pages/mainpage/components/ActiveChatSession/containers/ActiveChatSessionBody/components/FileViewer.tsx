@@ -7,7 +7,7 @@ import { BorderedContainer, FontWidthSpan, RotatedAttachFile } from 'shared/comp
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
 import { useUploadFile } from 'pages/mainpage/hooks'
 
-import { UploadingFileType } from '../../../../../hooks/ChatSessionsHooks'
+import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
 

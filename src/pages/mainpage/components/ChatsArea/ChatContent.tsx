@@ -5,11 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
-import { useChatSession, useActiveChatSession } from 'pages/mainpage/hooks/'
+import { useChatSession } from 'pages/mainpage/hooks/'
 import { useNewActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
-
-import { timeStampToTimeConverter } from 'pages/mainpage/utils/timeStampToTimeConverter';
-import { ChatSessionType } from '../../hooks/ChatSessionsHooks';
+import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 
 
 export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
@@ -54,10 +52,25 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
     return null
   }, [chatSession?.lastMessage])
 
+  const ChatPreviewTime = useMemo(() => {
+    if (chatSession?.lastMessage != null) {
+      const messageTimestamp = chatSession.lastMessage.timeStamp
+      const messageDate = new Date(messageTimestamp)
+      const now = new Date()
+      const isToday = messageDate.getDate() === now.getDate() && messageDate.getMonth() === now.getMonth() && messageDate.getFullYear() === now.getFullYear()
+      // if is today return currentDate
+      if (isToday) {
+        return messageDate.toLocaleString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true })
+      }
+      return messageDate.toLocaleDateString()
+    }
+    return null
+  }, [chatSession])
+
+
   if (chatSession == null || activeSession == null) {
     return (<div></div>)
   }
-
   // render a preview of the message containing the chat picture, title, lastMessagePreview and unreadMessages
   return (
     <Container container
@@ -79,7 +92,7 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
         <span data-testid="chatAreaTitle"><b>{chatSession.title}</b></span>
         { /* implement i18n */}
         {/* content Display */}
-        <span data-testid="chatAreaLastMessage">{userBelongsToSession ? chatPreview : 'disabled'}</span>
+        <span data-testid="chatAreaLastMessagePreview">{userBelongsToSession ? chatPreview : 'disabled'}</span>
       </Grid>
       {/* unreadMessages Display */}
       <Grid container item xs={4} sm={5} md={4} lg={3} xl={3}
@@ -87,7 +100,7 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
         direction="column"
         alignItems="flex-end"
       >
-        <span style={{ opacity: '50%' }}>{chatSession.lastMessage != null ? timeStampToTimeConverter(chatSession.lastMessage.timeStamp) : null}</span>
+        <span style={{ opacity: '50%' }}>{chatSession.lastMessage != null ? ChatPreviewTime : null}</span>
         <CircleContainer width={27} height={27} border={4} opacity='100%'>
           <span data-testid="chatAreaUnreadMessages">{chatSession.unreadMessages}</span>
         </CircleContainer>

@@ -48,7 +48,7 @@ export default function DefaultActionBar() {
         <Mic data-testid="DefaultActionBarRecordAudio" fontSize="large" onClick={() => setIsRecordingAudio(true)} />
       </Grid>
       <Grid item >
-        <RotatedSend data-testid="DefaultActionBarSend" marginBottom="7px" onClick={() => dispatchAndClear()} fontSize="large" />
+        <RotatedSend data-testid="DefaultActionBarSend" margin="0px 0px 7px 0px" onClick={() => dispatchAndClear()} fontSize="large" />
       </Grid>
     </FullHeightContainer>
   )

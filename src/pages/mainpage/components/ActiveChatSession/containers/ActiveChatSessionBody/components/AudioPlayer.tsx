@@ -1,4 +1,4 @@
-import React, { createRef, RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { ChangeEvent, createRef, ReactEventHandler, RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import { ControlPointSharp, PlayArrow, Stop } from '@material-ui/icons';
 import styled from 'styled-components'
@@ -16,34 +16,20 @@ import { useAudioPlayerHook } from '../../ActiveChatSessionActionBar/components/
 const PaddedBorderedContainer = styled(BorderedContainer)`padding: 5px`;
 const FixedHeightGrid = styled(Grid)`height: 50px`
 
-// useRef on audio to accesss audio property
-// memoize ref.duration
-// memoize ref.currentTime
-// enable pause audio - test.stop()
-// enable resume / play audio - test.play()
-
-
-// draw user avatar
-// draw arrow if ref is stoped
-// draw stop button if ref
-
-
-// if ref.played && ref.paused === false playing
-// if ref.played && ref.paused === true stopped
-
 // render audio player
 // render user avatar,
+// progress and currentTime are null until we set then by mocking an change event function
+// they are declared as soon as the components receives an event of data stream
 
+type ChangeEventExtended = React.MouseEvent<HTMLDivElement, MouseEvent> & {
+  nativeEvent: MouseEvent
+  target: Partial<EventTarget> & HTMLDivElement
+}
 
 export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
 
   const { progress, currentTime, audioRef, duration } = useAudioPlayerHook()
   const { user } = useUser()
-
-
-  // if progress is 100 % then render null
-  // it will force a render of 0 % on the slide bar
-  // and disable isPlaying
 
   const isStoped = useMemo(() => {
     if (progress == null || audioRef.current?.paused === true) {
@@ -87,8 +73,8 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
     return '0:00'
   }, [duration, currentTime, isStoped, isPlaying])
 
-  const movePositionByClick = (ev: any) => {
-    if (duration != null && audioRef.current != null) {
+  const movePositionByClick = (ev: ChangeEventExtended) => {
+    if (duration != null && audioRef.current != null && ev.target != null) {
       const clickedW = ev.nativeEvent.offsetX
       const { width } = ev.target.getBoundingClientRect()
       // the width property is around 4% bigger then the clickedW
@@ -107,7 +93,7 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
           <Grid item style={{ flex: 0.15 }}>
             {isPlaying === false ? <PlayArrow fontSize="large" onClick={() => playAudio()} /> : <Stop fontSize="large" onClick={() => pauseAudio()} />}
           </Grid>
-          <Grid item container direction="column" style={{ flex: 0.8 }} onClick={(e) => movePositionByClick(e)}>
+          <Grid item container direction="column" style={{ flex: 0.8 }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
             <BorderedContainer border={1} width={100} item container alignItems="center" position="relative" >
               <div style={{ paddingLeft: '10px', width: `${progress ?? 0}% `, justifyContent: 'flex-end', alignItems: "center", display: 'flex', zIndex: 99 }}>
                 <div style={{ width: 0, height: 0, borderLeft: '8px solid transparent', position: 'absolute', borderRight: '8px solid transparent', borderTop: '12px solid black' }} />

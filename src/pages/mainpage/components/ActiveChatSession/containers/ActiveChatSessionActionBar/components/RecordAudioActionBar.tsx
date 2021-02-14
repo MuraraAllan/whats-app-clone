@@ -19,10 +19,13 @@ export default function RecordAudioActionBar() {
   useEffect(() => {
     setTimeout(() => {
       if (hasAudioPermission) {
+        if (counter > 70) {
+          finishRecordingAudio()
+        }
         setCounter(counter + 1)
       }
     }, 1000)
-  }, [counter, isRecordingAudio, hasAudioPermission])
+  }, [counter, isRecordingAudio, hasAudioPermission, finishRecordingAudio])
 
   return (
     // implement i18n

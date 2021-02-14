@@ -3,7 +3,7 @@ import InlineButtonsDisplay from './InlineButtonsDisplay'
 import TakePictureWithCam from './TakePictureWithCam'
 import TextMessageDisplay from './TextMessageDisplay'
 import AudioMessageDisplay from './AudioMessageDisplay'
-import RegisteringForm from './RegisteringForm'
+
 import AudioPlayer from './AudioPlayer'
 
 export {
@@ -12,6 +12,5 @@ export {
   TextMessageDisplay,
   TakePictureWithCam,
   AudioMessageDisplay,
-  RegisteringForm,
   AudioPlayer
 }
