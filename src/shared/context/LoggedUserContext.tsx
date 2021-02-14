@@ -10,7 +10,7 @@ export interface User {
   avatar?: string | Blob
 }
 
-type RegisteringFormControl = {
+export type RegisteringFormControl = {
   isRegisteringFormOpen: boolean,
   setIsRegisterFormOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -29,6 +29,8 @@ type UserProviderProps = { children: React.ReactNode }
 // and it's propertys
 
 function LoggedUserProvider({ children }: UserProviderProps) {
+  // this is a top context we shouldnt rerender it
+  // move state to useActiveSessionUserStates (?)
   const [user,] = useState<User>(userWithChatSessions)
   const [isRegisteringFormOpen, setIsRegisterFormOpen] = useState<boolean>(false)
 
