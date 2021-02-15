@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core'
 import { BorderedContainer, FontWidthSpan, RotatedAttachFile } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
 import { useUploadFile } from 'pages/mainpage/hooks'
-
 import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 const CalcContainer = styled(Grid)`height: calc(100% - 42px)`

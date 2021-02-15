@@ -33,7 +33,7 @@ context('Test take picture with cam and upload Interaction', () => {
       cy.findByTestId('DefaultActionBarUploadPicture').click()
       // custom findAllByText for spans
     })
-    it('find Sala de chat 1 and click then click on  ', () => {
+    it('find Sala de chat 1 and click then click on UploadPictureActionBarTakePicture', () => {
       cy.findByText('Sala de chat 1').click()
       cy.findByTestId('takePictureWithCamContainer').should('exist')
       cy.findByTestId('UploadPictureActionBarTakePicture').should('exist')

@@ -4,8 +4,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import styled, { keyframes } from 'styled-components'
 
 import { RotatedSend, CircleContainer } from 'shared/components'
-import { useRecordAudio } from 'pages/mainpage/hooks'
 import { timeInSecondsRenderInMinute } from 'shared/utils';
+import { useRecordAudio } from 'pages/mainpage/hooks'
+
 
 function blinkingEffect() {
   return keyframes`

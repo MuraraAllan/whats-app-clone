@@ -6,10 +6,16 @@ import { useActiveChatSession } from "./ActiveChatSessionHooks";
 
 
 
+type handleFileUploadProps = Event & {
+  target: HTMLInputElement
+}
+
 // this hook is tested by e2e
 // useUploadFile computes only a callBack
 // the functions used are based on third hooks and already tested
-// the interactions with browser will be properly tested on cypress
+// left the current contet of interactions with browser alone 
+// test the results of those interactions on cypress
+// like ensuring that recording 4 seconds of audio creates a 4 seconds audio file
 
 async function convertFromFileListToBlob(files: FileList) {
   if (files == null || files.item == null || files.length > 1) {
@@ -94,9 +100,6 @@ export function useUploadFile() {
   }
 }
 
-type handleFileUploadProps = Event & {
-  target: HTMLInputElement
-}
 
 export function useUploadFileInput() {
   const inputRef = createRef<HTMLInputElement>()

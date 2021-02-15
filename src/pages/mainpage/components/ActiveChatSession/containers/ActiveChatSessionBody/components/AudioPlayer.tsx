@@ -91,10 +91,10 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
             <UserAvatar user={user} limitDimensions="50px" />
           </Grid>
           <Grid item style={{ flex: 0.15 }}>
-            {isPlaying === false ? <PlayArrow fontSize="large" onClick={() => playAudio()} /> : <Stop fontSize="large" onClick={() => pauseAudio()} />}
+            {isPlaying === false ? <PlayArrow data-testid="AudioMessagePlay" fontSize="large" onClick={() => playAudio()} /> : <Stop data-testid={"AudioMessageStop"} fontSize="large" onClick={() => pauseAudio()} />}
           </Grid>
-          <Grid item container direction="column" style={{ flex: 0.8, position: 'relative' }} >
-            <div style={{ position: 'absolute', padding: '15px', width: '80%', marginTop: '-20px' }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
+          <Grid item container data-testid="AudioMessageTimeControlBox" direction="column" style={{ flex: 0.8, position: 'relative' }} >
+            <div data-testid="AudioMessageTimeControl" style={{ position: 'absolute', padding: '15px', width: '80%', zIndex: 100, marginTop: '-20px' }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
 
             </div>
             <BorderedContainer border={1} width={100} item container alignItems="center" position="relative" >

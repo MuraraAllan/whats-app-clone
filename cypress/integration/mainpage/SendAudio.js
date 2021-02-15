@@ -40,7 +40,7 @@ context('Test Microphone Interaction', () => {
     })
     it('wait and click Send then get text 0:02 on screen and get AudioMessageDisplayObject on screen ', () => {
       cy.wait(2000)
-      cy.get('[data-testid=RecordAudioActionBarSend]').click()
+      cy.findByTestId('RecordAudioActionBarSend').click()
       cy.findByText('0:02').should('exist')
       cy.get('[data-testid=AudioMessageDisplayObject]').should('exist')
       cy.get('[data-testid=RecordAudioActionBar').should('not.exist')
