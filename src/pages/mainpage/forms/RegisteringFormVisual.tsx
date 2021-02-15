@@ -1,8 +1,9 @@
 import { Grid } from '@material-ui/core';
 import React from 'react'
+import styled from 'styled-components';
+
 import { BorderedContainer, FontWidthSpan, FullHeightContainer } from 'shared/components'
 import RegisteringForm from './RegisteringForm';
-import styled from 'styled-components';
 import { useUser } from 'shared/hooks';
 
 const BigGrid = styled(Grid)`height: 80%`

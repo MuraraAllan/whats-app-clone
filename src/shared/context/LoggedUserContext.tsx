@@ -15,18 +15,18 @@ export type RegisteringFormControl = {
   setIsRegisterFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
+type UserProviderProps = { children: React.ReactNode }
+
 type UserContext = {
   user: User
 } & RegisteringFormControl
-
-export const LoggedUserContext = React.createContext<UserContext | null>(null)
-
-type UserProviderProps = { children: React.ReactNode }
 
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 // we are retrieving from MockData, mimicking user logged in
 // and it's propertys
+
+export const LoggedUserContext = React.createContext<UserContext | null>(null)
 
 function LoggedUserProvider({ children }: UserProviderProps) {
   // this is a top context we shouldnt rerender it

@@ -16,8 +16,6 @@ export interface UploadFileDispatchers {
 
 type UploadFilesControlType = UploadingFileController & UploadFileDispatchers
 
-export const UploadFileContext = React.createContext<UploadFilesControlType | null>(null)
-
 type ActiveSessionProviderProps = { children: React.ReactNode }
 
 // hold states of possible User Actions on ActiveChatSession (ActiveChatSessionState)
@@ -25,6 +23,7 @@ type ActiveSessionProviderProps = { children: React.ReactNode }
 // upload file 
 // it alsos share a video reference for TakePictureWithCam to 
 
+export const UploadFileContext = React.createContext<UploadFilesControlType | null>(null)
 
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
 

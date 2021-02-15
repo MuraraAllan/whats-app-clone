@@ -1,10 +1,10 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 
+import { CameraAlt } from '@material-ui/icons'
 import { CircleContainer } from 'shared/components'
 import { useTakePicture } from 'pages/mainpage/hooks'
-import { CameraAlt } from '@material-ui/icons'
-import styled from 'styled-components'
 
 const PositionedCameraAlt = styled(CameraAlt)`width: 80%; height: 80%; `
 

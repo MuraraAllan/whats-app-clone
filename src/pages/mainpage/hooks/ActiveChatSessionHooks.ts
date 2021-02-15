@@ -2,10 +2,11 @@ import { useContext, useMemo } from "react"
 
 import { ActiveChatSessionContext, ChatSessionContextType } from "pages/mainpage/context/ActiveChatSessionContext"
 import { useChatSessions } from "pages/mainpage/hooks"
-import { User, RegisteringFormControl } from 'shared/context/LoggedUserContext'
-import { UploadFileContext } from "pages/mainpage/context"
-import { useUser } from "../../../shared/hooks"
 import { ChatSessionsContext } from "../context/ChatSessionsContext"
+import { UploadFileContext } from "pages/mainpage/context"
+import { User, RegisteringFormControl } from 'shared/context/LoggedUserContext'
+import { useUser } from "shared/hooks"
+
 
 interface ActiveChatSessionDispatchers {
   setIsRegisterFormOpen: RegisteringFormControl["setIsRegisterFormOpen"]

@@ -7,13 +7,13 @@ import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
-const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; background-color: #80808066;`
-
 interface TextMessageDisplayProps {
   message: Message,
   isCurrentUserMessage: boolean,
   setFileView: Dispatch<SetStateAction<UploadingFileType | null>>
 }
+
+const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; background-color: #80808066;`
 
 export default function TextMessageDisplay({ message, isCurrentUserMessage, setFileView }: TextMessageDisplayProps) {
   // the way messages with files can be displayed is always 

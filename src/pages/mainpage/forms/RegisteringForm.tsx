@@ -1,13 +1,11 @@
 import React from 'react';
 import * as yup from "yup";
 import { Grid } from '@material-ui/core';
-
 import styled from 'styled-components'
 
-import { SelectFormField, InputFormField, DatePickerFormField } from 'shared/forms/components';
 import { Form } from 'shared/forms';
 import { FullHeightContainer } from 'shared/components';
-
+import { SelectFormField, InputFormField, DatePickerFormField } from 'shared/forms/components';
 
 const schema = yup.object().shape({
   citizenship: yup.string().required("Required"),

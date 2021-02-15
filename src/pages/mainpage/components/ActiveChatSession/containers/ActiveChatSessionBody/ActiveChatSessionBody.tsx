@@ -1,13 +1,13 @@
 import React, { CSSProperties, useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
-import styled from 'styled-components'
 import PersonIcon from '@material-ui/icons/Person';
+import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
 import { FileViewer } from './components/';
-import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from 'pages/mainpage/components/ActiveChatSession/containers/ActiveChatSessionBody/components'
-import { RegisteringFormVisual } from 'pages/mainpage/forms'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import { RegisteringFormVisual } from 'pages/mainpage/forms'
+import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from 'pages/mainpage/components/ActiveChatSession/containers/ActiveChatSessionBody/components'
 import { useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
 
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
