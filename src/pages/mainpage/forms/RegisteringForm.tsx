@@ -1,8 +1,6 @@
 import React from 'react';
 import * as yup from "yup";
 import { Grid } from '@material-ui/core';
-import { DatePicker } from '@material-ui/pickers'
-import { Calendar } from '@material-ui/pickers'
 
 import styled from 'styled-components'
 

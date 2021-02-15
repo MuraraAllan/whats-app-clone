@@ -58,6 +58,7 @@ export function useActiveChatSession() {
     if (activeSession?.session_id === session_id || uploadingFile != null || isTakingPicture || isRecordingAudio || isRegisteringFormOpen) {
       return
     }
+    console.log('isregistering form open', isRegisteringFormOpen)
     Object.values(chatSessions?.sessions ?? []).forEach(session => {
       if (session.session_id === session_id) {
         context.setActiveSession({ ...session })

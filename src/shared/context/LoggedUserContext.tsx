@@ -33,7 +33,7 @@ function LoggedUserProvider({ children }: UserProviderProps) {
   // move state to useActiveSessionUserStates (?)
   const [user,] = useState<User>(userWithChatSessions)
   const [isRegisteringFormOpen, setIsRegisterFormOpen] = useState<boolean>(false)
-
+  console.log('isregistering form open', isRegisteringFormOpen)
   return (
     <LoggedUserContext.Provider value={{ user, isRegisteringFormOpen, setIsRegisterFormOpen }}>
       {children}

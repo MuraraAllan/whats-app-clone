@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
 import { useChatSession } from 'pages/mainpage/hooks/'
-import { useNewActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
+import { useActiveChatSession, useNewActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 
 
@@ -24,7 +24,7 @@ const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
 export default function ChatContent({ session_id }: { session_id: string }): React.ReactElement {
   const { chatSession, userBelongsToSession } = useChatSession(session_id)
-  const { activeSession, setActiveSession } = useNewActiveChatSession()
+  const { activeSession, setActiveSession } = useActiveChatSession()
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
   const chatPreview = useMemo(() => {
     // if lastMessage has a file then we should check for its type

@@ -28,7 +28,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test", 
+    "cypress-dev" : "CYPRESS_BASE_URL=http://localhost:3000 cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "cypress": "^6.4.0"
   }
 }
