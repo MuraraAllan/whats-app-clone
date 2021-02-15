@@ -1,5 +1,5 @@
-import { createRef, RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { AudioPlayer } from "../../ActiveChatSessionBody/components"
+import { RefObject, useEffect, useMemo, useRef, useState } from "react"
+
 
 export function useAudioPlayerHook() {
   let audioRef = useRef<HTMLAudioElement>() as RefObject<HTMLVideoElement>
@@ -55,10 +55,10 @@ export function useAudioPlayerHook() {
       audioRef.current.addEventListener("loadeddata", addLoadedDataChangeEvent);
       audioRef.current.addEventListener("timeupdate", timeUpdateEventHandler);
     }
-
+    const previousRef = audioRef.current
     return () => {
-      if (audioRef.current != null) {
-        audioRef.current.removeEventListener('loadeddata', addLoadedDataChangeEvent)
+      if (previousRef != null) {
+        previousRef.removeEventListener('loadeddata', addLoadedDataChangeEvent)
       }
     }
   }, [audioRef, setCurrentTime, duration])
