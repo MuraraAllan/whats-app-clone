@@ -1,30 +1,70 @@
-#########################################
-# REMEMBER TO IMPLEMENT AWESOME README
-#########################################
+## Installation
+
+Clone project to your machine;
+```
+git clone https://github.com/MuraraAllan/whats-app-clone
+```
+Install dependecies 
+```
+yarn install
+```
+----
+
+# WhatsApp + Telegram inline buttons clone
+
+This project was create based on a mock screen in PDF from the scratch, it includes work such as Mock, Archicture, Development and testing. 
+It's functionality mimicks whats app added telegram inline buttons.
+
+Architecture based on hooks, a central context (State Machine) on each page to ensure isolated state per page, important data such as chatSessions and userSession should be always available through top hoisted hooks, desired behavior is to containerize state <b>per page</b> and rerender as minimal as possible and as independent as possible.
+
+
+## Pages
+A page is an action or behavior that the application can have, such as UserPage or MainPage, they control their own state and can share the state between the application. 
+
+``UserPages has registering and logingIn and control if user is Registering or Logging - WIP``
+
+``MainPage controls NavBar and ActiveChatSession navigate between chatSessions, send Picture, send Audio, Attach File, Send Message...``
+
+**Packages**: 
+  - React
+  - Cypress
+  - Typescript
+  - Yarn
+   - @material-ui @testing-library @cypress-file-upload @styled-components @yup @react-hook-form 
+
+
+![](https://raw.githubusercontent.com/MuraraAllan/whats-app-clone/Task5/Task2/Task6/public/appImage.png?token=ACBMDFVY5JJF7MDBSYSYAH3AGQKUM)
 
 
 
+# Usage
 
+ Don't forget to attach yarn.lock when changing package.json
+ 
+## Installation
 
+Clone project to your machine;
+```
+git clone https://github.com/MuraraAllan/whats-app-clone
+```
+Install dependecies 
+```
+yarn install
+```
 
+## Testing
 
+Run cypress tests with url localhost:3000 pointed 
+```
+yarn cypress-dev
+```
 
+Run unit tests using Jest 
+```
+yarn test
+```
 
-
-
-
-
-
-
-
-#Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
+## Running on Development mode
 ### `yarn start`
 
 Runs the app in the development mode.\
@@ -33,33 +73,16 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
+## Running on Production mode
+  Build with
 ### `yarn build`
-
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
+The build is minified.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Add serve to host it
+### `yarn global add serve`
+Run serve on main project folder and host it
+### `serve -s build`
+ 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

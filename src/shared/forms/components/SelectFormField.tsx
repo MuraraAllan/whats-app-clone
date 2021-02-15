@@ -1,7 +1,5 @@
 import { ReactNode, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import styled from "styled-components";
 
 import { FormErrorHandling } from "shared/forms";

@@ -86,13 +86,13 @@ export default function FileViewer({ fileView, setFileView }: { fileView?: Uploa
     if (isViewingUploadedFile) {
       const fileURL = URL.createObjectURL(fileView?.content)
       return (<>
-        <img data-testid="FileViewerIsViewingUploadedFile" src={fileURL}></img>
+        <img alt="" data-testid="FileViewerIsViewingUploadedFile" src={fileURL}></img>
         <span style={{ padding: '10px' }}>{uploadingFile?.name}</span>
       </>)
     }
     if (isViewingWebcamFile) {
       const fileURL = URL.createObjectURL(uploadingFile?.content)
-      return <img data-testid="FileViewerIsViewingWebcamFile" src={fileURL}></img>
+      return <img alt="" data-testid="FileViewerIsViewingWebcamFile" src={fileURL}></img>
     }
     if (isPreViewingFileUpload) {
       return (<>

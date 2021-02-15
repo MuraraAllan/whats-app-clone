@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'

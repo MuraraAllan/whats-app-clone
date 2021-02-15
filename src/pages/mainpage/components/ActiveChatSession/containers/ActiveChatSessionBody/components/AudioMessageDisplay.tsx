@@ -1,10 +1,9 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import styled from 'styled-components'
 
-import { BorderedContainer } from 'shared/components'
-import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import AudioPlayer from './AudioPlayer'
+import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
+
 
 
 export default function AudioMessageDisplay({ message, isCurrentUserMessage }: { message: Message, isCurrentUserMessage: boolean }) {

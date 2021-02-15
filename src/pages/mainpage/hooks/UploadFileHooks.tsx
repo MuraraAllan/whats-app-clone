@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useState, useRef } from "react";
+import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useState } from "react";
 
 import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
 import { useChatSessions } from ".";
@@ -151,11 +151,11 @@ export function useUploadFileDND() {
     if (fileDropRef != null && fileDropRef.current != null) {
       fileDropRef.current.addEventListener("drop", refListner as any);
     }
-
+    const currentRef = fileDropRef.current
     return () => {
       document.removeEventListener('drop', globalListner)
-      if (fileDropRef.current != null) {
-        fileDropRef.current.removeEventListener('drop', refListner as any)
+      if (currentRef != null) {
+        currentRef.removeEventListener('drop', refListner as any)
       }
 
     }

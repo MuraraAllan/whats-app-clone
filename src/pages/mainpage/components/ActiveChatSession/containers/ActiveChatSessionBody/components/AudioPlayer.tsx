@@ -1,6 +1,5 @@
-import React, { ChangeEvent, createRef, ReactEventHandler, RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
-import { ControlPointSharp, PlayArrow, Stop } from '@material-ui/icons';
+import React, { useCallback, useMemo } from 'react'
+import { PlayArrow, Stop } from '@material-ui/icons';
 import styled from 'styled-components'
 
 import { BorderedContainer, UserAvatar } from 'shared/components'
