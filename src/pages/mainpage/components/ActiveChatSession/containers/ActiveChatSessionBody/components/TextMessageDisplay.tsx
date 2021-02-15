@@ -45,9 +45,8 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
   }, [message.file, message.picture, setFileView])
 
   const fileName = message.file?.name ?? null
-
   return (
-    <Grid data-testid="textMessageDisplayGrid" container item xs={12} sm={9} md={10} lg={9} xl={9} direction="column" alignItems={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
+    <Grid data-testid={`textMessageDisplayGrid${message.message_id}`} container item xs={12} sm={9} md={10} lg={9} xl={9} direction="column" alignItems={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
       {message.textMessage != null || DisplayFile != null ? (
         <MessageContainer container direction="column" alignItems="center">
           {DisplayFile != null ?

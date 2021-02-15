@@ -31,12 +31,12 @@ jest.mock('pages/mainpage/hooks', () => {
 });
 
 describe('RecordAudioActionBar', () => {
-  test('should call finishRecordingAudio when RecordAudioActionBarFinish is clicked', () => {
+  test('should call finishRecordingAudio when RecordAudioActionBarSend is clicked', () => {
     const { getByTestId } = render(
       <MockProviders>
         <RecordAudioActionBar />
       </MockProviders>)
-    fireEvent.click(getByTestId('RecordAudioActionBarFinish'))
+    fireEvent.click(getByTestId('RecordAudioActionBarSend'))
     expect(mockFinishUploadingFile).toBeCalled()
   })
 })

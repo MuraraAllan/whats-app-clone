@@ -72,7 +72,8 @@ describe('TextMessageDisplay', () => {
       <MockProviders>
         <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={true} />
       </MockProviders>)
-    expect(getByTestId('textMessageDisplayGrid').style["alignItems"]).toContain("flex-end")
+    const sentMessage = getByTestId(`textMessageDisplayGrid${toDisplayMessage.message_id}`).className.includes('flex-end')
+    expect(sentMessage).toBe(true)
 
   })
 })

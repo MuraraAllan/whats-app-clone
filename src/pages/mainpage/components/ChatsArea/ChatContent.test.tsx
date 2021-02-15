@@ -13,13 +13,13 @@ describe('ChatContent.tsx', () => {
   test('should render session with title, lastMessage and unreadMessagesAmount when user belong to chatSession', () => {
     const { getByTestId } = render(
       <MockProviders>
-        <ChatsContent session_id="2" />
+        <ChatsContent refKey="2" session_id="2" />
       </MockProviders>
     )
 
     const sessionToTest = chatSessionsMock[1]
     expect(getByTestId('chatAreaTitle').textContent).toEqual(sessionToTest.title)
-    expect(getByTestId('chatAreaLastMessage').textContent).toEqual(findLastMessageChatPreview(sessionToTest.lastMessage))
+    expect(getByTestId('chatAreaLastMessagePreview').textContent).toEqual(findLastMessageChatPreview(sessionToTest.lastMessage))
     // possible bug, remember to analise later in react-testing codebase
     expect(parseInt(getByTestId('chatAreaUnreadMessages').textContent ?? "0")).toEqual(sessionToTest.unreadMessages)
   })
@@ -27,23 +27,23 @@ describe('ChatContent.tsx', () => {
   test('chat with title, disabled  and unreadMessagesAmount when the user does not belong to chatSession', () => {
     const { getByTestId } = render(
       <MockProviders>
-        <ChatsContent session_id="3" />
+        <ChatsContent refKey="2" session_id="3" />
       </MockProviders>
     )
 
     const sessionToTest = chatSessionsMock[2]
     expect(getByTestId('chatAreaTitle').textContent).toEqual(sessionToTest.title)
-    expect(getByTestId('chatAreaLastMessage').textContent).toEqual("disabled")
+    expect(getByTestId('chatAreaLastMessagePreview').textContent).toEqual("disabled")
     // possible bug, remember to analise later in react-testing codebase
     expect(parseInt(getByTestId('chatAreaUnreadMessages').textContent ?? "0")).toEqual(sessionToTest.unreadMessages)
   })
 
   test('render with backgroundColor when current chat is the same as ActiveChatSession', () => {
-    const { mockSetactiveSession, getByTestId } = useActiveChatSessionMock(<ChatsContent session_id="1" />)
+    const { mockSetactiveSession, getByTestId } = useActiveChatSessionMock(<ChatsContent refKey="2" session_id="1" />)
     act(() => {
       mockSetactiveSession("1")
     })
-    expect(getByTestId('chatAreaContainer').style.backgroundColor).toEqual("rgba(128, 128, 128, 0.4)")
+    expect(getByTestId('chatAreaContainer1').style.backgroundColor).toEqual("rgba(128, 128, 128, 0.4)")
   })
 })
 
