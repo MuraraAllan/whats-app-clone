@@ -13,11 +13,6 @@
 
 // MIC TESTING
 // StopRecording
-// click on Mic button
-// expect to have rendered RecordAudioActionBar data-test-id present
-// click on RecordAudioActionBarStop data-testid
-// expect to not have rendered AudioMessageDisplayObject data-test-id
-// expect to not have rendered RecordAudioActionBar
 
 // RecordAudio
 // click on DefaultActionBarRecordAudio data-testid
@@ -143,13 +138,16 @@
   getByTestId("ActiveChatSessionBodyMessages")
   getByTestId("DefaultActionBar")
 
+
+//try to register and close register screen
+
 // registerWrong
 // open RegisterForm clicking on Fazer Meu Cadastro at InlineButtons
 // expect to find a form in the screen
 // dispatch wrong info for the form
   click(getByText('Fazer meu Cadastro'))
 
-registerWright
+registerRight
 // open RegisterForm clicking on Fazer Meu Cadastro at InlineButtons
 // dispatch right info for the form
 // expect to receive a console.log()
@@ -158,3 +156,9 @@ registerWright
 
 // LeftActionArea 
 // SwitchBetweenActiveChatSessions
+
+
+
+
+// mainpage
+// UserNotParticipantOfAGroup

@@ -12,17 +12,4 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-declare Cypress as {
-
-}
-Cypress.Commands.add('getByLabel', (label) => {
-  // you can disable individual command logging
-  // by passing {log: false} option to every
-  // command inside "getByLabel"
-  cy.log('**getByLabel**')
-  cy.contains('label', label)
-    .invoke('attr', 'for')
-    .then((id) => {
-      cy.get('#' + id)
-    })
-})
+import './commands'

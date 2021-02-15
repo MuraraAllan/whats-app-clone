@@ -1817,6 +1817,14 @@
     "@svgr/plugin-svgo" "^5.4.0"
     loader-utils "^2.0.0"
 
+"@testing-library/cypress@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/cypress/-/cypress-7.0.3.tgz#1f4bcf992d0a0ff55da13b80f6f785c976ef9c0d"
+  integrity sha512-JOYW4VSSyHxaZDUhrS5N7tZA8jhr3ISx73WnLPpNkPqDCLUIJpo8ZQihti68Q4Qv5hVuA+I2rUI2glORaEFPaA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@testing-library/dom" "^7.28.1"
+
 "@testing-library/dom@^7.28.1":
   version "7.29.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.29.4.tgz#1647c2b478789621ead7a50614ad81ab5ae5b86c"
@@ -4311,6 +4319,13 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
+
+cypress-file-upload@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-5.0.2.tgz#538722e64747b5bf309399a7df26b470431859cb"
+  integrity sha512-QRPnQPeEaW+HMVB62/htIsKh7Kd/x2uzoHKEQxh7LCD+4IaG0rAjLZupCIjjUh+JnRymgfir8wOYtFSJCNWlpA==
+  dependencies:
+    mime "^2.5.0"
 
 cypress@^6.4.0:
   version "6.4.0"
@@ -7958,6 +7973,11 @@ mime@^2.4.4:
   version "2.4.6"
   resolved "https://registry.yarnpkg.com/mime/-/mime-2.4.6.tgz"
   integrity sha512-RZKhC3EmpBchfTGBVb8fb+RL2cWyw/32lshnsETttkBAyAUXSGHxbEJWWRXc751DrIxG1q04b8QwMbAwkRPpUA==
+
+mime@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.5.0.tgz#2b4af934401779806ee98026bb42e8c1ae1876b1"
+  integrity sha512-ft3WayFSFUVBuJj7BMLKAQcSlItKtfjsKDDsii3rqFDAZ7t11zRe8ASw/GlmivGwVUYtwkQrxiGGpL6gFvB0ag==
 
 mimic-fn@^1.0.0:
   version "1.2.0"

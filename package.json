@@ -15,6 +15,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "16.9.8",
     "@types/react-test-renderer": "^17.0.0",
+    "cypress-file-upload": "^5.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^6.15.1",
@@ -28,8 +29,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test", 
-    "cypress-dev" : "CYPRESS_BASE_URL=http://localhost:3000 cypress open",
+    "test": "react-scripts test",
+    "cypress-dev": "CYPRESS_BASE_URL=http://localhost:3000 cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/cypress": "^7.0.3",
     "@types/styled-components": "^5.1.7",
     "cypress": "^6.4.0"
   }

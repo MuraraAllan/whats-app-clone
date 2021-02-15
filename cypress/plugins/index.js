@@ -19,11 +19,4 @@
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-
-  // investigate if it does integrate with CI
-  on('before:browser:launch', (browser = {}, launchOptions) => {
-    Cypress.Commands.add('getByTestID', (testid) => {
-      return cy.get(`[data-testid=${testid}]`)
-    })
-  })
 }
