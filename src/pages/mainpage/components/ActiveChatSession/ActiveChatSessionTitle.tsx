@@ -4,22 +4,23 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components';
 
 import { BorderedContainer, CircleContainer } from 'shared/components';
-import { useUser } from 'shared/hooks';
 import { useActiveChatSession } from 'pages/mainpage/hooks'
 
 const Container = styled(BorderedContainer)`height: 72px`
 const LimitedContainer = styled(Grid)`max-width: 50%`
 
-export default function ActiveChatSessionTitle() {
-  const { activeSession, userBelongsToActiveSession } = useActiveChatSession()
-  const user = useUser()
 
+// should render  the names of participants and the ActiveChatSession title
+// when user not belong to ActiveChatSession doesn't render participants names
+
+export default function ActiveChatSessionTitle() {
+  const { activeSession, userBelongsToActiveSession, user } = useActiveChatSession()
   const usersInChat = useMemo(() => {
-    if (user == null || activeSession == null) {
+    if (user == null || activeSession == null || activeSession.participants == null) {
       return null
     }
     // implement i18n
-    const allUsers = activeSession.participants.map(participant => participant.user_id === user.user_id ? 'Eu' : participant.userName)
+    const allUsers = activeSession.participants.map((participant) => participant.user_id === user.user_id ? 'Eu' : participant.userName)
     allUsers.sort((a, b) => a.localeCompare(b))
     return allUsers.join(', ')
   }, [activeSession, user])

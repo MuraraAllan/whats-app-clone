@@ -1,25 +1,23 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PersonIcon from '@material-ui/icons/Person';
+
 import styled from 'styled-components';
 
-import { BorderedContainer, CircleContainer } from 'shared/components';
+import { BorderedContainer, UserAvatar } from 'shared/components';
 import { useUser } from 'shared/hooks/UserHooks';
 
 const Container = styled(BorderedContainer)`height: 72px`
 
 export default function UserArea() {
-  const user = useUser()
+  const { user } = useUser()
   return (
     <Container container
       justify="space-evenly"
       alignItems="center"
       direction="row"
     >
-      <CircleContainer>
-        <PersonIcon style={{ width: '80%', height: '80%' }} />
-      </CircleContainer>
+      <UserAvatar user={user} />
       <Grid item xs={7} sm={8} md={8} lg={9} xl={9}>
         <span>[{user.userName}]</span>
       </Grid>

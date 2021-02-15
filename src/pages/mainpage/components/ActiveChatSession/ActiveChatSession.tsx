@@ -5,12 +5,15 @@ import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTit
 import { BorderedContainer } from 'shared/components'
 
 // import { useActiveChatSession } from 'pages/mainpage/hooks'
-const ActionContainer = styled(BorderedContainer)`height:60px;`
+// ActiveChatSessionBody is the centered area in the screen.
+// ActiveChatSessionActionBar is the ActionBar down the screen.
+
+
+const ActionContainer = styled(BorderedContainer)`min-height:60px;`
 // We need to calculate how much is left in user screen, considering that
 // ActionBar and Title will use 74px and 60 px, it should be all screen - 134px
 const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px); overflow-x: hidden; overflow-y: auto;`
 const Container = styled(BorderedContainer)`height: 72px;`
-const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 
 export default function ActiveChatSessionScreen() {
   // this is not the most ideal scenario as it forces re-render ActiveChatSessionScreen and childrens each time activeSession switchs
@@ -23,16 +26,13 @@ export default function ActiveChatSessionScreen() {
   //     <span>Pick a chat on the left to start chating...</span>
   //   </div>
   // }
-
   return (
     <>
       <Container item>
         <ActiveChatSessionTitle />
       </Container>
       <CalcContainer container >
-        <FullWidthContainer container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
-          <ActiveChatSessionBody />
-        </FullWidthContainer>
+        <ActiveChatSessionBody />
       </CalcContainer>
       <ActionContainer item border={2}>
         <ActiveChatSessionActionBar />

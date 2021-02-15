@@ -1,19 +1,26 @@
-import { useMemo, useContext, useEffect } from 'react'
+import { useContext, useMemo } from 'react'
 
-import { chatSessionsMock } from 'mocks/chatSessions'
-import { ChatSessionsContext } from 'pages/mainpage/context/ChatSessionsContext'
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
+import { ChatSessionsContext } from '../context/ChatSessionsContext'
+
+export type UploadingFileType = {
+  content: Blob | null
+  name: string
+}
 
 interface InlineButtons {
   label: string,
-  onClickAction?: Function
+  onClickAction?: string
 }
 
 export interface Message {
   message_id: string,
-  textMessage?: string,
+  textMessage?: string | null,
   inlineButtons?: InlineButtons[],
+  file?: UploadingFileType
+  picture?: UploadingFileType
+  audio?: UploadingFileType
   timeStamp: number,
   user: User
 }
@@ -30,40 +37,22 @@ export interface ChatSessionType {
   chatImage?: File,
   unreadMessages: number,
   lastReadTimestamp?: number,
-  lastMessage?: Message
+  lastMessage: Message
 }
 
 export interface ChatSessions {
   sessions: ChatSessionType[] | []
 }
 
-
-
 function useChatSessions() {
-  const { chatSessions, dispatch } = useContext(ChatSessionsContext)
-  useEffect(() => {
-    if (chatSessionsMock == null || dispatch == null) {
-      return
-    }
-    // this is mimicking a subscription which brings us active chat sessions that this user has
-    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
-
-    dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [])
-
-  const addMessage = (session_id: string, textMessage: string, user: User) => {
-    if (textMessage == null || textMessage === '' || user == null || session_id == null) {
-      return
-    }
-    dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }
-
-  return { chatSessions, addMessage }
+  const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
+  const { user, setIsRegisterFormOpen, isRegisteringFormOpen } = useUser()
+  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user, setIsRegisterFormOpen, isRegisteringFormOpen }
 }
 
+
 function useChatSession(session_id: string) {
-  const { user_id } = useUser()
-  const { chatSessions } = useChatSessions()
+  const { chatSessions, user: { user_id } } = useChatSessions()
 
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
@@ -102,4 +91,4 @@ function useChatSession(session_id: string) {
 }
 
 
-export { useChatSessions, useChatSession }
+export { useChatSession, useChatSessions }

@@ -1,0 +1,164 @@
+// TakePictureWithCam
+// should be tested when testing the photo button
+
+
+// possible actions :
+// simulate each possible action 
+
+// main page test : behaviors
+
+
+// ActiveChatSession
+
+
+// MIC TESTING
+// StopRecording
+
+// RecordAudio
+// click on DefaultActionBarRecordAudio data-testid
+// expect to have rendered RecordAudioActionBar data-test-id present
+// expect to have rendered AudioMessageDisplayObject data-testid
+// click on RecordAudioActionBarFinish data-testid
+// expect have rendered DefaultActionBar data-testid
+
+
+// WEBCAM TESTING
+// CloseUpload 
+// click on camera icon at DefaultActionBar
+// get container at TakePictureWithCam
+// click on x at TakePictureWithCam
+// get element that displays Messages at ActiveChatSessionBody
+// get DefaultActionBar
+
+ click(getByTestId("DefaultActionBarUploadPicture"))
+ getByTestId("takePictureWithCamContainer)
+ click(getByTestId("takePictureWithCamClose"))
+ getByTestId("ActiveChatSessionBodyMessages")
+ getByTestId("DefaultActionBar")
+
+
+// TakeScreenShotAgain
+// click on camera icon at DefaultActionBar
+// click on big camera icon at UploadPictureActionBar
+// get element that display isViewingWebcamFile at FileViewer
+// click on Tirar Foto Novamente at FileViewer
+// get big camera icon UploadPictureActionBar
+// get container at TakePictureWithCam
+
+ click(getByTestId("DefaultActionBarUploadPicture"))
+ click(getByTestId("UploadPictureActionBarTakePicture"))
+ getByTestId("FileViewerIsViewingWebcamFile")
+ click(getByTestId("FileViewerTakeScreenShot"))
+ getByTestId("UploadPictureActionBarTakePicture")
+ getByTestId("takePictureWithCamContainer")
+
+
+// CompleteUploadWithMessage
+// click on camera icon at DefaultActionBar
+// click on big camera icon at UploadPictureActionBar
+// get tire uma foto at FileViewer espere que seja igual a Tire uma foto
+// click on send icon at FileUploadLabelActionBar
+// add label "1234testeUploadPictureWithCam" for the picture at FileUploadLabelActionBar
+// get element that displays pictures at TextMessageDisplay
+// get element by text (label of picture)
+
+ click(getElementByTestId("DefaultActionBarUploadPicture"))
+ click(getElementByTestId("UploadPictureActionBarTakePicture"))
+ getByText("Tire uma foto")
+ fireEvent.input(getByTestId('FileUploadLabelActionBarInput'), { target: { value: '1234teste' } }))
+ click(getElementByTestId("FileUploadLabelActionBarSend"))
+ getByText("1234testeUploadPictureWithCam")
+
+
+
+
+// UPLOAD FILE TESTING
+
+// UploadFileComplete 
+// create a new file with name testingFileUpload.
+// send event to hidden input file at DefaultActionBar
+// get previewingFileUpload container at FileViewer
+// get Digite o label do arquivo at FileViewer espere que seja igual a Digite o label do arquivo
+// click on Send icon at FileUploadLabelActionBar
+// getByText fileName
+// get DefaultActionBar
+
+  const inputEl = getByLabelText("Upload File");
+  const file = new File(["(⌐□_□)"], "testingFileUpload.png", {
+    type: "image/png"
+  });
+  Object.defineProperty(inputEl, "files", {
+    value: [file]
+  });
+  fireEvent.change(inputEl)
+  getByTestId("FileViewerIsPreviewingFileUpload")
+  getByText("Digite o label do arquivo")
+  click(getByTestId("FileUploadLabelActionBarSend"))
+  getByText('testingFileUpload.png')
+  getByTestId('DefaultActionBar')
+
+// UploadFileComplete with fileName
+// create a new file with name testingFileUpload.
+// send event to hidden input file at DefaultActionBar
+// send event FileUploadLabelActionBarInput with text testing1234FileUploadLabelActionBarInput
+// click on Send icon at FileUploadLabelActionBar
+// getByText fileName
+// getByText fileLabel
+// get DefaultActionBar
+
+  const inputEl = getByLabelText("Upload File");
+  const file = new File(["(⌐□_□)"], "testingFileUpload.png", {
+    type: "image/png"
+  });
+  Object.defineProperty(inputEl, "files", {
+    value: [file]
+  });
+  fireEvent.change(inputEl)
+  fireEvent.input(getByTestId('FileUploadLabelActionBarInput'), { target: { value: 'testing1234FileUploadLabelActionBarInput' } }))
+  click(getByTestId("FileUploadLabelActionBarSend"))
+  getByText('testingFileUpload.png')
+  getByTestId('DefaultActionBar')
+  getByText("testing1234FileUploadLabelActionBarInput")
+
+//CancelUpload
+// create a new file with name testingFileUpload.
+// send event to hidden input file at DefaultActionBar
+// click on x at TakePictureWithCam
+// get element that displays Messages at ActiveChatSessionBody
+// get DefaultActionBar
+  const inputEl = getByLabelText("Upload File");
+  const file = new File(["(⌐□_□)"], "testingFileUpload.png", {
+    type: "image/png"
+  });
+  Object.defineProperty(inputEl, "files", {
+    value: [file]
+  });
+  fireEvent.change(inputEl)
+  click(getByTestId("FileViewerClose"))
+  getByTestId("ActiveChatSessionBodyMessages")
+  getByTestId("DefaultActionBar")
+
+
+//try to register and close register screen
+
+// registerWrong
+// open RegisterForm clicking on Fazer Meu Cadastro at InlineButtons
+// expect to find a form in the screen
+// dispatch wrong info for the form
+  click(getByText('Fazer meu Cadastro'))
+
+registerRight
+// open RegisterForm clicking on Fazer Meu Cadastro at InlineButtons
+// dispatch right info for the form
+// expect to receive a console.log()
+// or expect to don't find errors
+  click(getByText('Fazer meu Cadastro'))
+
+// LeftActionArea 
+// SwitchBetweenActiveChatSessions
+
+
+
+
+// mainpage
+// UserNotParticipantOfAGroup

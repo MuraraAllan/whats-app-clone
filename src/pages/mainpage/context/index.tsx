@@ -1,7 +1,10 @@
-import { ActiveChatSessionProvider } from './ActiveChatSessionContext'
-import { ChatSessionsProvider } from './ChatSessionsContext'
-
+import { ActiveChatSessionProvider, ActiveChatSessionContext } from './ActiveChatSessionContext'
+import { ChatSessionsProvider, } from './ChatSessionsContext'
+import { UploadFileProvider, UploadFileContext } from './UploadFileContext'
 export {
   ActiveChatSessionProvider,
-  ChatSessionsProvider
+  ActiveChatSessionContext,
+  ChatSessionsProvider,
+  UploadFileProvider,
+  UploadFileContext
 }

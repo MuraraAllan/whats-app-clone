@@ -8,7 +8,6 @@ import { useActiveChatSessionMock } from "shared/test-utils"
 // expect activeSession to be register chat (chat 2) by default 
 // later : expect activeSession to be register chat (chat 2) by default for unregistered users
 // later : expect activeSession to be null for registered users
-
 // expect that after act setActiveSession
 // expect userBelongsToActiveSession to be false when that user does not belong to chatSession participants
 

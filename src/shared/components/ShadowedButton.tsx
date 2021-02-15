@@ -8,6 +8,8 @@ interface ShadowedButtonProps {
   margin?: string
 }
 
+// rememberr to check cross-browser compatibility
+
 export const ShadowedButton = styled(Button)`
 border: ${(p: ShadowedButtonProps) => p.border ? `${p.border}px solid` : "2px solid black"};
 line-height: 1;
@@ -22,5 +24,5 @@ color: black;
 font-weight: 400;
 margin: ${(p: ShadowedButtonProps) => p.margin ? `${p.margin}` : "0px"};
 width: ${(p: ShadowedButtonProps) => p.width ? `${p.width}%` : "auto"};
-height: ${(p: ShadowedButtonProps) => p.height ? `${p.height}%` : "auto"};
+height: ${(p: ShadowedButtonProps) => p.height ? (typeof p.height === 'string' ? p.height : `${p.height}%`) : "auto"};
 `

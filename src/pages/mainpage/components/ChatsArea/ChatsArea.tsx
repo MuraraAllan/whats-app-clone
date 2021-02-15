@@ -4,18 +4,18 @@ import ChatContent from './ChatContent'
 import { useUser } from 'shared/hooks/UserHooks'
 
 export default function ChatsArea() {
-  const user = useUser()
+  const { user } = useUser()
 
   if (user == null || user.chatSessions == null) {
     return null
   }
-
+  // iterate over all user messages and render its content as preview
   return (
     <>
       {
-        user.chatSessions.map((session, index) => {
+        user.chatSessions.map((session) => {
           return (
-            <ChatContent key={index} session_id={session.session_id} />
+            <ChatContent key={session.session_id} refKey={session.session_id} session_id={session.session_id} />
           )
         })
       }
