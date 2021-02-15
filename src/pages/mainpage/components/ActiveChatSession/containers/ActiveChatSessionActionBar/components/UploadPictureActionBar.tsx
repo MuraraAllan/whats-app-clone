@@ -13,7 +13,7 @@ export default function UploadPicture() {
   return (
     // implement i18n
     <Grid style={{ height: '80px' }} container justify="flex-start" direction="column" alignItems="center">
-      <CircleContainer cursor="pointer" width={60} height={60} margin="-40px 0px" backgroundColor="white">
+      <CircleContainer cursor="pointer" width={60} height={60} margin="-40px 0px" coloredbackground="white">
         <PositionedCameraAlt data-testid="UploadPictureActionBarTakePicture" onClick={() => takePicture()} />
       </CircleContainer>
       <span style={{ marginTop: '45px' }}>Tirar Foto</span>

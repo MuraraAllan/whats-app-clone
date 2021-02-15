@@ -19,23 +19,28 @@ const filePreviewStyles = makeStyles((theme) => {
       alignItems: 'center',
       [theme.breakpoints.down("xs")]: {
         width: '200px',
-        height: '200px'
+        height: '200px',
+        maxHeight: '80%'
       },
       [theme.breakpoints.down("sm")]: {
         width: '300px',
-        height: '300px'
+        height: '300px',
+        maxHeight: '80%'
       },
       [theme.breakpoints.up("md")]: {
         width: '400px',
-        height: '400px'
+        height: '400px',
+        maxHeight: '80%'
       },
       [theme.breakpoints.up("lg")]: {
         width: '450px',
-        height: '450px'
+        height: '450px',
+        maxHeight: '80%'
       },
       [theme.breakpoints.up("xl")]: {
         width: '550px',
-        height: '550px'
+        height: '550px',
+        maxHeight: '80%'
       },
     }
   }
@@ -47,7 +52,7 @@ const filePreviewStyles = makeStyles((theme) => {
 // isPreViewingFileUpload (uploadFile != null & !isTakingPicture should render Attach icon and a container around)
 // isPreviewingWebcam (uploadingFile != null & isTakingPicture)
 
-export default function FilePreview({ fileView, setFileView }: { fileView?: UploadingFileType, setFileView?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
+export default function FileViewer({ fileView, setFileView }: { fileView?: UploadingFileType, setFileView?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
   const {
     setUploadingFile,
     uploadingFile,
@@ -121,7 +126,7 @@ export default function FilePreview({ fileView, setFileView }: { fileView?: Uplo
           ) : null}
         </Grid>
         {isViewingWebcamFile ?
-          <Grid container xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
+          <Grid container item xs={10} sm={5} md={8} lg={9} xl={9} justify="flex-end">
             <FontWidthSpan
               data-testid="FileViewerTakeScreenShot"
               style={{ cursor: 'pointer', marginRight: '10px' }}

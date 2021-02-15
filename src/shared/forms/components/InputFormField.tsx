@@ -1,11 +1,8 @@
-import { createRef, forwardRef, ReactElement, ReactNode, useEffect, useRef } from "react";
-import Select from "@material-ui/core/Select";
+import { ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 
 import { BorderedInput } from "shared/components";
-import { Grid } from "@material-ui/core";
-import { types } from "util";
 
 
 interface InputFormFieldProps {
@@ -29,6 +26,7 @@ export function InputFormField(props: InputFormFieldProps) {
       <Controller
         as={<BorderedInput
           onClick={(e) => e.preventDefault()}
+          autoComplete="off"
           height="26px"
           {...props}
           border={hasErrors ? '2px solid red' : border}

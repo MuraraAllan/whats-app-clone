@@ -22,7 +22,6 @@ export function useActiveChatSessionDispatchers() {
 
 export function useGetActiveChatSession() {
   const ctx = useContext(ChatSessionsContext)
-  console.log(ctx)
   const { chatSessions } = ctx
   const activeSession = useMemo(() => {
     if (chatSessions == null) {
@@ -58,7 +57,6 @@ export function useActiveChatSession() {
     if (activeSession?.session_id === session_id || uploadingFile != null || isTakingPicture || isRecordingAudio || isRegisteringFormOpen) {
       return
     }
-    console.log('isregistering form open', isRegisteringFormOpen)
     Object.values(chatSessions?.sessions ?? []).forEach(session => {
       if (session.session_id === session_id) {
         context.setActiveSession({ ...session })

@@ -21,7 +21,7 @@ export default function InlineButtonsDisplay({ textMessage, inlineButtons, isCur
 
 
   return (
-    <Grid style={{ marginTop: textMessage == null ? "10px" : "5px", marginLeft: textMessage == null ? "5px" : "0px" }} data-testid="inlineButtonsGrid" item container sm={10} md={10} lg={10} xl={10} justify={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
+    <Grid style={{ marginTop: textMessage == null ? "10px" : "5px", marginLeft: textMessage == null ? "5px" : "0px" }} data-testid="inlineButtonsGrid" item container sm={11} md={11} lg={10} xl={9} justify={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
       {inlineButtons?.map((button, index) => {
         return <ShadowedButton key={index} onClick={() => translateClickAction(button)} margin={"0px 6px 3px 0px"} >
           <span>{button.label}</span>

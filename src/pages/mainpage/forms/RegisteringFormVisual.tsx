@@ -20,8 +20,8 @@ export default function RegisteringFormVisual() {
         this component should be already centered and positioned at this point
        */}
       <Grid item >
-        <FontWidthSpan onClick={() => setIsRegisterFormOpen(false)} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
-        <FontWidthSpan > Fazer meu cadastro</FontWidthSpan>
+        <FontWidthSpan data-testid="RegisteringFormVisualClose" onClick={() => setIsRegisterFormOpen(false)} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
+        <FontWidthSpan> Fazer meu cadastro</FontWidthSpan>
         {/* implement i18n */}
       </Grid>
     </BorderedContainer>

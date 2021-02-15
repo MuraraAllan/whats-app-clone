@@ -11,11 +11,12 @@ interface FormErrorHandlingProps {
 
 export function FormErrorHandling({ children, name }: FormErrorHandlingProps) {
   const data = useFormContext()
-  const hasErrors = data.errors[name] != null && data.formState.submitCount > 0
+  const hasErrors = data.errors[name] != null
 
   return (
     <>
       <div
+        data-testid={`FormErrorHandling${name}`}
         style={{
           overflow: hasErrors === true ? 'hidden' : 'inherit',
           border: `2px solid ${hasErrors ? 'red' : 'transparent'}`,

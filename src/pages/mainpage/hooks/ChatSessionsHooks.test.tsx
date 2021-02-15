@@ -69,7 +69,6 @@ describe('useChatSessions', () => {
     const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
     expect(lengthOfTestedSessionMessagesArray).toBe(4)
     const lastMessage = state?.sessions[0].lastMessage
-    console.log('last message', lastMessage.file)
     expect(lastMessage).toHaveProperty("file")
   })
 

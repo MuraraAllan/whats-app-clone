@@ -22,7 +22,7 @@ export default function FileUploadLabelActionBar() {
           border={2}
           placeholder="Escreva um label para o arquivo." />
       </Grid>
-      <Grid item style={{ alignSelf: 'center' }} container xs={1} sm={1} md={1} lg={1} xl={1}>
+      <Grid item style={{ paddingTop: '16px' }} container xs={1} sm={1} md={1} lg={1} xl={1}>
         <RotatedSend data-testid="FileUploadLabelActionBarSend" onClick={() => finishUploadingFile(inputState)} fontSize="large" margin="0px 0px 15px 0px" />
       </Grid>
     </Grid>

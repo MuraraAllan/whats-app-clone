@@ -18,7 +18,6 @@ describe('AudioMessageDisplay', () => {
       <MockProviders>
         <AudioMessageDisplay message={toDisplayMessage} isCurrentUserMessage={true} />
       </MockProviders>)
-    console.log('DEBUG', debug())
     expect(getByTestId('AudioMessageDisplayObject')).toBeDefined()
 
   })

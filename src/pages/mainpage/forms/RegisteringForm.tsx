@@ -40,14 +40,15 @@ align-content: center;`
 
 const defaultValues = {
   citizenship: 'Brasileira',
-  fullname: null,
-  birth_date: null,
+  fullname: '',
+  birth_date: '',
   gender: 'Masculino',
   civil_status: 'Casado',
   mother_fullname: '',
+  father_fullname: '',
   birth_country: 'Brasil',
   birth_state: 'SP',
-  birth_city: null
+  birth_city: ''
 }
 
 
@@ -69,9 +70,10 @@ export default function RegisteringForm() {
             <label>Nacionalidade: </label>
           </RegisteringFormLabel>
           <RegisteringFormGroup item >
-            <SelectFormField name="citizenship">
+            <SelectFormField data-testid="RegisteringFormCitizenship" name="citizenship">
               <option value="Brasileira">Brasileira</option >
-              <option value="Brala">alallala</option >
+              <option value="Argentina">Argentina</option >
+              <option value="Venezuela">Venezuela</option >
             </SelectFormField>
           </RegisteringFormGroup>
         </RegisteringFormGrid>
@@ -80,8 +82,8 @@ export default function RegisteringForm() {
           <RegisteringFormLabel item container xs={4} sm={4} md={4} lg={4} xl={4}>
             <label>Nome Completo: </label>
           </RegisteringFormLabel>
-          <RegisteringFormGroup item justify="flex-end" alignItems="center" xs={7} sm={7} md={7} lg={7} xl={6}>
-            <InputFormField placeholder="fullname, compo aparece no seu documento." name="fullname" border={2} width={99} />
+          <RegisteringFormGroup item xs={7} sm={7} md={7} lg={7} xl={6}>
+            <InputFormField data-testid="RegisteringFormFullname" placeholder="fullname, compo aparece no seu documento." name="fullname" border={2} width={99} />
           </RegisteringFormGroup>
         </RegisteringFormGrid>
 
@@ -89,13 +91,13 @@ export default function RegisteringForm() {
           <RegisteringFormLabel item container xs={4} sm={4} md={4} lg={4} xl={4} justify="flex-end">
             <label>Data de nascimento: </label>
           </RegisteringFormLabel>
-          <RegisteringFormGroup item xs={8} sm={8} md={2} lg={2} xl={2} alignItems="center" >
-            <DatePickerFormField name="birth_date" />
+          <RegisteringFormGroup item xs={8} sm={8} md={2} lg={2} xl={2} >
+            <DatePickerFormField data-testid="RegisteringFormBirthdate" name="birth_date" />
           </RegisteringFormGroup>
           <Grid item xs={12} sm={12} md={5} lg={5} xl={4} container wrap="nowrap"   >
             <RegisteringFormGroup container wrap="nowrap" alignItems="center" justify="flex-end">
               <label>Gênero: </label>
-              <SelectFormField name="gender">
+              <SelectFormField data-testid="RegisteringFormGender" name="gender">
                 <option value="Masculino">Masculino</option >
                 <option value="Feminino">Feminino</option >
                 <option value="Outro">Outro</option >
@@ -103,7 +105,7 @@ export default function RegisteringForm() {
             </RegisteringFormGroup>
             <RegisteringFormGroup style={{ paddingLeft: '10px' }} container wrap="nowrap" alignItems="center" justify="flex-end">
               <label>Est. Cívil: </label>
-              <SelectFormField name="civil_status">
+              <SelectFormField data-testid="RegisteringFormCivilstatus" name="civil_status">
                 <option value="Casado">Casado</option >
                 <option value="Solteiro">Solteiro</option >
                 <option value="Divorciado">Divorciado</option >
@@ -117,8 +119,8 @@ export default function RegisteringForm() {
           <RegisteringFormLabel item container xs={4} sm={4} md={4} lg={4} xl={4}>
             <label>Nome da mãe:  </label>
           </RegisteringFormLabel>
-          <RegisteringFormGroup item justify="flex-end" alignItems="center" xs={7} sm={7} md={7} lg={7} xl={6}>
-            <InputFormField placeholder="Nome da mãe, como aparece no seu documento." name="mother_fullname" border={2} width={99} />
+          <RegisteringFormGroup item xs={7} sm={7} md={7} lg={7} xl={6}>
+            <InputFormField data-testid="RegisteringFormMotherfullname" placeholder="Nome da mãe, como aparece no seu documento." name="mother_fullname" border={2} width={99} />
           </RegisteringFormGroup>
         </RegisteringFormGrid>
 
@@ -127,7 +129,7 @@ export default function RegisteringForm() {
           <RegisteringFormLabel item container xs={4} sm={4} md={4} lg={4} xl={4}>
             <label>Nome do pai:</label>
           </RegisteringFormLabel>
-          <RegisteringFormGroup item justify="flex-end" alignItems="center" xs={7} sm={7} md={7} lg={7} xl={6}>
+          <RegisteringFormGroup item xs={7} sm={7} md={7} lg={7} xl={6}>
             <InputFormField placeholder="Nome do Pai, como aparece no seu documento." name="father_fullname" border={2} width={99} />
           </RegisteringFormGroup>
         </RegisteringFormGrid>
@@ -137,9 +139,9 @@ export default function RegisteringForm() {
             <label>Local de nascimento:</label>
           </RegisteringFormLabel>
           <RegisteringFormGroup item xs={4} sm={8} md={8} lg={8} xl={8} container wrap="nowrap" alignItems="center">
-            <SelectFormField name="birth_country" renderList={country_list} />
-            <SelectFormField name="birth_state" renderList={country_list} depends="birth_country" />
-            <InputFormField name="birth_city" border={2} width={20} />
+            <SelectFormField data-testid="RegisteringFormBirthCountry" name="birth_country" renderList={country_list} />
+            <SelectFormField data-testid="RegisteringFormBirthState" name="birth_state" renderList={country_list} depends="birth_country" />
+            <InputFormField data-testid="RegisteringFormBirthCity" name="birth_city" border={2} width={20} />
           </RegisteringFormGroup>
         </RegisteringFormGrid>
       </FullHeightContainer>

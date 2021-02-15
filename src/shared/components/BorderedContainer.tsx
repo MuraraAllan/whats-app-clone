@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface BorderedContainerProps {
   border?: string | number
   width?: string | number
-  limitWidth?: string | number,
+  maxwidth?: string | number,
   padding?: string | number,
   height?: string | number
   margin?: string
@@ -18,7 +18,7 @@ width: ${(p: BorderedContainerProps) => p.width ? (typeof p.width === 'string' ?
 height: ${(p: BorderedContainerProps) => p.height ? (typeof p.width === 'string' ? p.height : `${p.height}%`) : null};
 padding: ${(p: BorderedContainerProps) => p.padding ? (typeof p.padding === 'string' ? p.padding : `${p.padding}%`) : null};
 
-max-width: ${(p: BorderedContainerProps) => p.limitWidth ? (typeof p.limitWidth === 'string' ? p.limitWidth : `${p.limitWidth}%`) : null};
+max-width: ${(p: BorderedContainerProps) => p.maxwidth ? (typeof p.maxwidth === 'string' ? p.maxwidth : `${p.maxwidth}%`) : null};
 margin: ${(p: BorderedContainerProps) => p.margin ? `${p.margin}` : "0px"};
 position: ${(p: BorderedContainerProps) => p.position ? `${p.position}` : null};
 flex: ${(p: BorderedContainerProps) => p.flex ? `${p.flex}` : null};

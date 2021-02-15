@@ -26,16 +26,20 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
   const DisplayFile = useMemo(() => {
     if (message.file != null) {
       const blobSRC = URL.createObjectURL(message.file.content);
-      //</a>
       return (
-        <a data-testid="TextMessageDisplayFile" style={{ color: 'inherit', height: 'inherit', width: 'inherit' }} href={blobSRC} download={message.file.name}>
-          <RotatedAttachFile width={60} height={60} />
-        </a>)
+        <BorderedContainer container item width="70px" height="70px" justify="center" alignItems="center" margin={"auto"} >
+          <a data-testid="TextMessageDisplayFile" style={{ color: 'inherit', width: 'fit-content' }} href={blobSRC} download={message.file.name}>
+            <RotatedAttachFile width={90} height={90} />
+          </a>
+        </BorderedContainer>)
     }
     if (message.picture != null) {
       // later it will be an cloud bucket address
       const blobSRC = URL.createObjectURL(message.picture.content);
-      return <img data-testid="TextMessageDisplayPicture" onClick={() => setFileView(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+      return (
+        <BorderedContainer container maxwidth={"200px"} justify="center" alignItems="center" margin={"auto"}  >
+          <img data-testid="TextMessageDisplayPicture" onClick={() => setFileView(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+        </BorderedContainer>)
     }
     return null
   }, [message.file, message.picture, setFileView])
@@ -49,10 +53,8 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
           {DisplayFile != null ?
             (
               <Grid container direction="column" alignContent="center" style={{ textAlign: 'center' }}>
-                <BorderedContainer container limitWidth={"200px"} justify="center" alignItems="center" margin={"auto"}  >
-                  {DisplayFile}
-                </BorderedContainer>
-                <span style={{ marginBottom: '5px' }}>{fileName}</span>
+                {DisplayFile}
+                <span style={{ marginBottom: '5px', marginTop: '5px' }}>{fileName}</span>
               </Grid>
             )
             : null}

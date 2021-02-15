@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
 import { useChatSession } from 'pages/mainpage/hooks/'
-import { useActiveChatSession, useNewActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
+import { useActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks';
 
 
@@ -22,7 +22,7 @@ export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMes
 }
 const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
-export default function ChatContent({ session_id }: { session_id: string }): React.ReactElement {
+export default function ChatContent({ session_id, refKey }: { session_id: string, refKey: string }): React.ReactElement {
   const { chatSession, userBelongsToSession } = useChatSession(session_id)
   const { activeSession, setActiveSession } = useActiveChatSession()
   const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
@@ -77,7 +77,7 @@ export default function ChatContent({ session_id }: { session_id: string }): Rea
       justify="space-evenly"
       alignItems="center"
       direction="row"
-      data-testid="chatAreaContainer"
+      data-testid={`chatAreaContainer${session_id}`}
       style={{ backgroundColor: isCurrentActiveSession ? "#80808066" : 'white' }}
       onClick={() => setActiveSession(session_id)}
     >

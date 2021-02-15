@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { MockProviders } from "shared/test-utils";
 import ActiveChatSessionActionBar from "../ActiveChatSessionActionBar";
 
-const mockAddMessage = jest.fn(() => console.log('cLLED'))
+const mockAddMessage = jest.fn()
 const mockSetIsTakingPicture = jest.fn()
 const mockSetIsRecordingAudio = jest.fn()
 

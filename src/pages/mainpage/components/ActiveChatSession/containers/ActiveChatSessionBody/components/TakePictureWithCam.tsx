@@ -7,7 +7,7 @@ import { BorderedContainer } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
 import { useTakePicture } from 'pages/mainpage/hooks'
 
-const CalcContainer = styled(Grid)`height: calc(100% - 42px)`
+const CalcContainer = styled(Grid)`height: calc(100% - 42px);`
 
 const filePreviewStyles = makeStyles((theme) => {
   return {
@@ -54,7 +54,7 @@ export default function TakePictureWithCam() {
         <span style={{ fontWeight: 600 }}> Tire uma foto</span>
       </BorderedContainer>
       <CalcContainer item container direction="column" justify="center" alignItems="center">
-        <video data-testid="takePictureWithCamVideoSource" className={classes.filePreviewer} ref={videoRef} />
+        <video style={{ maxWidth: '600px', display: 'none' }} data-testid="takePictureWithCamVideoSource" className={classes.filePreviewer} ref={videoRef} />
       </CalcContainer>
     </FullHeightContainer >
   )

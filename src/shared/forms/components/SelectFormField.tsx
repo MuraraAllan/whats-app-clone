@@ -1,10 +1,10 @@
 import { ReactNode, useMemo } from "react";
-import { Control, Controller, useController, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import { FormErrorHandling } from "shared/forms";
 import styled from "styled-components";
 
+import { FormErrorHandling } from "shared/forms";
 
 
 const SelectDiv = styled.div`
@@ -48,6 +48,7 @@ interface FormSelectProps {
   renderList?: {
     [index: string]: unknown
   }
+  "data-testid"?: string
 }
 
 // a selectFormField can be rendered by childrens
@@ -64,7 +65,8 @@ interface FormSelectProps {
 //   'venezuela' : ['a', 'b']
 // }
 
-export function SelectFormField({ name, children, depends, renderList }: FormSelectProps) {
+export function SelectFormField(props: FormSelectProps) {
+  const { name, children, depends, renderList } = props
   const methods = useFormContext()
   const dependsValue = depends != null ? methods.watch(depends) : null
 
@@ -75,15 +77,15 @@ export function SelectFormField({ name, children, depends, renderList }: FormSel
         return (
           <>
             {/* fix type any */}
-            {Object.values(optionsToRender as []).map((item) => {
-              return <option value={item ?? ''}>{item}</option>
+            {Object.values(optionsToRender as []).map((item: any) => {
+              return <option key={item} value={item ?? ''}>{item}</option>
             })}
           </>)
       }
       return (
         <>
           {Object.keys(renderList).map((item: any) => {
-            return <option value={item ?? ''}>{item}</option>
+            return <option key={item} value={item ?? ''}>{item}</option>
           })}
         </>)
     }
@@ -96,7 +98,7 @@ export function SelectFormField({ name, children, depends, renderList }: FormSel
         <SelectDiv>
           <Controller
             as={
-              <StyledSelect ref={methods.register} name={name}>
+              <StyledSelect  {...props} ref={methods.register} name={name}>
                 {RenderList != null ? <> {RenderList}</> : children}
                 {/* {children} */}
               </StyledSelect>

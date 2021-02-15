@@ -65,7 +65,8 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
       if (isPlaying) {
         return timeInSecondsRenderInMinute(currentTime)
       }
-      if (isStoped && currentTime > 0) {
+      const isPaused = isStoped && currentTime > 0
+      if (isPaused) {
         return `${timeInSecondsRenderInMinute(currentTime)} - ${timeInSecondsRenderInMinute(duration)}`
       }
       return timeInSecondsRenderInMinute(duration)
@@ -85,7 +86,7 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
 
   return (
     <>
-      <PaddedBorderedContainer container item xs={9} sm={7} md={5} lg={3} xl={2} direction="column" alignItems="center">
+      <PaddedBorderedContainer container item xs={9} sm={7} md={5} lg={3} xl={2} direction="column" alignItems="center" border={2}>
         <FixedHeightGrid container alignItems="center">
           <Grid item style={{ flex: 0.15 }}>
             <UserAvatar user={user} limitDimensions="50px" />
@@ -93,7 +94,10 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
           <Grid item style={{ flex: 0.15 }}>
             {isPlaying === false ? <PlayArrow fontSize="large" onClick={() => playAudio()} /> : <Stop fontSize="large" onClick={() => pauseAudio()} />}
           </Grid>
-          <Grid item container direction="column" style={{ flex: 0.8 }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
+          <Grid item container direction="column" style={{ flex: 0.8, position: 'relative' }} >
+            <div style={{ position: 'absolute', padding: '15px', width: '80%', marginTop: '-20px' }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
+
+            </div>
             <BorderedContainer border={1} width={100} item container alignItems="center" position="relative" >
               <div style={{ paddingLeft: '10px', width: `${progress ?? 0}% `, justifyContent: 'flex-end', alignItems: "center", display: 'flex', zIndex: 99 }}>
                 <div style={{ width: 0, height: 0, borderLeft: '8px solid transparent', position: 'absolute', borderRight: '8px solid transparent', borderTop: '12px solid black' }} />

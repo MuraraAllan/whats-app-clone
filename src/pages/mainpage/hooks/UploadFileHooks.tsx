@@ -1,8 +1,9 @@
-import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useMemo, useState, ChangeEvent } from "react";
+import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useState, useRef } from "react";
 
+import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
 import { useChatSessions } from ".";
 import { useActiveChatSession } from "./ActiveChatSessionHooks";
-import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
+
 
 
 // this hook is tested by e2e
@@ -144,7 +145,7 @@ export function useUploadFileDND() {
       e.preventDefault()
       return null
     }
-
+    document.addEventListener("dragover", globalListner);
     document.addEventListener('drop', globalListner, false)
 
     if (fileDropRef != null && fileDropRef.current != null) {
@@ -153,7 +154,10 @@ export function useUploadFileDND() {
 
     return () => {
       document.removeEventListener('drop', globalListner)
-      document.removeEventListener('drop', refListner as any)
+      if (fileDropRef.current != null) {
+        fileDropRef.current.removeEventListener('drop', refListner as any)
+      }
+
     }
   }, [fileDropRef, setUploadingFile])
 
@@ -191,6 +195,7 @@ export function useTakePicture() {
     }
   }, [videoRef, setUploadingFile, hasPermission])
 
+
   useLayoutEffect(() => {
     if (videoRef != null && videoRef.current != null) {
       const asyncGetUserMedia = async () => {
@@ -198,7 +203,10 @@ export function useTakePicture() {
         // use any on videoRef so we can set srcObject
         if (videoRef != null && videoRef.current != null) {
           videoRef.current.srcObject = stream
-          videoRef.current?.play()
+          setTimeout(() => {
+            videoRef.current?.play()
+          }, 1000)
+          videoRef.current.style.display = 'block'
         }
         return true
       }
@@ -270,7 +278,7 @@ export function useRecordAudio() {
       })
 
       return () => {
-        if (isRecordingAudio) {
+        if (isRecordingAudio && mediaRecorder?.state !== 'inactive') {
           mediaRecorder?.stop()
         }
       }

@@ -54,10 +54,6 @@ function useChatSessions() {
 function useChatSession(session_id: string) {
   const { chatSessions, user: { user_id } } = useChatSessions()
 
-  useEffect(() => {
-    console.log('chat sessions rerendering')
-  }, [chatSessions])
-
   const chatSession = useMemo(() => {
     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
       return null
