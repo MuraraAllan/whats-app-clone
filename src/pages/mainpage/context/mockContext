@@ -1,0 +1,91 @@
+MainPage context
+state : 'view_message', 
+{ activeSession : activeSessionObj }, 
+activeSessionID: string
+
+
+// activeChatSession can change and activeSessionID stay the same
+// activesessionID can change and subsenquently, change activechatSession
+// state should be nullable
+
+
+active chat sessions hooks
+
+useGetMainPageState()
+should expose mainPage State
+
+// useFinishMainPageState(file)
+// should dispatch an action to finish current state accordingly
+// on record_audio, preview_file_upload and preview_uploading_webcam useUploadFile will be populate
+// refer to it as the addMessageWithFile() params
+// on view_message and take_webcam_picture refer use finishMainPage with a file
+
+
+useGetActiveChatSessionID()
+should expose activeChatSession.sessionID
+
+useGetActiveChatSession()
+use a memo on activeSessionId with deep equality on useGetChatSessionInfo(active_session_id) .messages to return current ActiveChatSession.
+return only the chatSession obj
+
+
+useGetActiveChatSessionMessages()
+should expose useGetActiveChatSession.messages 
+
+
+
+Chat session hooks
+
+useGetChatSessionMessage({ session_id, message_id })
+should expose message based on session_id and message_id 
+// should be used to enable rerendering the MessageDisplay container and render another one without rerendering the childrens
+
+useGetChatSessionInfo(session_id)
+should return chat session object, useGetSessionInfo(session_d).messages useMemo
+
+chatSessions should expose useGetChatSessionInfo(session_id)
+chatSessions should expose useGetChatMessage({ session_id, message_id })
+
+
+
+
+
+
+
+
+
+// expose SetActiveChatSEssionState(state machine states)
+// set active chat session state as one of valid values
+// expose ActiveChatSessionState
+
+
+useUploadFile // should explore 
+
+should expose chatSession based on session_id
+
+
+
+
+
+
+
+states :
+//switch between sessions will will set activeChatSessionState as view_message
+//cancelActiveChatSessionState will set activeChatSessionState as view_message; make sure useFileUpload hook also clears out;
+
+view_message - defaultState - display all activeChatSession messages | can play audio | can download files | can attach files | can take picture | can send message | can switch active session
+view_message_picture - display UploadedFileViewer open at view_message | can send message | can view picture | can switch active session
+
+record_audio - display recording audio | all chat messages | can send audio | can switch active session
+
+preview_file_upload - can see file upload preview | can add a label to file upload | can switch active session
+
+take_webcam_picture - can take picture | can switch between sessions
+preview_uploading_webcam - can see file upload preview | can add a label to picture | can switch active session
+
+register_form - can use register form | can switch can switch active session
+
+
+
+
+

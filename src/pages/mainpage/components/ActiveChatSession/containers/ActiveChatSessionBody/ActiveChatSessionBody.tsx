@@ -64,6 +64,7 @@ export default function ActiveChatSessionBody() {
   // should render DisplayMessages when 
   // iterate over all messages;   
 
+  //DISPLAY MESSAGES : pass message id down instead of passing 
   return <FullWidthContainer data-testid="ActiveChatSessionBodyMessages" ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {activeSession?.messages?.map((message, index) => {
       const isCurrentUserMessage = message.user.user_id === user.user_id
