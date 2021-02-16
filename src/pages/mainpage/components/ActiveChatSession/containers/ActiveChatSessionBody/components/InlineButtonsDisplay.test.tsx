@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react"
 
-import { chatSessionsMock } from "mocks/chatSessions"
+import { chatSessionsMock } from "../mocks/chatSessions"
 import InlineButtonsDisplay from "./InlineButtonsDisplay"
 import { MockProviders } from "shared/test-utils"
 

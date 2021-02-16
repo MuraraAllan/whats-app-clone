@@ -2,7 +2,7 @@ import { act } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
 import { useEffect } from 'react';
 
-import { chatSessionsMock } from 'mocks/chatSessions'
+import { chatSessionsMock } from '../mocks/chatSessions'
 import { MockProviders } from 'shared/test-utils'
 import { ChatSessions, ChatSessionType, useChatSession } from './ChatSessionsHooks'
 import { useChatSessions } from '.';

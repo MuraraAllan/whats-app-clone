@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
-import { userWithChatSessions } from 'mocks/userData'
+import { userWithChatSessions } from 'pages/../../mocks/userData'
 
 export interface User {
   user_id: string,

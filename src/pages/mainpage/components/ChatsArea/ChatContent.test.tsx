@@ -2,7 +2,7 @@ import { render } from "@testing-library/react"
 import { act } from "react-dom/test-utils"
 
 import ChatsContent, { findLastMessageChatPreview } from "./ChatContent"
-import { chatSessionsMock } from 'mocks/chatSessions'
+import { chatSessionsMock } from '../mocks/chatSessions'
 import { MockProviders, useActiveChatSessionMock } from "shared/test-utils"
 
 // expect to render a chat session with title, lastMessage and unreadMessagesAmount when user belong to chatSession

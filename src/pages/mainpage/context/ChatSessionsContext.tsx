@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useReducer } from 'react'
 
-import { chatSessionsMock } from 'mocks/chatSessions'
+import { chatSessionsMock } from 'pages/../../mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { User } from 'shared/context/LoggedUserContext'
 

@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react"
-import { chatSessionsMock } from "mocks/chatSessions"
+import { chatSessionsMock } from "../mocks/chatSessions"
 import { MockProviders } from "shared/test-utils"
 import AudioMessageDisplay from "./AudioMessageDisplay"
 

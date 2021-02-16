@@ -79,7 +79,7 @@ context('Test take picture with cam and upload Interaction', () => {
   // add label "1234testeUploadPictureWithCam" for the picture at FileUploadLabelActionBar
   // get element that displays pictures at TextMessageDisplay
   // get element by text (label of picture)
-  describe('try to take screen shot without sending a label', () => {
+  describe('take screen shot without sending a label', () => {
     it('Visit main page and click on webcam', () => {
       cy.visit('')
       cy.findByTestId('DefaultActionBarUploadPicture').click()
@@ -99,7 +99,7 @@ context('Test take picture with cam and upload Interaction', () => {
   // add label "1234testeUploadPictureWithCam" for the picture at FileUploadLabelActionBar
   // get element that displays pictures at TextMessageDisplay
   // get element by text (label of picture)
-  describe('try to take screen shot without sending a label', () => {
+  describe('take screen shot without sending a label', () => {
     it('Visit main page and click on webcam', () => {
       cy.visit('')
       cy.findByTestId('DefaultActionBarUploadPicture').click()

@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 
 import { MockProviders } from "shared/test-utils"
-import { chatSessionsMock } from 'mocks/chatSessions'
+import { chatSessionsMock } from '../mocks/chatSessions'
 import TextMessageDisplay from "./TextMessageDisplay"
 
 
