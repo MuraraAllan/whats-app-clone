@@ -4,6 +4,19 @@ import styled from "styled-components";
 
 import { FormErrorHandling } from "shared/forms";
 
+interface FormSelectProps {
+  name: string,
+  label?: string,
+  children?: ReactNode,
+  depends?: string,
+  renderList?: {
+    [index: string]: unknown
+  }
+  "data-testid"?: string
+  control?: any
+}
+
+
 
 const SelectDiv = styled.div`
 position: relative;
@@ -38,16 +51,6 @@ min-width: max-content;
   background-color: white;
 }
 `
-interface FormSelectProps {
-  name: string,
-  label?: string,
-  children?: ReactNode,
-  depends?: string,
-  renderList?: {
-    [index: string]: unknown
-  }
-  "data-testid"?: string
-}
 
 // a selectFormField can be rendered by childrens
 // or can have a renderList in which case will render all the props as value and label 
@@ -94,17 +97,9 @@ export function SelectFormField(props: FormSelectProps) {
     <>
       <FormErrorHandling name={name}>
         <SelectDiv>
-          <Controller
-            as={
-              <StyledSelect  {...props} ref={methods.register} name={name}>
-                {RenderList != null ? <> {RenderList}</> : children}
-                {/* {children} */}
-              </StyledSelect>
-
-            }
-            name={name}
-            control={methods?.control}
-          />
+          <StyledSelect control={methods?.control} ref={methods.register} {...props}>
+            {RenderList != null ? <> {RenderList}</> : children}
+          </StyledSelect>
         </SelectDiv>
       </FormErrorHandling >
     </>

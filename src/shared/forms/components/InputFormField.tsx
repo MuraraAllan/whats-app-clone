@@ -21,18 +21,16 @@ export function InputFormField(props: InputFormFieldProps) {
   const hasErrors = methods.errors[props.name] != null && methods.formState.submitCount > 0
   const { border } = props
 
+  // component is now connect to form validation through FormProvider
   return (
     <>
-      <Controller
-        as={<BorderedInput
-          onClick={(e) => e.preventDefault()}
-          autoComplete="off"
-          height="26px"
-          {...props}
-          border={hasErrors ? '2px solid red' : border}
-        />}
-        name={props.name}
-        control={methods?.control}
+      <BorderedInput
+        onClick={(e) => e.preventDefault()}
+        autoComplete="off"
+        height="26px"
+        ref={methods.register}
+        {...props}
+        border={hasErrors ? '2px solid red' : border}
       />
     </>
   );

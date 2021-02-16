@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
@@ -9,26 +9,12 @@ import { FormErrorHandling } from "shared/forms";
 interface FormSelectProps {
   name: string,
   label?: string,
-  children?: ReactNode,
   depends?: string,
   renderList?: {
     [index: string]: unknown
   }
+  children?: ReactNode
 }
-
-
-const BorderedDatePicker = ({ children }: { children: ReactNode }) => {
-  return (
-    <BorderedContainer container alignItems="center" style={{ position: 'relative', marginLeft: '-2px' }}>
-      <BorderedContainer position="absolute" height={100} width={80} border={2} />
-      {children}
-    </BorderedContainer>
-  )
-
-}
-
-
-
 
 
 const CustomInput = styled.input`
@@ -44,24 +30,29 @@ background: transparent;
 }
 `
 
+// this component can't be used as children
+
 export function DatePickerFormField(props: FormSelectProps) {
   const methods = useFormContext()
-  const { name, children } = props
+  const { name } = props
+
+  const BorderedDatePicker = useCallback((borderProps: { children: React.ReactNode }) => {
+    if (borderProps.children == null) return null
+    return (
+      <BorderedContainer container alignItems="center" style={{ position: 'relative', marginLeft: '-2px' }}>
+        <BorderedContainer position="absolute" height={100} width={80} border={2} />
+        {borderProps.children}
+      </BorderedContainer>
+    )
+  }, [])
+
   return (
-    <>
-      <FormErrorHandling name={name}>
-        <Controller
-          render={() => {
-            return children != null ? children as any :
-              <BorderedDatePicker>
-                <CustomInput {...props} type="date" name={name} ref={methods.register as any} />
-              </BorderedDatePicker>
-          }}
-          name={name}
-          control={methods?.control}
-        />
-      </FormErrorHandling >
-    </>
+    <FormErrorHandling name={name}>
+      <BorderedDatePicker>
+        <CustomInput {...props} type="date" name={name} ref={methods.register as any} />
+      </BorderedDatePicker>
+    </FormErrorHandling>
+
   );
 }
 
