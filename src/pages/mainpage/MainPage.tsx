@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Grid from '@material-ui/core/Grid'
 
 import { ActiveChatSession, ChatsArea, FilterArea, UserArea } from 'pages/mainpage/components'
@@ -6,6 +6,7 @@ import { ActiveChatSessionProvider, ChatSessionsProvider, UploadFileProvider } f
 import { FullHeightBorderedContainer } from 'shared/components'
 
 export default function MainPage() {
+
   return (
     <Grid container direction='row'>
       <ChatSessionsProvider>

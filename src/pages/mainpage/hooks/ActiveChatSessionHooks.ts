@@ -13,6 +13,7 @@ interface ActiveChatSessionDispatchers {
 }
 
 
+
 export function useActiveChatSessionDispatchers() {
   const { setIsRegisterFormOpen } = useUser()
 

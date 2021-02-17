@@ -16,6 +16,12 @@ const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px); ove
 const Container = styled(BorderedContainer)`height: 72px;`
 
 export default function ActiveChatSessionScreen() {
+
+  //   activechat context 
+
+  // useState(activeSessionID,....) string
+
+
   // this is not the most ideal scenario as it forces re-render ActiveChatSessionScreen and childrens each time activeSession switchs
   // although it is better to rerender and show something when a registered user recently logged in and don't have an ActiveSession yet
   // this will remain commented in case we don't finish the extra firebase/firestore task, to avoid unecessary rerender
@@ -32,10 +38,10 @@ export default function ActiveChatSessionScreen() {
         <ActiveChatSessionTitle />
       </Container>
       <CalcContainer container >
-        <ActiveChatSessionBody />
+        {/* <ActiveChatSessionBody /> */}
       </CalcContainer>
       <ActionContainer item border={2}>
-        <ActiveChatSessionActionBar />
+        {/* <ActiveChatSessionActionBar /> */}
       </ActionContainer>
     </>
   )

@@ -1,8 +1,9 @@
-import { useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
 import { ChatSessionsContext } from '../context/ChatSessionsContext'
+import { useGetActiveChatSession } from './ActiveChatSessionHooks'
 
 export type UploadingFileType = {
   content: Blob | null
@@ -51,6 +52,7 @@ function useChatSessions() {
 }
 
 
+
 function useChatSession(session_id: string) {
   const { chatSessions, user: { user_id } } = useChatSessions()
 
@@ -84,11 +86,38 @@ function useChatSession(session_id: string) {
     return belongs
   }, [session_id, user_id, chatSession])
 
+
   return {
     chatSession,
     userBelongsToSession
   }
 }
 
+function useNewChatSessions() {
+  const { chatSessions } = useContext(ChatSessionsContext)
+  return { chatSessions }
+}
+
+export function useChatSessionsDispatchers() {
+  const { addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
+  return { addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }
+}
+
+export function useGetChatSession() {
+  const { chatSessions } = useNewChatSessions()
+  // try without, although better a deepEquality check on chatSessions.messages to avoid rerendering  
+  const getChatSession = useCallback((session_id: string) => {
+    return Object.values(chatSessions?.sessions ?? []).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
+      if (session.session_id === session_id) {
+        return session
+      }
+      return prev
+    }, null)
+  }, [chatSessions])
+
+  return {
+    getChatSession
+  }
+}
 
 export { useChatSession, useChatSessions }

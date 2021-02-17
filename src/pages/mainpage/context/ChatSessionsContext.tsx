@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useReducer } from 'react'
+import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
 
 import { chatSessionsMock } from 'pages/../../mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
@@ -148,33 +148,33 @@ function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
     dispatch({ type: 'update_fetched', state: chatSessionsMock })
   }, [])
 
-  const addMessage = ({ session_id, textMessage, user }: AddMessageParams) => {
-    if (textMessage == null || user == null || session_id == null) {
-      return
+  const addMessage = useCallback(({ session_id, textMessage, user }: AddMessageParams) => {
+    if (textMessage == null || user == null || session_id == null || chatSessions == null) {
+      return null
     }
     dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }
+  }, [chatSessions])
 
-  const addMessageWithFile = ({ session_id, textMessage, file, user }: AddMessageWithFileParams) => {
-    if (user == null || session_id == null || file == null) {
+  const addMessageWithFile = useCallback(({ session_id, textMessage, file, user }: AddMessageWithFileParams) => {
+    if (user == null || session_id == null || file == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithFile', session_id, textMessage, user, file })
-  }
+  }, [chatSessions])
 
-  const addMessageWithWebcamPicture = ({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => {
-    if (textMessage == null || user == null || session_id == null || picture == null) {
+  const addMessageWithWebcamPicture = useCallback(({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => {
+    if (textMessage == null || user == null || session_id == null || picture == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithWebcamPicture', session_id, textMessage, user, picture })
-  }
+  }, [chatSessions])
 
-  const addAudioMessage = ({ session_id, audio, user }: AddAudioMessageParams) => {
-    if (user == null || session_id == null || audio == null) {
+  const addAudioMessage = useCallback(({ session_id, audio, user }: AddAudioMessageParams) => {
+    if (user == null || session_id == null || audio == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_AudioMessage', session_id, user, audio })
-  }
+  }, [chatSessions])
 
   return (
     <ChatSessionsContext.Provider value={{ chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }}>
