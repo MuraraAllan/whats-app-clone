@@ -4,11 +4,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components'
-import { FileViewer } from './components/';
-import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks';
-import { RegisteringFormVisual } from 'pages/mainpage/forms'
-import { TakePictureWithCam, TextMessageDisplay, AudioMessageDisplay } from 'pages/mainpage/components/ActiveChatSession/containers/ActiveChatSessionBody/components'
-import { useUploadFile, useUploadFileDND, } from 'pages/mainpage/hooks'
+import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import { TextMessageDisplay, AudioMessageDisplay } from './'
+import { useActiveChatSession, useUploadFileDND } from 'pages/mainpage/hooks';
+import { useUser } from 'shared/hooks';
 
 const FullWidthContainer = styled(BorderedContainer)`max-width: 100%`
 const GridPadded = styled(Grid)`padding: 10px;`
@@ -20,35 +19,11 @@ const GridPadded = styled(Grid)`padding: 10px;`
 // displayingTextMessage (defaultState will render MessageDisplay)
 // registering (will render RegisteringForm)
 
-export default function ActiveChatSessionBody() {
+export default function DisplayMessages() {
   const { fileDropRef } = useUploadFileDND()
-  const { uploadingFile, isTakingPicture, activeSession, user, isRegisteringFormOpen } = useUploadFile()
-
-  const [fileView, setFileView] = useState<UploadingFileType | null>(null)
-  // null FileViewer when user switch screens or dispatch some action
-  useEffect(() => {
-    setFileView(null)
-  }, [activeSession, isTakingPicture, uploadingFile])
-
-  if (activeSession == null) {
-    return null
-  }
-
-  if (isRegisteringFormOpen) {
-    return (<RegisteringFormVisual />)
-  }
-
-  if (fileView != null) {
-    return (<FileViewer fileView={fileView} setFileView={setFileView} />)
-  }
-
-  if (isTakingPicture && uploadingFile == null) {
-    return (<TakePictureWithCam />)
-  }
-
-  if (uploadingFile != null) {
-    return (<FileViewer />)
-  }
+  //move into useGetActiveChatMessages
+  const { activeSession } = useActiveChatSession()
+  const { user } = useUser()
 
   // align gridPadded to the flex-end when message.user === loggedUser
   const UserAvatarWithName = ({ message, style }: { message: Message, style?: CSSProperties }) => (
@@ -61,18 +36,20 @@ export default function ActiveChatSessionBody() {
   // message can use 70 % of width 
   // inline buttons can use entire screen 
 
-  // should render DisplayMessages when 
-  // iterate over all messages;   
+  if (activeSession == null) {
+    return null
+  }
 
+  //DISPLAY MESSAGES : pass message id down instead of passing 
   return <FullWidthContainer data-testid="ActiveChatSessionBodyMessages" ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
-    {activeSession?.messages?.map((message, index) => {
+    {activeSession.messages?.map((message, index) => {
       const isCurrentUserMessage = message.user.user_id === user.user_id
       return (
         <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} >
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
           {message.audio != null ?
             (<AudioMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />) :
-            (<TextMessageDisplay setFileView={setFileView} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
+            (<TextMessageDisplay setFileView={() => null} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
         </GridPadded>
       )
     })}

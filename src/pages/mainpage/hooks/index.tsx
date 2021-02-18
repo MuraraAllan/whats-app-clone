@@ -1,5 +1,5 @@
 import { useChatSession, useChatSessions } from './ChatSessionsHooks'
-import { useActiveChatSession, useActiveChatSessionDispatchers, useGetActiveChatSession } from './ActiveChatSessionHooks'
+import { useActiveChatSession, useActiveChatSessionDispatchers } from './ActiveChatSessionHooks'
 import {
   useUploadFile,
   useUploadFileDND,
@@ -8,6 +8,7 @@ import {
   useRecordAudio,
 
 } from './UploadFileHooks'
+import { useActiveChatSessionNew, useGetMainPageState, useGetActiveSessionId } from './MainPageHooks'
 
 export {
   useChatSessions,
@@ -19,5 +20,7 @@ export {
   useUploadFileDND,
   useTakePicture,
   useRecordAudio,
-  useGetActiveChatSession
+  useGetActiveSessionId,
+  useActiveChatSessionNew,
+  useGetMainPageState,
 }

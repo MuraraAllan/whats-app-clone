@@ -3,7 +3,7 @@ import { useCallback, useContext, useMemo } from 'react'
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
 import { ChatSessionsContext } from '../context/ChatSessionsContext'
-import { useGetActiveChatSession } from './ActiveChatSessionHooks'
+import { chatSessionsMock } from '../../../../mocks/chatSessions'
 
 export type UploadingFileType = {
   content: Blob | null
@@ -119,5 +119,34 @@ export function useGetChatSession() {
     getChatSession
   }
 }
+
+// on firebird messages should be a collection
+// only message_ids should be present on ChatSession
+
+export function useChatMessage(session_id: string, message_id: string) {
+  const { getChatSession } = useGetChatSession()
+  // pay attention as getChatSession rerendering, probably better to be left unchecked on useMemo
+  // as we didn't allow editing messages, this is a static value after retrieved
+  // although if we plan to support editing we can just listen to getChatSession on Memo
+  const chatMessage = useMemo(() => {
+    console.log('rerendering mem of useChatMessage')
+    if (session_id != null && message_id != null) {
+      const chatSession = getChatSession(session_id)
+      if (chatSession != null && chatSession.messages != null) {
+        if (chatSession.lastMessage.message_id === message_id) {
+          console.log('the message is last message', chatSession.lastMessage)
+          return chatSession.lastMessage
+        }
+        const message = chatSession.messages.filter(message => message.message_id === message_id)
+        console.log('the message is', message)
+        return message
+      }
+    }
+    return null
+  }, [session_id, message_id])
+
+  return { message: chatMessage }
+}
+
 
 export { useChatSession, useChatSessions }

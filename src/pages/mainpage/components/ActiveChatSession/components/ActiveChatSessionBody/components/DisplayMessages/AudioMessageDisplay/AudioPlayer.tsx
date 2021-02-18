@@ -9,7 +9,7 @@ import { useUser } from 'shared/hooks'
 
 import { Grid } from '@material-ui/core';
 import { timeInSecondsRenderInMinute } from 'shared/utils';
-import { useAudioPlayerHook } from '../../ActiveChatSessionActionBar/components/useAudioPlayerHook';
+import { useAudioPlayerHook } from './hooks/useAudioPlayerHook';
 
 
 const PaddedBorderedContainer = styled(BorderedContainer)`padding: 5px`;

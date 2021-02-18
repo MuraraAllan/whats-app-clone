@@ -38,10 +38,10 @@ export default function ActiveChatSessionScreen() {
         <ActiveChatSessionTitle />
       </Container>
       <CalcContainer container >
-        {/* <ActiveChatSessionBody /> */}
+        <ActiveChatSessionBody />
       </CalcContainer>
       <ActionContainer item border={2}>
-        {/* <ActiveChatSessionActionBar /> */}
+        <ActiveChatSessionActionBar />
       </ActionContainer>
     </>
   )

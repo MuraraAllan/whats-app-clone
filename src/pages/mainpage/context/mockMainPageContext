@@ -5,34 +5,38 @@ activeSessionID: string
 
 
 // MainPageReducer can change and activeSessionID stay the same
-// activesessionID can change and subsenquently, change activechatSession
+// activesessionID can change and change activechatSession
 // state should be nullable
 
 
-active chat sessions hooks
+MainPage hooks
 
 useGetMainPageState()
 should expose mainPage State
 
+useGetActiveChatSession
+should expose mainPage.activeChatSession
+
+useGetActiveChatSessionID()
+
+// we might be almost done with ActiveChatSessionContext migration
+// leave ActiveChatSessionHooks although, they will be keep in use
+
 // useFinishMainPageState(file)
 // should dispatch an action to finish current state accordingly
 // on record_audio, preview_file_upload and preview_uploading_webcam useUploadFile will be populate
-// refer to it as the addMessageWithFile() params
-// on view_message and take_webcam_picture refer use finishMainPage with a file
+// forward it to addMessageWithFile() params
+// on view_message and take_webcam_picture use finishMainPage with a file
 
 
-useActiveChatSessionID()
+
+ActiveChatSessionHooks
 should expose activeChatSession.sessionID
-
-useGetActiveChatSession()
-use a memo on activeSessionId with deep equality on useGetChatSessionInfo(active_session_id) .messages to return current ActiveChatSession.
-return only the chatSession obj
 
 
 useGetActiveChatSessionMessages()
 should expose useGetActiveChatSession.messages 
 
-useViewingFile
 
 Chat session hooks
 

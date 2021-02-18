@@ -1,40 +1,18 @@
-import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
+import React, { ReactNode, useCallback, useEffect, useMemo, useReducer } from 'react'
 
 import { chatSessionsMock } from 'pages/../../mocks/chatSessions'
 import { ChatSessionType, useChatSession, useGetChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
-import { useGetActiveChatSession } from '../hooks'
+import { useUser } from 'shared/hooks'
+import { User } from '../../../shared/context/LoggedUserContext'
 
-// export interface ChatSessionContextType {
-//   chatSessions: ChatSessions | null,
-//   addMessage: ({ session_id, textMessage, user }: AddMessageParams) => void,
-//   addMessageWithFile: ({ session_id, textMessage, file, user }: AddMessageWithFileParams) => void
-//   addMessageWithWebcamPicture: ({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => void
-//   addAudioMessage: ({ session_id, audio, user }: AddAudioMessageParams) => void
-// }
+interface MainPageActiveChatSession extends ChatSessionType {
+  userBelongsToSession: boolean
+}
 
-// type AddMessageParams = {
-//   session_id: string,
-//   textMessage: string | null,
-//   user: User,
-// }
-
-// interface AddMessageWithFileParams extends AddMessageParams {
-//   file: UploadingFileType
-// }
-
-// interface AddMessageWithWebcamPictureParams extends AddMessageParams {
-//   picture: UploadingFileType
-// }
-
-// interface AddAudioMessageParams {
-//   audio: UploadingFileType
-//   session_id: string,
-//   user: User
-// }
 interface MainPageReducerState {
   state: MainPageStates | null
   activeSessionId?: string
-  activeChatSession?: ChatSessionType
+  activeChatSession?: MainPageActiveChatSession
 }
 
 interface MainPageDispatchers {
@@ -44,7 +22,7 @@ interface MainPageDispatchers {
 
 type ActionSetMainPageCurrentState = { type: 'set_mainpage_state', state: MainPageStates }
 type MainPageActions = SetActiveSession | ActionSetMainPageCurrentState
-type MainPageContext = MainPageReducerState & MainPageDispatchers
+type MainPageContextState = MainPageReducerState & MainPageDispatchers
 
 // view_message - defaultState - display all activeChatSession messages | can play audio | can download files | can attach files | can take picture | can send message | can switch active session
 // view_message_picture - display UploadedFileViewer open at view_message | can send message | can view picture | can switch active session
@@ -55,7 +33,7 @@ type MainPageContext = MainPageReducerState & MainPageDispatchers
 // register_form - can use register form | can switch can switch active session
 type MainPageStates = 'view_message' | 'view_message_picture' | 'record_audio' | 'preview_file_upload' | 'take_webcam_picture' | 'preview_uploading_webcam' | 'register_form'
 
-type SetActiveSession = { type: 'set_active_session', sessionId: string, activeChatSession: ChatSessionType }
+type SetActiveSession = { type: 'set_active_session', sessionId: string, activeChatSession: MainPageActiveChatSession, state: MainPageStates }
 
 // MainPageContext hold a reducer that controls currentMainPageState, activeSession object and activeSessionID
 
@@ -75,13 +53,14 @@ export function MainPageReducer(reducerState: MainPageReducerState, action: Main
       return {
         ...reducerState,
         activeSessionID: action.sessionId,
-        actrveSession: 
+        activeChatSession: { ...action.activeChatSession },
+        state: action.state,
       }
     default: throw new Error('invalid action type on main page context')
   }
 }
 
-export const ChatSessionsContext = React.createContext<MainPageContext>({
+export const MainPageContext = React.createContext<MainPageContextState>({
   state: 'view_message',
   setActiveChatSession: () => null,
   setMainPageState: () => null
@@ -91,32 +70,57 @@ export const ChatSessionsContext = React.createContext<MainPageContext>({
 type ChatSessionProviderProps = { children: ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
-function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
+function MainPageProvider({ children }: ChatSessionProviderProps) {
 
   const [mainPageReducer, dispatch] = useReducer(MainPageReducer, {
     state: 'view_message',
   })
 
+  const { user: { user_id } } = useUser()
   const { getChatSession } = useGetChatSession()
 
-  const activeSessionId = mainPageReducer.activeSessionId
+  // this memo should check for a change on activeSessionID
+  // a deep equality check on mainPageReducer should fix it
+  // first decompose everything then implement deep equality around the codebase
+  const userBelongsToSession = useMemo(() => {
+    const activeChatSession = mainPageReducer.activeChatSession
+    if (activeChatSession == null || activeChatSession.session_id == null || user_id == null) {
+      return false
+    }
 
+    const belongs = Object.values(activeChatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+      if (participant.user_id === user_id) {
+        return true
+      }
+      return prev
+    }, false)
+
+    return belongs
+
+  }, [user_id, mainPageReducer])
+
+  // maybe a callBack is not necessary here 
   const setActiveChatSession = useCallback((() => {
     console.log('trick to audit rerendering of useCallBack')
     return (sessionId: string) => {
       console.log('Rerendering setActiveChatSession')
-      if (sessionId != null && sessionId !== activeSessionId) {
+      if (sessionId != null && sessionId !== mainPageReducer.activeSessionId) {
         const activeChatSession = getChatSession(sessionId)
+        const localActiveChatSession = {
+          ...activeChatSession,
+          userBelongsToSession
+        } as MainPageActiveChatSession
+
         if (activeChatSession != null) {
-          dispatch({ type: 'set_active_session', sessionId, activeChatSession })
+          dispatch({ type: 'set_active_session', sessionId, activeChatSession: localActiveChatSession, state: 'view_message' })
         }
       }
     }
   })(), [mainPageReducer])
+
   // WIP: using IIF to control rerenders of useCB
   // just in order to put the context together
   // and ensure minimal rerendering
-
   const setMainPageState = useCallback((() => {
     console.log('trick to audit rerendering of useCallBack')
     return (state: MainPageStates) => {
@@ -131,12 +135,13 @@ function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
     setActiveChatSession('2')
   }, [setActiveChatSession])
 
-  console.log('active session changed', activeSessionId)
+  console.log('active session changed', mainPageReducer.activeSessionId)
+  console.log('active session changed', mainPageReducer.state)
   return (
-    <ChatSessionsContext.Provider value={{ state: mainPageReducer.state, activeSessionId, setActiveChatSession, setMainPageState }}>
+    <MainPageContext.Provider value={{ ...mainPageReducer, setActiveChatSession, setMainPageState }}>
       {children}
-    </ChatSessionsContext.Provider >
+    </MainPageContext.Provider >
   )
 }
 
-export { ChatSessionsProvider }
+export { MainPageProvider }
