@@ -26,9 +26,8 @@ type ChangeEventExtended = React.MouseEvent<HTMLDivElement, MouseEvent> & {
 }
 
 export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
-
   const { progress, currentTime, audioRef, duration } = useAudioPlayerHook()
-  const { user } = useUser()
+  const { user: { avatar } } = useUser()
 
   const isStoped = useMemo(() => {
     if (progress == null || audioRef.current?.paused === true) {
@@ -88,17 +87,17 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
       <PaddedBorderedContainer container item xs={9} sm={7} md={5} lg={3} xl={2} direction="column" alignItems="center" border={2}>
         <FixedHeightGrid container alignItems="center">
           <Grid item style={{ flex: 0.15 }}>
-            <UserAvatar user={user} limitDimensions="50px" />
+            <UserAvatar avatar={avatar} limitDimensions="50px" />
           </Grid>
           <Grid item style={{ flex: 0.15 }}>
             {isPlaying === false ? <PlayArrow data-testid="AudioMessagePlay" fontSize="large" onClick={() => playAudio()} /> : <Stop data-testid={"AudioMessageStop"} fontSize="large" onClick={() => pauseAudio()} />}
           </Grid>
           <Grid item container data-testid="AudioMessageTimeControlBox" direction="column" style={{ flex: 0.8, position: 'relative' }} >
-            <div data-testid="AudioMessageTimeControl" style={{ position: 'absolute', padding: '15px', width: '80%', zIndex: 100, marginTop: '-20px' }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
+            <div data-testid="AudioMessageTimeControl" style={{ position: 'absolute', padding: '15px', width: '80%', zIndex: 90, marginTop: '-20px' }} onClick={(e) => movePositionByClick(e as ChangeEventExtended)}>
 
             </div>
             <BorderedContainer border={1} width={100} item container alignItems="center" position="relative" >
-              <div style={{ paddingLeft: '10px', width: `${progress ?? 0}% `, justifyContent: 'flex-end', alignItems: "center", display: 'flex', zIndex: 99 }}>
+              <div style={{ paddingLeft: '10px', width: `${progress ?? 0}% `, justifyContent: 'flex-end', alignItems: "center", display: 'flex', zIndex: 80 }}>
                 <div style={{ width: 0, height: 0, borderLeft: '8px solid transparent', position: 'absolute', borderRight: '8px solid transparent', borderTop: '12px solid black' }} />
               </div>
             </BorderedContainer>

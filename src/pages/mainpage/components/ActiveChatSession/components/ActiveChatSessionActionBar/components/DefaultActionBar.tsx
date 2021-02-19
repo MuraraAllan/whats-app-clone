@@ -5,29 +5,30 @@ import Mic from '@material-ui/icons/Mic'
 
 import { BorderedInput, RotatedAttachFile, RotatedSend } from 'shared/components'
 import { FullHeightContainer } from 'shared/components/FullHeightContainer'
-import { useActiveChatSession, useUploadFileInput, useUploadFile } from 'pages/mainpage/hooks'
+import { useUploadFileInput, useMainPageDispatchers } from 'pages/mainpage/hooks'
 
 //
 
 export default function DefaultActionBar() {
-  const { activeSession, user } = useActiveChatSession()
-  const session_id = activeSession?.session_id ?? '0'
+  const { finishMainPageState, setMainPageState } = useMainPageDispatchers()
+
   const [inputState, setInputState] = useState<string>('')
-  const { setIsTakingPicture, setIsRecordingAudio, addMessage } = useUploadFile()
   const { inputRef } = useUploadFileInput()
 
   const dispatchAndClear = useCallback(() => {
     if (inputState.length > 0) {
-      addMessage({ session_id, textMessage: inputState, user })
+      finishMainPageState({
+        textMessage: inputState
+      })
       setInputState('')
     }
     return null
-  }, [inputState, session_id, user, addMessage])
+  }, [inputState, finishMainPageState])
 
   return (
     <FullHeightContainer data-testid="DefaultActionBar" container justify="space-evenly" alignItems="center">
       <Grid item>
-        <CameraAlt data-testid="DefaultActionBarUploadPicture" fontSize="large" onClick={() => setIsTakingPicture(true)} />
+        <CameraAlt data-testid="DefaultActionBarUploadPicture" fontSize="large" onClick={() => setMainPageState('take_webcam_picture')} />
       </Grid>
       <Grid item>
         <input data-testid="DefaultActionBarHiddenInputFile" type="file" ref={inputRef} style={{ display: 'none' }} />
@@ -45,7 +46,7 @@ export default function DefaultActionBar() {
           placeholder="Escreva uma mensagem..." />
       </FullHeightContainer>
       <Grid item>
-        <Mic data-testid="DefaultActionBarRecordAudio" fontSize="large" onClick={() => setIsRecordingAudio(true)} />
+        <Mic data-testid="DefaultActionBarRecordAudio" fontSize="large" onClick={() => setMainPageState('record_audio')} />
       </Grid>
       <Grid item >
         <RotatedSend data-testid="DefaultActionBarSend" margin="0px 0px 7px 0px" onClick={() => dispatchAndClear()} fontSize="large" />

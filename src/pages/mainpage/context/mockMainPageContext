@@ -30,6 +30,7 @@ useGetActiveChatSessionID()
 
 
 
+
 ActiveChatSessionHooks
 should expose activeChatSession.sessionID
 
@@ -74,17 +75,25 @@ states :
 //cancelActiveChatSessionState will set activeChatSessionState as view_message; make sure useFileUpload hook also clears out;
 
 view_message - defaultState - display all activeChatSession messages | can play audio | can download files | can attach files | can take picture | can send message | can switch active session
+finishState can happen with file or textMessage
+
 view_message_picture - display UploadedFileViewer open at view_message | can send message | can view picture | can switch active session
+finishState - reset to VIEW_MESSAGE and send textMessage if a message attached
 
 record_audio - display recording audio | all chat messages | can send audio | can switch active session
+finishState - reset to VIEW_MESSAGE and send audio if a message attached | cancel if no audio
 
 preview_file_upload - can see file upload preview | can add a label to file upload | can switch active session
+finishState - reset to VIEW_MESSAGE if no file | send textMessage if a file attached | add label if label present | cancel  | 
+
 
 take_webcam_picture - can take picture | can switch between sessions
 preview_uploading_webcam - can see file upload preview | can add a label to picture | can switch active session
+finishState - reset to VIEW_MESSAGE if no picture | send textMessage if a picture attached | add label if label present | cancel  | 
 
 register_form - can use register form | can switch can switch active session
 
+finishState - reset to VIEW_MESSAGE if form is valid | reset if called empty
 
 
 

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { BorderedContainer, CircleContainer } from 'shared/components';
 import { useActiveChatSession } from 'pages/mainpage/hooks'
+import { useUser } from 'shared/hooks';
 
 const Container = styled(BorderedContainer)`height: 72px`
 const LimitedContainer = styled(Grid)`max-width: 50%`
@@ -14,18 +15,20 @@ const LimitedContainer = styled(Grid)`max-width: 50%`
 // when user not belong to ActiveChatSession doesn't render participants names
 
 export default function ActiveChatSessionTitle() {
-  const { activeSession, userBelongsToActiveSession, user } = useActiveChatSession()
+  const { activeChatSession } = useActiveChatSession()
+  const { user } = useUser()
+
   const usersInChat = useMemo(() => {
-    if (user == null || activeSession == null || activeSession.participants == null) {
+    if (user == null || activeChatSession == null || activeChatSession.participants == null) {
       return null
     }
     // implement i18n
-    const allUsers = activeSession.participants.map((participant) => participant.user_id === user.user_id ? 'Eu' : participant.userName)
+    const allUsers = activeChatSession.participants.map((participant) => participant.user_id === user.user_id ? 'Eu' : participant.userName)
     allUsers.sort((a, b) => a.localeCompare(b))
     return allUsers.join(', ')
-  }, [activeSession, user])
+  }, [activeChatSession, user])
 
-  if (user == null || activeSession == null) {
+  if (user == null || activeChatSession == null) {
     return null
   }
 
@@ -34,15 +37,15 @@ export default function ActiveChatSessionTitle() {
       justify="flex-start"
       alignItems="center"
       direction="row"
-      style={{ backgroundColor: userBelongsToActiveSession ? 'white' : '#80808066' }}
+      style={{ backgroundColor: activeChatSession.userBelongsToSession ? 'white' : '#80808066' }}
     >
       <CircleContainer style={{ marginLeft: '10px', marginRight: '10px' }}>
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>
       <LimitedContainer container direction="column">
-        <span data-testid="activeChatSessionTitleTitle"><b>{activeSession.title}</b></span>
+        <span data-testid="activeChatSessionTitleTitle"><b>{activeChatSession.title}</b></span>
         {/* implement i18n */}
-        <span data-testid="activeChatSessionTitleUsers">{userBelongsToActiveSession ? usersInChat : "You can't see users in this chat session"}</span>
+        <span data-testid="activeChatSessionTitleUsers">{activeChatSession.userBelongsToSession ? usersInChat : "You can't see users in this chat session"}</span>
       </LimitedContainer>
     </Container>
   )

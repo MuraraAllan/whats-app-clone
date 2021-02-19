@@ -5,9 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components'
 
 import { BorderedContainer, CircleContainer } from 'shared/components/'
-import { useChatSession } from 'pages/mainpage/hooks/'
-import { useActiveChatSession } from 'pages/mainpage/hooks/ActiveChatSessionHooks'
-import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import { ChatSessionType, useUserBelongsToSession } from 'pages/mainpage/hooks/ChatSessionsHooks';
+import { useGetChatSession, useActiveChatSessionID, useMainPageDispatchers } from 'pages/mainpage/hooks';
+import { User } from '../../../../shared/context/LoggedUserContext';
 
 
 export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
@@ -22,10 +22,14 @@ export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMes
 }
 const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
-export default function ChatContent({ session_id, refKey }: { session_id: string, refKey: string }): React.ReactElement {
-  const { chatSession, userBelongsToSession } = useChatSession(session_id)
-  const { activeSession, setActiveSession } = useActiveChatSession()
-  const isCurrentActiveSession = useMemo(() => activeSession != null && activeSession.session_id === session_id, [activeSession, session_id])
+export default function ChatContent({ session_id, }: { session_id: ChatSessionType["session_id"] }): React.ReactElement {
+  const { getChatSession } = useGetChatSession()
+  const activeSessionID = useActiveChatSessionID()
+  const { setActiveChatSession } = useMainPageDispatchers()
+
+  const chatSession = getChatSession(session_id)
+  const userBelongsToSession = useUserBelongsToSession(session_id)
+  const isCurrentActiveSession = useMemo(() => activeSessionID != null && activeSessionID === session_id, [activeSessionID, session_id])
   const chatPreview = useMemo(() => {
     // if lastMessage has a file then we should check for its type
     // and render a respective icon
@@ -68,9 +72,10 @@ export default function ChatContent({ session_id, refKey }: { session_id: string
   }, [chatSession])
 
 
-  if (chatSession == null || activeSession == null) {
+  if (chatSession == null) {
     return (<div></div>)
   }
+
   // render a preview of the message containing the chat picture, title, lastMessagePreview and unreadMessages
   return (
     <Container container
@@ -79,7 +84,7 @@ export default function ChatContent({ session_id, refKey }: { session_id: string
       direction="row"
       data-testid={`chatAreaContainer${session_id}`}
       style={{ backgroundColor: isCurrentActiveSession ? "#80808066" : 'white' }}
-      onClick={() => setActiveSession(session_id)}
+      onClick={() => setActiveChatSession(session_id)}
     >
       {/* chatContent Picture Display */}
       <CircleContainer style={{

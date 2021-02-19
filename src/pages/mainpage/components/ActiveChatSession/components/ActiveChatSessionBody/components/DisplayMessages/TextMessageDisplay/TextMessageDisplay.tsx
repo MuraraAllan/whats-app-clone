@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
 import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { useMainPageDispatchers } from '../../../../../../../hooks'
 
 interface TextMessageDisplayProps {
   message: Message,
@@ -22,7 +23,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
   // "textMessage"
   // so we are going to render checking if file is present ( a picture is also a file, so distinguish between picture and files and render accordingly)
   // also we check if the message contains inlineButtons so we can render them after the message
-
+  const { finishMainPageState } = useMainPageDispatchers()
   const DisplayFile = useMemo(() => {
     if (message.file != null) {
       const blobSRC = URL.createObjectURL(message.file.content);
@@ -38,7 +39,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
       const blobSRC = URL.createObjectURL(message.picture.content);
       return (
         <BorderedContainer container maxwidth={"200px"} justify="center" alignItems="center" margin={"auto"}  >
-          <img data-testid="TextMessageDisplayPicture" onClick={() => setFileView(message?.picture ?? null)} alt="" width="150" height="150" src={blobSRC}></img>
+          <img data-testid="TextMessageDisplayPicture" onClick={() => finishMainPageState({ picture: message.picture })} alt="" width="150" height="150" src={blobSRC}></img>
         </BorderedContainer>)
     }
     return null

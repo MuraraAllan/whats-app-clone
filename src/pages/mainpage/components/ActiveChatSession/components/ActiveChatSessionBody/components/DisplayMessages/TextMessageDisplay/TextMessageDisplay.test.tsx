@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 
 import { MockProviders } from "shared/test-utils"
-import { chatSessionsMock } from '../mocks/chatSessions'
+import { chatSessionsMock } from 'mocks/chatSessions'
 import TextMessageDisplay from "./TextMessageDisplay"
 
 
@@ -12,12 +12,14 @@ import TextMessageDisplay from "./TextMessageDisplay"
 describe('TextMessageDisplay', () => {
   test('expect when a message with textMessage is called we display the textMessage', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
-    const { getByTestId } = render(
+    const { getByTestId, debug } = render(
       <MockProviders>
         <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
       </MockProviders>)
+    console.log('debug', debug())
     expect(getByTestId('textMessageDisplay').textContent).toEqual(toDisplayMessage.textMessage)
   })
+
   test('expect when a message with textMessage and inlineButtons is called we display the textMessage and inlineButtons', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByTestId, getByText } = render(

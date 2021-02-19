@@ -11,6 +11,7 @@ interface CricleContainerProps {
   opacity?: string
   margin?: string,
   cursor?: string
+  zindex?: number
 }
 
 export const CircleContainer = styled(Grid)`
@@ -18,6 +19,7 @@ border: ${(p: CricleContainerProps) => p.border ? `${p.border}px solid` : "2px s
 border-radius: 50%;
 display: flex;
 justify-content: center;
+z-index: ${(p: CricleContainerProps) => p.zindex != null ? p.zindex : null};
 cursor: ${(p: CricleContainerProps) => p.cursor ? `${p.cursor}` : null};
 margin: ${(p: CricleContainerProps) => p.margin ? `${p.margin}` : "0px"};
 opacity: ${(p: CricleContainerProps) => p.opacity ? p.opacity : "100%"};

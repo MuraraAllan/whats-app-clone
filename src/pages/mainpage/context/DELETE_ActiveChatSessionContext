@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
-import { chatSessionsMock } from 'pages/../../mocks/chatSessions'
+import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 
 

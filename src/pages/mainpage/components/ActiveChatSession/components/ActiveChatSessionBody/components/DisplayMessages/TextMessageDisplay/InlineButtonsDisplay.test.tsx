@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react"
 
-import { chatSessionsMock } from "../mocks/chatSessions"
+import { chatSessionsMock } from "mocks/chatSessions"
 import InlineButtonsDisplay from "./InlineButtonsDisplay"
 import { MockProviders } from "shared/test-utils"
 
@@ -9,7 +9,7 @@ describe('InlineButtonsDisplay', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByText } = render(
       <MockProviders>
-        <InlineButtonsDisplay inlineButtons={toDisplayMessage.inlineButtons} isCurrentUserMessage={false} />
+        <InlineButtonsDisplay textMessage={toDisplayMessage.textMessage} inlineButtons={toDisplayMessage.inlineButtons} isCurrentUserMessage={false} />
       </MockProviders>
     )
     toDisplayMessage.inlineButtons?.forEach((inlineButton) => {
@@ -20,7 +20,7 @@ describe('InlineButtonsDisplay', () => {
     const toDisplayMessage = chatSessionsMock[1].lastMessage
     const { getByTestId } = render(
       <MockProviders>
-        <InlineButtonsDisplay inlineButtons={toDisplayMessage.inlineButtons} isCurrentUserMessage={true} />
+        <InlineButtonsDisplay textMessage={toDisplayMessage.textMessage} inlineButtons={toDisplayMessage.inlineButtons} isCurrentUserMessage={true} />
       </MockProviders>
     )
     expect(getByTestId("inlineButtonsGrid")).toHaveStyle('justify-content : flex-end')

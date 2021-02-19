@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, createRef, useLayoutEffect, useStat
 
 import { UploadFileContext } from "pages/mainpage/context/UploadFileContext";
 import { useActiveChatSession } from "./ActiveChatSessionHooks";
-import { useChatSessions } from ".";
+import { useMainPageDispatchers } from "./MainPageHooks";
 
 
 
@@ -43,68 +43,71 @@ async function convertFromFileListToBlob(files: FileList) {
 // should return current uploadingFile 
 
 export function useUploadFile() {
-  const { activeSession, user } = useActiveChatSession()
-  const { addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, addMessage, isRegisteringFormOpen } = useChatSessions()
-  const context = useContext(UploadFileContext)
+  // const { activeSession, user } = useActiveChatSession()
+  // const { addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, addMessage, isRegisteringFormOpen } = useChatSessions()
+  // const context = useContext(UploadFileContext)
 
-  if (context == null) {
-    throw new Error('missing uploadFileHooks context. check it out')
-  }
+  // if (context == null) {
+  //   throw new Error('missing uploadFileHooks context. check it out')
+  // }
 
-  const {
-    setUploadingFile,
-    uploadingFile,
-    isTakingPicture,
-    setIsTakingPicture,
-    setIsRecordingAudio,
-    isRecordingAudio
-  } = context
+  // const {
+  //   setUploadingFile,
+  //   uploadingFile,
+  //   isTakingPicture,
+  //   setIsTakingPicture,
+  //   setIsRecordingAudio,
+  //   isRecordingAudio
+  // } = context
 
-  // this should be moved into individual peaces to easier move around the code aka own hook
-  // doesn't make sense to be in the main context... will keep poluting around 
-  const finishUploadingFile = useCallback((message: string | null) => {
-    if (activeSession?.session_id == null || uploadingFile == null) {
-      return null
-    }
-    if (isTakingPicture) {
-      addMessageWithWebcamPicture({
-        session_id: activeSession.session_id,
-        textMessage: message,
-        picture: uploadingFile,
-        user
-      })
-      setIsTakingPicture(false)
-    } else {
-      addMessageWithFile({
-        session_id: activeSession.session_id,
-        textMessage: message,
-        file: uploadingFile,
-        user
-      })
-    }
-    setUploadingFile(null)
-  }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture, setIsTakingPicture])
+  // // this should be moved into individual peaces to easier move around the code aka own hook
+  // // doesn't make sense to be in the main context... will keep poluting around 
+  // const finishUploadingFile = useCallback((message: string | null) => {
+  //   if (activeSession?.session_id == null || uploadingFile == null) {
+  //     return null
+  //   }
+  //   if (isTakingPicture) {
+  //     addMessageWithWebcamPicture({
+  //       session_id: activeSession.session_id,
+  //       textMessage: message,
+  //       picture: uploadingFile,
+  //       user
+  //     })
+  //     setIsTakingPicture(false)
+  //   } else {
+  //     addMessageWithFile({
+  //       session_id: activeSession.session_id,
+  //       textMessage: message,
+  //       file: uploadingFile,
+  //       user
+  //     })
+  //   }
+  //   setUploadingFile(null)
+  // }, [activeSession, addMessageWithFile, user, uploadingFile, setUploadingFile, addMessageWithWebcamPicture, isTakingPicture, setIsTakingPicture])
 
+  // return {
+  //   setUploadingFile,
+  //   uploadingFile,
+  //   finishUploadingFile,
+  //   isTakingPicture,
+  //   setIsTakingPicture,
+  //   isRecordingAudio,
+  //   setIsRecordingAudio,
+  //   addAudioMessage,
+  //   activeSession,
+  //   user,
+  //   addMessage,
+  //   isRegisteringFormOpen
+  // }
   return {
-    setUploadingFile,
-    uploadingFile,
-    finishUploadingFile,
-    isTakingPicture,
-    setIsTakingPicture,
-    isRecordingAudio,
-    setIsRecordingAudio,
-    addAudioMessage,
-    activeSession,
-    user,
-    addMessage,
-    isRegisteringFormOpen
+
   }
 }
 
 
 export function useUploadFileInput() {
   const inputRef = createRef<HTMLInputElement>()
-  const { setUploadingFile, uploadingFile, isTakingPicture } = useUploadFile()
+  const { finishMainPageState } = useMainPageDispatchers()
 
   useEffect(() => {
     if (inputRef != null && inputRef.current != null) {
@@ -114,25 +117,23 @@ export function useUploadFileInput() {
           if (file == null) {
             return null
           }
-          setUploadingFile({ content: file?.content, name: file?.name })
+          finishMainPageState({ file: { content: file?.content, name: file?.name } })
         }
         evt.preventDefault()
       }
       inputRef.current.addEventListener("change", handleFileUpload as any)
     }
-  }, [inputRef, setUploadingFile])
+  }, [inputRef, finishMainPageState])
 
   return {
     inputRef,
-    uploadingFile,
-    isTakingPicture
   }
 }
 
 
 export function useUploadFileDND() {
   const fileDropRef = createRef<HTMLDivElement>()
-  const { setUploadingFile } = useUploadFile()
+  const { finishMainPageState } = useMainPageDispatchers()
 
   useLayoutEffect(() => {
     async function refListner(evt: Event & { dataTransfer: DataTransfer }) {
@@ -141,7 +142,7 @@ export function useUploadFileDND() {
       if (file == null) {
         return null
       }
-      setUploadingFile({ content: file?.content, name: file?.name })
+      finishMainPageState({ file: { content: file?.content, name: file?.name } })
       evt.preventDefault()
     }
 
@@ -163,7 +164,7 @@ export function useUploadFileDND() {
       }
 
     }
-  }, [fileDropRef, setUploadingFile])
+  }, [fileDropRef, finishMainPageState])
 
   return {
     fileDropRef
@@ -171,19 +172,21 @@ export function useUploadFileDND() {
 }
 
 //useTakePicture 
-// should return whether the user is takingPicture or not
-// should convert picture into Blob and set uploadingFile 
+
 
 export function useTakePicture() {
-  const { isTakingPicture, setIsTakingPicture, setUploadingFile, finishUploadingFile } = useUploadFile()
   const ctx = useContext(UploadFileContext)
   const [hasPermission, setHasPermission] = useState<boolean>(false)
+  const { finishMainPageState, resetMainPageState } = useMainPageDispatchers()
+  // we needed the ref to be available but on the past
+  // not sure about reredenring useTakePicture as states will not be shared alongside hooks anymore. 
   const { videoRef } = ctx ?? {}
 
   const takePicture = useCallback(() => {
-    if (!hasPermission) {
+    if (hasPermission === false) {
       return
     }
+
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
     canvas.setAttribute('width', '500');
@@ -191,17 +194,21 @@ export function useTakePicture() {
     if (context != null && videoRef?.current != null) {
       context.drawImage(videoRef.current, 0, 0, 600, 500)
       canvas.toBlob((blob) => {
-        setUploadingFile({
-          content: blob,
-          name: `WEBCAM_PICTURE_${Math.random() * 3 * Math.random()}`
+        finishMainPageState({
+          picture: {
+            content: blob,
+            name: `WEBCAM_PICTURE_${Math.random() * 3 * Math.random()}`
+          }
         })
       }, 'image/png', 1);
     }
-  }, [videoRef, setUploadingFile, hasPermission])
+  }, [videoRef, finishMainPageState, hasPermission])
 
 
   useLayoutEffect(() => {
+    console.log('HERE WE ARE RENDERING >>>>>>>>>>', videoRef)
     if (videoRef != null && videoRef.current != null) {
+
       const asyncGetUserMedia = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         // use any on videoRef so we can set srcObject
@@ -217,18 +224,15 @@ export function useTakePicture() {
       asyncGetUserMedia().then(ret => {
         setHasPermission(true)
       }).catch(exc => {
-        setIsTakingPicture(false)
         alert("falha ao obeter permissoes de ou ao acessar o dispositivo de video")
       })
     }
-  }, [videoRef, setIsTakingPicture])
+  }, [videoRef])
 
   return {
-    isTakingPicture,
-    setIsTakingPicture,
     videoRef,
     takePicture,
-    finishUploadingFile
+    resetMainPageState
   }
 }
 
@@ -237,64 +241,54 @@ export function useTakePicture() {
 // should expose a finishRecording() which will bring together the recorded chunks
 
 export function useRecordAudio() {
-  const {
-    isRecordingAudio,
-    setIsRecordingAudio,
-    addAudioMessage,
-    activeSession,
-    user
-  } = useUploadFile()
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
   const [hasAudioPermission, setHasAudioPermission] = useState<boolean>(false)
+  const { finishMainPageState, resetMainPageState } = useMainPageDispatchers()
+
+  const cancelRecordingAudio = useCallback(() => resetMainPageState(), [resetMainPageState])
+
   const finishRecordingAudio = useCallback(() => {
     if (mediaRecorder != null) {
       mediaRecorder?.stop()
-      setIsRecordingAudio(false)
     }
-  }, [mediaRecorder, setIsRecordingAudio])
+  }, [mediaRecorder])
 
   useLayoutEffect(() => {
-    if (isRecordingAudio) {
-      navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
-        const chunks = [] as Blob[]
-        setHasAudioPermission(true)
-        const mediaRecorder = new MediaRecorder(stream)
-        mediaRecorder.start()
-        mediaRecorder.onstop = (e: Event) => {
-          const file = new Blob(chunks, { 'type': 'audio/ogg' })
-          const audio = {
-            content: file,
-            name: `Recording${Math.random() + 4 * Math.random()}`
-          }
-          if (activeSession != null) {
-
-            addAudioMessage({ session_id: activeSession.session_id, audio, user })
-          }
+    navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
+      const chunks = [] as Blob[]
+      setHasAudioPermission(true)
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorder.start()
+      mediaRecorder.onstop = (e: Event) => {
+        const file = new Blob(chunks, { 'type': 'audio/ogg' })
+        const audio = {
+          content: file,
+          name: `Recording${Math.random() + 4 * Math.random()}`
         }
-        mediaRecorder.ondataavailable = (e) => {
-          chunks.push(e.data)
-        }
-
-        setMediaRecorder(mediaRecorder)
-      }).catch(err => {
-        alert("falha ao obeter permissoes de ou ao acessar o dispositivo de audio")
-        setIsRecordingAudio(false)
-      })
-
-      return () => {
-        if (isRecordingAudio && mediaRecorder?.state !== 'inactive') {
-          mediaRecorder?.stop()
-        }
+        finishMainPageState({ audio })
       }
 
+      mediaRecorder.ondataavailable = (e) => {
+        chunks.push(e.data)
+      }
+
+      setMediaRecorder(mediaRecorder)
+    }).catch(err => {
+      alert("falha ao obeter permissoes de ou ao acessar o dispositivo de audio")
+    })
+
+    return () => {
+      if (mediaRecorder?.state !== 'inactive') {
+        mediaRecorder?.stop()
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRecordingAudio, addAudioMessage, activeSession, setIsRecordingAudio, user])
+  }, [])
 
   return {
-    isRecordingAudio,
-    setIsRecordingAudio,
     finishRecordingAudio,
-    hasAudioPermission
+    hasAudioPermission,
+    cancelRecordingAudio
   }
 }

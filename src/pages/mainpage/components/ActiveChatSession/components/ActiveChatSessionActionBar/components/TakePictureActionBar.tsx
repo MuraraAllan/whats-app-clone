@@ -6,14 +6,15 @@ import { CameraAlt } from '@material-ui/icons'
 import { CircleContainer } from 'shared/components'
 import { useTakePicture } from 'pages/mainpage/hooks'
 
-const PositionedCameraAlt = styled(CameraAlt)`width: 80%; height: 80%; `
+const PositionedCameraAlt = styled(CameraAlt)`width: 80%; height: 80%; z-index: 101;`
 
-export default function UploadPicture() {
+export default function TakePictureActionBar() {
   const { takePicture } = useTakePicture()
+
   return (
     // implement i18n
     <Grid style={{ height: '80px' }} container justify="flex-start" direction="column" alignItems="center">
-      <CircleContainer cursor="pointer" width={60} height={60} margin="-40px 0px" coloredbackground="white">
+      <CircleContainer zindex={150} cursor="pointer" width={60} height={60} margin="-40px 0px" coloredbackground="white">
         <PositionedCameraAlt data-testid="UploadPictureActionBarTakePicture" onClick={() => takePicture()} />
       </CircleContainer>
       <span style={{ marginTop: '45px' }}>Tirar Foto</span>

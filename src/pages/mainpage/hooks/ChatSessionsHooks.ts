@@ -3,7 +3,6 @@ import { useCallback, useContext, useMemo } from 'react'
 import { useUser } from 'shared/hooks'
 import { User } from 'shared/context/LoggedUserContext'
 import { ChatSessionsContext } from '../context/ChatSessionsContext'
-import { chatSessionsMock } from '../../../../mocks/chatSessions'
 
 export type UploadingFileType = {
   content: Blob | null
@@ -15,16 +14,21 @@ interface InlineButtons {
   onClickAction?: string
 }
 
-export interface Message {
+type MessageBody = {
   message_id: string,
+  timeStamp: number,
+  user: User
+}
+
+type AudioMessage = MessageBody & { audio?: UploadingFileType }
+
+type TextMessage = MessageBody & {
   textMessage?: string | null,
   inlineButtons?: InlineButtons[],
   file?: UploadingFileType
   picture?: UploadingFileType
-  audio?: UploadingFileType
-  timeStamp: number,
-  user: User
 }
+export type Message = AudioMessage & TextMessage
 
 // unreadMessages would be the result of storing last time each user opened that chat in an intersection
 // so we could retrieve the unreadMessages based on lastTime loggedUser accesssed that message
@@ -45,57 +49,83 @@ export interface ChatSessions {
   sessions: ChatSessionType[] | []
 }
 
-function useChatSessions() {
-  const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
-  const { user, setIsRegisterFormOpen, isRegisteringFormOpen } = useUser()
-  return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user, setIsRegisterFormOpen, isRegisteringFormOpen }
+// function useChatSessions() {
+//   const { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useContext(ChatSessionsContext)
+//   const { user, setIsRegisterFormOpen, isRegisteringFormOpen } = useUser()
+//   return { chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage, user, setIsRegisterFormOpen, isRegisteringFormOpen }
+// }
+
+
+
+// function useChatSession(session_id: string) {
+//   const { chatSessions, user: { user_id } } = useChatSessions()
+
+//   const chatSession = useMemo(() => {
+//     if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
+//       return null
+//     }
+
+//     const localSession = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
+//       if (session.session_id === session_id) {
+//         return session
+//       }
+//       return prev
+//     }, null)
+
+//     return localSession
+//   }, [session_id, chatSessions])
+
+//   const userBelongsToSession = useMemo(() => {
+//     if (session_id == null || user_id == null || chatSession == null) {
+//       return false
+//     }
+
+//     const belongs = Object.values(chatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+//       if (participant.user_id === user_id) {
+//         return true
+//       }
+//       return prev
+//     }, false)
+
+//     return belongs
+//   }, [session_id, user_id, chatSession])
+
+
+//   return {
+//     chatSession,
+//     userBelongsToSession
+//   }
+// }
+
+
+export function useChatSessions() {
+  const { chatSessions } = useContext(ChatSessionsContext)
+  console.log('uise chat sessions hooks rerendering', chatSessions)
+  return chatSessions
 }
 
 
-
-function useChatSession(session_id: string) {
-  const { chatSessions, user: { user_id } } = useChatSessions()
-
-  const chatSession = useMemo(() => {
-    if (chatSessions?.sessions == null || chatSessions?.sessions.length === 0) {
-      return null
-    }
-
-    const localSession = Object.values(chatSessions.sessions).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
+export function useGetChatSession() {
+  const chatSessions = useChatSessions()
+  // maybe here would be better to grab session id and pre find the desired chatSession
+  // then we can deep check propertys on the specific chat session if necessary
+  console.log('chat sessions is on GETY CHATR sessiuon', chatSessions)
+  // try without, although better a deepEquality check on chatSessions.messages to avoid rerendering  
+  const getChatSession = useCallback((session_id: ChatSessionType["session_id"], user_id?: User["user_id"]) => {
+    console.log('USE GET CHAT SESISON', chatSessions)
+    const chatSession = Object.values(chatSessions?.sessions ?? []).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
       if (session.session_id === session_id) {
         return session
       }
       return prev
     }, null)
-
-    return localSession
-  }, [session_id, chatSessions])
-
-  const userBelongsToSession = useMemo(() => {
-    if (session_id == null || user_id == null || chatSession == null) {
-      return false
-    }
-
-    const belongs = Object.values(chatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
-      if (participant.user_id === user_id) {
-        return true
-      }
-      return prev
-    }, false)
-
-    return belongs
-  }, [session_id, user_id, chatSession])
-
+    console.log('THE CHAT SESSION ISS', chatSession)
+    return chatSession
+  }, [chatSessions?.sessions])
 
   return {
-    chatSession,
-    userBelongsToSession
+    getChatSession,
   }
-}
-
-function useNewChatSessions() {
-  const { chatSessions } = useContext(ChatSessionsContext)
-  return { chatSessions }
 }
 
 export function useChatSessionsDispatchers() {
@@ -103,25 +133,8 @@ export function useChatSessionsDispatchers() {
   return { addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }
 }
 
-export function useGetChatSession() {
-  const { chatSessions } = useNewChatSessions()
-  // try without, although better a deepEquality check on chatSessions.messages to avoid rerendering  
-  const getChatSession = useCallback((session_id: string) => {
-    return Object.values(chatSessions?.sessions ?? []).reduce<ChatSessionType | null>((prev: ChatSessionType | null, session: ChatSessionType) => {
-      if (session.session_id === session_id) {
-        return session
-      }
-      return prev
-    }, null)
-  }, [chatSessions])
-
-  return {
-    getChatSession
-  }
-}
-
 // on firebird messages should be a collection
-// only message_ids should be present on ChatSession
+// only message_ids should be present on ChatSession.messages = [{ message_id: '1' }]
 
 export function useChatMessage(session_id: string, message_id: string) {
   const { getChatSession } = useGetChatSession()
@@ -129,7 +142,7 @@ export function useChatMessage(session_id: string, message_id: string) {
   // as we didn't allow editing messages, this is a static value after retrieved
   // although if we plan to support editing we can just listen to getChatSession on Memo
   const chatMessage = useMemo(() => {
-    console.log('rerendering mem of useChatMessage')
+    // console.log('rerendering mem of useChatMessage')
     if (session_id != null && message_id != null) {
       const chatSession = getChatSession(session_id)
       if (chatSession != null && chatSession.messages != null) {
@@ -149,4 +162,17 @@ export function useChatMessage(session_id: string, message_id: string) {
 }
 
 
-export { useChatSession, useChatSessions }
+export function useUserBelongsToSession(session_id: ChatSessionType["session_id"]) {
+  const { user: { user_id } } = useUser()
+  const { getChatSession } = useGetChatSession()
+  const chatSession = getChatSession(session_id)
+  if (chatSession == null) {
+    return false
+  }
+  return Object.values(chatSession.participants).reduce<boolean>((prev: boolean, participant: User) => {
+    if (participant.user_id === user_id) {
+      return true
+    }
+    return prev
+  }, false)
+}

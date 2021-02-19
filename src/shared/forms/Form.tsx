@@ -4,7 +4,7 @@ import { ReactNode, useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ObjectSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useActiveChatSession } from "../../pages/mainpage/hooks";
+import { useActiveChatSessionID } from "../../pages/mainpage/hooks";
 
 interface FormProps {
   id?: string
@@ -29,6 +29,7 @@ export function Form({ children, id, onSubmit, schema, defaultValues }: FormProp
     mode: 'all',
   });
   const { handleSubmit } = methods
+  const session_id = useActiveChatSessionID()
   const localHandleSubmit = useCallback((data, form) => {
     if (handleSubmit != null) {
       // fit string type of return object
@@ -44,17 +45,6 @@ export function Form({ children, id, onSubmit, schema, defaultValues }: FormProp
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleSubmit, methods])
-
-  // session_id is used all around, definitely implement a get for it
-  const { activeSession } = useActiveChatSession()
-
-  // why activeSession is null ?
-  // it shouldn't be actually
-  if (activeSession == null) {
-    return null
-  }
-  const { session_id } = activeSession
-
 
 
   if (handleSubmit == null) {

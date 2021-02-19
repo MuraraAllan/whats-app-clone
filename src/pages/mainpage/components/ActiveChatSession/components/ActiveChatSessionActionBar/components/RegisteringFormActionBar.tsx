@@ -19,7 +19,7 @@ export default function RegisteringFormActionBar() {
   return (
     // implement i18n
     <Grid style={{ height: '80px' }} container justify="flex-start" direction="column" alignItems="center">
-      <CircleContainer cursor="pointer" width={60} height={60} margin="-40px 0px -40px 0px" coloredbackground="white">
+      <CircleContainer zindex={150} cursor="pointer" width={60} height={60} margin="-40px 0px -40px 0px" coloredbackground="white">
         <StyledButton data-testid="RegisteringFormActionBarSubmit" type="submit" form="fazer_meu_cadastro"><RotatedSend margin="" fontSize="large" data-testid="RegisteringFormActionBarSend" /></StyledButton>
       </CircleContainer>
       <span style={{ marginTop: '45px' }}>Enviar Formulário</span>

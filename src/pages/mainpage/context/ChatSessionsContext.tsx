@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
 
-import { chatSessionsMock } from 'pages/../../mocks/chatSessions'
+import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { User } from 'shared/context/LoggedUserContext'
 
@@ -125,28 +125,16 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 }
 
 export const ChatSessionsContext = React.createContext<ChatSessionContextType>({} as ChatSessionContextType)
-// states ActionBar:
-// isRecordingAudio should Render RecordAudioActionBar
-// isPreviweingWebcamPicture (isTakingPicture && uploadingFile == null Render SingleButtonActionBar)
-// isUploadingFile (uploadingFile != null should render FileUploadLabelActionBar) 
-// isSendingTextMessageOrViewingFile should render DefaultActionBar
-// isRegistering should render RegisteringFormActionBar
 
 
 type ChatSessionProviderProps = { children: ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
-  useEffect(() => {
-    if (chatSessionsMock == null || dispatch == null) {
-      return
-    }
-    // this dispatch is mimicking a subscription result dispatch 
-    //which brings us active chat sessions that this user has
-    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
-    dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [])
+  // instead of rendering with chatSessionsMock, this should be rendered with userSessions from backend
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
+
+  // console.log('chat sessions is', chatSessions)
 
   const addMessage = useCallback(({ session_id, textMessage, user }: AddMessageParams) => {
     if (textMessage == null || user == null || session_id == null || chatSessions == null) {

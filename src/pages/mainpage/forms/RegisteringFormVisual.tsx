@@ -4,15 +4,12 @@ import styled from 'styled-components';
 
 import { BorderedContainer, FontWidthSpan, FullHeightContainer } from 'shared/components'
 import RegisteringForm from './RegisteringForm';
-import { useUser } from 'shared/hooks';
+import { useMainPageDispatchers } from '../hooks';
 
 const BigGrid = styled(Grid)`height: 80%`
-export default function RegisteringFormVisual() {
-  const { setIsRegisterFormOpen, isRegisteringFormOpen } = useUser()
 
-  if (setIsRegisterFormOpen == null || isRegisteringFormOpen == null) {
-    return null
-  }
+export default function RegisteringFormVisual() {
+  const { resetMainPageState } = useMainPageDispatchers()
   return <FullHeightContainer item container direction="row" >
     <BorderedContainer alignItems="center" justify="space-between" container style={{ backgroundColor: '#80808066', height: '40px' }}>
       {/* implement i18n */}
@@ -21,7 +18,7 @@ export default function RegisteringFormVisual() {
         this component should be already centered and positioned at this point
        */}
       <Grid item >
-        <FontWidthSpan data-testid="RegisteringFormVisualClose" onClick={() => setIsRegisterFormOpen(false)} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
+        <FontWidthSpan data-testid="RegisteringFormVisualClose" onClick={() => resetMainPageState()} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
         <FontWidthSpan> Fazer meu cadastro</FontWidthSpan>
         {/* implement i18n */}
       </Grid>

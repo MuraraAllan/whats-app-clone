@@ -1,5 +1,5 @@
 import { act } from "react-dom/test-utils"
-import { chatSessionsMock } from "../mocks/chatSessions"
+import { chatSessionsMock } from "mocks/chatSessions"
 import { useActiveChatSessionMock } from "shared/test-utils"
 
 
