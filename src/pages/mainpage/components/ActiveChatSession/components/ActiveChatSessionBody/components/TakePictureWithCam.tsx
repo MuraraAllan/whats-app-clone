@@ -29,7 +29,7 @@ const filePreviewStyles = makeStyles((theme) => {
         height: '450px'
       },
       [theme.breakpoints.up("xl")]: {
-        height: '550px'
+        height: '450px'
       },
     }
   }

@@ -4,12 +4,9 @@ import styled from 'styled-components'
 import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTitle } from '.'
 import { BorderedContainer } from 'shared/components'
 import { useActiveChatSessionID } from '../../hooks'
-import { DisplayMessages } from './components/ActiveChatSessionBody/components'
 
-// import { useActiveChatSession } from 'pages/mainpage/hooks'
 // ActiveChatSessionBody is the centered area in the screen.
 // ActiveChatSessionActionBar is the ActionBar down the screen.
-
 
 const ActionContainer = styled(BorderedContainer)`min-height:60px;`
 // We need to calculate how much is left in user screen, considering that
@@ -18,23 +15,13 @@ const CalcContainer = styled(BorderedContainer)`height: calc(100vh - 134px); ove
 const Container = styled(BorderedContainer)`height: 72px;`
 
 export default function ActiveChatSession() {
+  const sessionId = useActiveChatSessionID()
 
-  //   activechat context 
-
-  // useState(activeSessionID,....) string
-
-
-  // this is not the most ideal scenario as it forces re-render ActiveChatSessionScreen and childrens each time activeSession switchs
-  // although it is better to rerender and show something when a registered user recently logged in and don't have an ActiveSession yet
-  // this will remain commented in case we don't finish the extra firebase/firestore task, to avoid unecessary rerender
-
-  // const sessionId = useActiveChatSessionID()
-
-  // if (sessionId == null) {
-  //   return <div style={{ width: '100%', textAlign: 'center' }}>
-  //     <span>Pick a chat on the left to start chating...</span>
-  //   </div>
-  // }
+  if (sessionId == null) {
+    return <div style={{ width: '100%', textAlign: 'center' }}>
+      <span>Pick a chat on the left to start chating...</span>
+    </div>
+  }
 
   return (
     <>
@@ -42,7 +29,6 @@ export default function ActiveChatSession() {
         <ActiveChatSessionTitle />
       </Container>
       <CalcContainer container >
-        <DisplayMessages />
         <ActiveChatSessionBody />
       </CalcContainer>
       <ActionContainer item border={2}>

@@ -1,22 +1,21 @@
-import React, { useMemo, Dispatch, SetStateAction } from 'react'
+import React, { useMemo } from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 
 
 import { BorderedContainer, RotatedAttachFile } from 'shared/components'
 import InlineButtonsDisplay from './InlineButtonsDisplay'
-import { Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
-import { useMainPageDispatchers } from '../../../../../../../hooks'
+import { Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import { useMainPageDispatchers } from 'pages/mainpage/hooks'
 
 interface TextMessageDisplayProps {
   message: Message,
   isCurrentUserMessage: boolean,
-  setFileView: Dispatch<SetStateAction<UploadingFileType | null>>
 }
 
 const MessageContainer = styled(BorderedContainer)`max-width: 90%; width: initial; overflow: hidden; padding: 10px; background-color: #80808066;`
 
-export default function TextMessageDisplay({ message, isCurrentUserMessage, setFileView }: TextMessageDisplayProps) {
+export default function TextMessageDisplay({ message, isCurrentUserMessage }: TextMessageDisplayProps) {
   // the way messages with files can be displayed is always 
   //   "FILE"  
   //  "fileName"
@@ -24,6 +23,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
   // so we are going to render checking if file is present ( a picture is also a file, so distinguish between picture and files and render accordingly)
   // also we check if the message contains inlineButtons so we can render them after the message
   const { finishMainPageState } = useMainPageDispatchers()
+
   const DisplayFile = useMemo(() => {
     if (message.file != null) {
       const blobSRC = URL.createObjectURL(message.file.content);
@@ -39,13 +39,14 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage, setF
       const blobSRC = URL.createObjectURL(message.picture.content);
       return (
         <BorderedContainer container maxwidth={"200px"} justify="center" alignItems="center" margin={"auto"}  >
-          <img data-testid="TextMessageDisplayPicture" onClick={() => finishMainPageState({ picture: message.picture })} alt="" width="150" height="150" src={blobSRC}></img>
+          <img data-testid="TextMessageDisplayPicture" onClick={() => finishMainPageState({ picture: message.picture, message_id: message.message_id })} alt="" width="150" height="150" src={blobSRC}></img>
         </BorderedContainer>)
     }
     return null
-  }, [message.file, message.picture, setFileView])
+  }, [message.file, message.picture, finishMainPageState])
 
   const fileName = message.file?.name ?? null
+
   return (
     <Grid data-testid={`textMessageDisplayGrid${message.message_id}`} container item xs={12} sm={9} md={10} lg={9} xl={9} direction="column" alignItems={isCurrentUserMessage ? 'flex-end' : 'flex-start'}>
       {message.textMessage != null || DisplayFile != null ? (

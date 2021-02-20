@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState, useEffect } from 'react'
+import React, { CSSProperties } from 'react'
 import Grid from '@material-ui/core/Grid'
 import PersonIcon from '@material-ui/icons/Person';
 import styled from 'styled-components'
@@ -9,19 +9,11 @@ import { TextMessageDisplay, AudioMessageDisplay } from './'
 import { useActiveChatSessionMessages, useUploadFileDND } from 'pages/mainpage/hooks';
 import { useUser } from 'shared/hooks';
 
-const FullWidthContainer = styled(BorderedContainer)`max-width: 100%; z-index: 1; position: absolute; min-height:100%;`
+const FullWidthContainer = styled(BorderedContainer)`max-width: 100%; min-height:100%;`
 const GridPadded = styled(Grid)`padding: 10px;`
-
-// states :
-// withFileView (fileView != null render FilePreview )
-// displayWebcamTakePicture (takingPicture and notUploadingFile render TakePictureWithCam)
-// uploadingFile (render FilePreviewer)
-// displayingTextMessage (defaultState will render MessageDisplay)
-// registering (will render RegisteringForm)
 
 export default function DisplayMessages() {
   const { fileDropRef } = useUploadFileDND()
-  //move into useGetActiveChatMessages
   const messages = useActiveChatSessionMessages()
   const { user } = useUser()
 
@@ -37,11 +29,6 @@ export default function DisplayMessages() {
     </CircleContainer>
   )
 
-  // message can use 70 % of width 
-  // inline buttons can use entire screen 
-
-
-
   //DISPLAY MESSAGES : pass message id down instead of passing 
   return <FullWidthContainer data-testid="ActiveChatSessionBodyMessages" ref={fileDropRef} container item direction="column" xs={12} sm={12} md={12} lg={12} xl={12}>
     {messages?.map((message, index) => {
@@ -51,7 +38,7 @@ export default function DisplayMessages() {
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}
           {message.audio != null ?
             (<AudioMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />) :
-            (<TextMessageDisplay setFileView={() => null} message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
+            (<TextMessageDisplay message={message} isCurrentUserMessage={isCurrentUserMessage} />)}
         </GridPadded>
       )
     })}

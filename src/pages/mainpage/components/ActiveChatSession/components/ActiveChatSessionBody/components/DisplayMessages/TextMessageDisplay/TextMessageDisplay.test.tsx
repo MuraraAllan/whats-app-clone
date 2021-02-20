@@ -16,7 +16,6 @@ describe('TextMessageDisplay', () => {
       <MockProviders>
         <TextMessageDisplay setFileView={() => null} message={toDisplayMessage} isCurrentUserMessage={false} />
       </MockProviders>)
-    console.log('debug', debug())
     expect(getByTestId('textMessageDisplay').textContent).toEqual(toDisplayMessage.textMessage)
   })
 

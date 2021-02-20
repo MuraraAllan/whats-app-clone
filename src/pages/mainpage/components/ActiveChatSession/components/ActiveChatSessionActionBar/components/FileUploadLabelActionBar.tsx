@@ -25,9 +25,7 @@ export default function FileUploadLabelActionBar() {
           placeholder="Escreva um label para o arquivo." />
       </Grid>
       <Grid item style={{ paddingTop: '16px' }} container xs={1} sm={1} md={1} lg={1} xl={1}>
-        <RotatedSend data-testid="FileUploadLabelActionBarSend" onClick={() => inputState.length > 0 ? finishMainPageState({
-          textMessage: inputState
-        }) : null} fontSize="large" margin="0px 0px 15px 0px" />
+        <RotatedSend data-testid="FileUploadLabelActionBarSend" onClick={() => finishMainPageState({ textMessage: inputState })} fontSize="large" margin="0px 0px 15px 0px" />
       </Grid>
     </Grid>
   )
