@@ -19,12 +19,12 @@ context('Test Microphone Interaction', () => {
   })
 
   describe('try to switch activeSession while recording', () => {
-    it('Visit main page and click on microphone and try to switch sessions then search for Eu, Karen', () => {
+    it('Visit main page and click on microphone and try to switch sessions then make sure chat 2 message doesnt exist', () => {
       cy.visit('')
       cy.get('[data-testid=DefaultActionBarRecordAudio]').click()
       // custom findAllByText for spans
       cy.findByText('Sala de chat 1').click()
-      cy.findAllByText((content, node) => node?.textContent.includes('Meu nome é Karen'))
+      cy.findAllByText((content, node) => node?.textContent.includes('Meu nome é Karen')).should('not.exist')
     })
   })
   // RecordAudio
