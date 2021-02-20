@@ -2,12 +2,23 @@ import { fireEvent, render } from "@testing-library/react";
 import { MockProviders } from "shared/test-utils";
 import ActiveChatSessionActionBar from "../ActiveChatSessionActionBar";
 
-const mockAddMessage = jest.fn()
-const mockSetIsTakingPicture = jest.fn()
-const mockSetIsRecordingAudio = jest.fn()
+const mockFinishMainPageState = jest.fn()
+const mocksetMainPageState = jest.fn()
 
 jest.mock('pages/mainpage/hooks', () => {
   return ({
+    useMainPageDispatchers: () => ({
+      finishMainPageState: mockFinishMainPageState,
+      setMainPageState: mocksetMainPageState,
+    }),
+    useMainPage: () => {
+      const { useMainPage } = jest.requireActual('pages/mainpage/hooks')
+      return useMainPage()
+    },
+    useGetMainPageState: () => {
+      const { useGetMainPageState } = jest.requireActual('pages/mainpage/hooks')
+      return useGetMainPageState()
+    },
     useActiveChatSession: () => {
       const { useActiveChatSession } = jest.requireActual('pages/mainpage/hooks')
       return useActiveChatSession()
@@ -20,11 +31,7 @@ jest.mock('pages/mainpage/hooks', () => {
       const { useChatSessions } = jest.requireActual('pages/mainpage/hooks')
       return useChatSessions()
     },
-    useUploadFile: () => ({
-      addMessage: mockAddMessage,
-      setIsTakingPicture: mockSetIsTakingPicture,
-      setIsRecordingAudio: mockSetIsRecordingAudio
-    })
+
   })
 });
 
@@ -36,7 +43,7 @@ describe('DefaultActionBar', () => {
       </MockProviders>)
 
     fireEvent.click(getByTestId('DefaultActionBarSend'))
-    expect(mockAddMessage).toBeCalledTimes(0)
+    expect(mockFinishMainPageState).toBeCalledTimes(0)
   })
   test('should call mockAddMessage when DefaultActionBarSend is clicked', () => {
     const { getByTestId } = render(
@@ -46,7 +53,7 @@ describe('DefaultActionBar', () => {
 
     fireEvent.input(getByTestId('DefaultActionBarInput'), { target: { value: '1234teste' } })
     fireEvent.click(getByTestId('DefaultActionBarSend'))
-    expect(mockAddMessage).toBeCalled()
+    expect(mockFinishMainPageState).toBeCalled()
   })
   test('should call mockSetIsTakingPicture when DefaultActionBarUploadPicture is clicked', () => {
     const { getByTestId } = render(
@@ -54,7 +61,7 @@ describe('DefaultActionBar', () => {
         <ActiveChatSessionActionBar />
       </MockProviders>)
     fireEvent.click(getByTestId('DefaultActionBarUploadPicture'))
-    expect(mockSetIsTakingPicture).toBeCalled()
+    expect(mocksetMainPageState).toBeCalled()
   })
   test('should call mockSetIsRecordingAudio when DefaultActionBarRecordAudio is clicked', () => {
     const { getByTestId } = render(
@@ -62,6 +69,6 @@ describe('DefaultActionBar', () => {
         <ActiveChatSessionActionBar />
       </MockProviders>)
     fireEvent.click(getByTestId('DefaultActionBarRecordAudio'))
-    expect(mockSetIsRecordingAudio).toBeCalled()
+    expect(mocksetMainPageState).toBeCalled()
   })
 })

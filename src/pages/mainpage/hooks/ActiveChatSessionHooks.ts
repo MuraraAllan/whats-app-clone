@@ -22,6 +22,7 @@ export function useActiveChatSessionMessages() {
   return activeChatSession?.messages
 }
 
+
 export function useUserBelongsToActiveSession() {
   const { activeChatSession } = useActiveChatSession()
   return activeChatSession?.userBelongsToSession

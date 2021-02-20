@@ -43,6 +43,7 @@ export default function TextMessageDisplay({ message, isCurrentUserMessage }: Te
         </BorderedContainer>)
     }
     return null
+
   }, [message.file, message.picture, finishMainPageState])
 
   const fileName = message.file?.name ?? null

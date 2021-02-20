@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react"
 import { act } from "react-dom/test-utils"
 
-import ChatsContent, { findLastMessageChatPreview } from "./ChatContent"
-import { chatSessionsMock } from '../mocks/chatSessions'
+import { ChatContent, findLastMessageChatPreview } from "./ChatContent"
+import { chatSessionsMock } from 'mocks/chatSessions'
 import { MockProviders, useActiveChatSessionMock } from "shared/test-utils"
 
 // expect to render a chat session with title, lastMessage and unreadMessagesAmount when user belong to chatSession
@@ -13,7 +13,7 @@ describe('ChatContent.tsx', () => {
   test('should render session with title, lastMessage and unreadMessagesAmount when user belong to chatSession', () => {
     const { getByTestId } = render(
       <MockProviders>
-        <ChatsContent refKey="2" session_id="2" />
+        <ChatContent session_id="2" />
       </MockProviders>
     )
 
@@ -27,7 +27,7 @@ describe('ChatContent.tsx', () => {
   test('chat with title, disabled  and unreadMessagesAmount when the user does not belong to chatSession', () => {
     const { getByTestId } = render(
       <MockProviders>
-        <ChatsContent refKey="2" session_id="3" />
+        <ChatContent session_id="3" />
       </MockProviders>
     )
 
@@ -39,7 +39,7 @@ describe('ChatContent.tsx', () => {
   })
 
   test('render with backgroundColor when current chat is the same as ActiveChatSession', () => {
-    const { mockSetactiveSession, getByTestId } = useActiveChatSessionMock(<ChatsContent refKey="2" session_id="1" />)
+    const { mockSetactiveSession, getByTestId } = useActiveChatSessionMock(<ChatContent session_id="1" />)
     act(() => {
       mockSetactiveSession("1")
     })
