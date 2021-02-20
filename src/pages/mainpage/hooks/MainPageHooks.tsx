@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react"
+import { useContext } from "react"
 import { MainPageContext } from "../context"
 
 // there are multiple possibilitys of change in the context
@@ -6,8 +6,7 @@ import { MainPageContext } from "../context"
 
 export function useMainPage() {
   const { state, activeChatSession, activeSessionId, file } = useContext(MainPageContext)
-  console.log('useGetMainPage rerendering >>>', state)
-  console.log('useGetMainPage rerendering >>>', activeChatSession)
+
   return {
     state, activeChatSession, activeSessionId, file
   }

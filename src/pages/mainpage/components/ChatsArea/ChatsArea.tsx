@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ChatContent from './ChatContent'
+import { ChatContent } from './ChatContent'
 import { useUser } from 'shared/hooks/UserHooks'
 
 export default function ChatsArea() {

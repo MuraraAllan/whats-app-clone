@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { BorderedContainer, CircleContainer } from 'shared/components/'
 import { ChatSessionType, useUserBelongsToSession } from 'pages/mainpage/hooks/ChatSessionsHooks';
 import { useGetChatSession, useActiveChatSessionID, useMainPageDispatchers } from 'pages/mainpage/hooks';
-import { User } from '../../../../shared/context/LoggedUserContext';
 
 
 export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMessage']) => {
@@ -22,14 +21,14 @@ export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMes
 }
 const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
-export default function ChatContent({ session_id, }: { session_id: ChatSessionType["session_id"] }): React.ReactElement {
+export const ChatContent = function ChatContent({ session_id }: { session_id: ChatSessionType["session_id"] }): React.ReactElement {
   const { getChatSession } = useGetChatSession()
   const activeSessionID = useActiveChatSessionID()
   const { setActiveChatSession } = useMainPageDispatchers()
 
   const chatSession = getChatSession(session_id)
   const userBelongsToSession = useUserBelongsToSession(session_id)
-  const isCurrentActiveSession = useMemo(() => activeSessionID != null && activeSessionID === session_id, [activeSessionID, session_id])
+  const isCurrentActiveSession = activeSessionID != null && activeSessionID === session_id
   const chatPreview = useMemo(() => {
     // if lastMessage has a file then we should check for its type
     // and render a respective icon

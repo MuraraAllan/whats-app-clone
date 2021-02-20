@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
+import React, { ReactNode, useCallback, useReducer } from 'react'
 
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
@@ -51,6 +51,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
         sessions: [...action.state]
       }
     }
+
     case 'add_textMessageWithFile': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -69,6 +70,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_AudioMessage': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -86,6 +88,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_textMessageWithWebcamPicture': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -104,6 +107,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_textMessage': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -121,6 +125,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
   }
 }
 
@@ -133,8 +138,6 @@ type ChatSessionProviderProps = { children: ReactNode }
 function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
   // instead of rendering with chatSessionsMock, this should be rendered with userSessions from backend
   const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
-
-  // console.log('chat sessions is', chatSessions)
 
   const addMessage = useCallback(({ session_id, textMessage, user }: AddMessageParams) => {
     if (textMessage == null || user == null || session_id == null || chatSessions == null) {

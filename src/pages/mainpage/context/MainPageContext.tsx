@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useReducer } from 'react'
+import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
 
 import { ChatSessionType, Message, UploadingFileType, useChatSessionsDispatchers, useGetChatSession } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { useUser } from 'shared/hooks'
@@ -50,7 +50,6 @@ export function MainPageReducer(reducerState: MainPageReducerState, action: Main
   switch (action.type) {
     case 'set_mainpage_state':
       if (action.file != null) {
-        console.log('ACTION FILE IS ssOT NULL')
         return {
           ...reducerState,
           state: action.state,
@@ -99,139 +98,123 @@ function MainPageProvider({ children }: ChatSessionProviderProps) {
   const { addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useChatSessionsDispatchers()
 
   // maybe a callBack is not necessary here 
-  const setActiveChatSession = useCallback((() => {
-    console.log('trick to audit rerendering of useCallBasck', getChatSession)
-    return (sessionId: string) => {
-      console.log('UPDATING ACTIVE CHAT SESSION >>>', sessionId)
-      if (sessionId != null && sessionId !== mainPageReducer.activeSessionId) {
-        const activeChatSession = getChatSession(sessionId)
-        console.log('THE ACTIVE CHAT SESSION', activeChatSession)
-        const belongs = Object.values(activeChatSession?.participants ?? []).reduce<boolean>((prev: boolean, participant: User) => {
-          if (participant.user_id === user_id) {
-            return true
-          }
-          return prev
-        }, false)
-
-        const localActiveChatSession = {
-          ...activeChatSession,
-          userBelongsToSession: belongs
-        } as MainPageActiveChatSession
-
-        if (activeChatSession != null) {
-          dispatch({ type: 'set_active_session', sessionId, activeChatSession: localActiveChatSession, state: 'view_message' })
+  const setActiveChatSession = (sessionId: string) => {
+    if (sessionId != null && sessionId !== mainPageReducer.activeSessionId) {
+      const activeChatSession = getChatSession(sessionId)
+      const belongs = Object.values(activeChatSession?.participants ?? []).reduce<boolean>((prev: boolean, participant: User) => {
+        if (participant.user_id === user_id) {
+          return true
         }
+        return prev
+      }, false)
+
+      const localActiveChatSession = {
+        ...activeChatSession,
+        userBelongsToSession: belongs
+      } as MainPageActiveChatSession
+
+      if (activeChatSession != null) {
+        dispatch({ type: 'set_active_session', sessionId, activeChatSession: localActiveChatSession, state: 'view_message' })
       }
     }
-  })(), [mainPageReducer, getChatSession])
+  }
 
-  const finishMainPageState = useCallback((() => {
-    console.log('trick to audit rerender+ing of useCallBack finishMainPageState')
-
-    return (params: Partial<Message>) => {
-      console.log('called with ', params)
-      console.log('APP STATE IS', mainPageReducer.state)
-      console.log('APP STATE IS', mainPageReducer.activeSessionId)
-      switch (mainPageReducer.state) {
-        case 'view_message':
-          // on view message, if the finishAction brings picture, it means viewing uploaded picture
-          if (params.picture != null) {
+  const finishMainPageState = useCallback((params: Partial<Message>) => {
+    switch (mainPageReducer.state) {
+      case 'view_message':
+        // on view message, if the finishAction brings picture, it means viewing uploaded picture
+        // or drag and droped picture which will not contain message_id
+        if (params.picture != null) {
+          if (params.message_id != null) {
             dispatch({ type: 'set_mainpage_state', state: 'view_message_picture', file: params.picture })
             return
           }
-          // if it brings a file it means setting an file upload
-          if (params.file != null) {
-            dispatch({ type: 'set_mainpage_state', state: 'preview_file_upload', file: params.file })
-            return
-          }
-          if (params.textMessage == null || mainPageReducer.activeSessionId == null) {
-            return null
-          }
-          addMessage({
-            session_id: mainPageReducer.activeSessionId,
-            user,
-            textMessage: params.textMessage
-          })
-          break;
-        case 'preview_file_upload':
-          if (mainPageReducer.file != null && mainPageReducer.activeSessionId != null) {
-            console.log('HERE WE ARE ADD FILE')
-            addMessageWithFile({
-              session_id: mainPageReducer.activeSessionId,
-              textMessage: params.textMessage ?? null,
-              file: mainPageReducer.file,
-              user,
-            })
-            dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-          }
-          break;
-        case 'take_webcam_picture':
-          if (params.picture == null) {
-            dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-            return null
-          }
           dispatch({ type: 'set_mainpage_state', state: 'preview_uploading_webcam', file: params.picture })
-          break;
-        case 'preview_uploading_webcam':
-          if (mainPageReducer.file == null || mainPageReducer.activeSessionId == null) {
-            dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-            return null
-          }
-          addMessageWithWebcamPicture({
+        }
+
+        // if it brings a file it means setting an file upload
+        if (params.file != null) {
+          dispatch({ type: 'set_mainpage_state', state: 'preview_file_upload', file: params.file })
+          return
+        }
+        if (params.textMessage == null || mainPageReducer.activeSessionId == null) {
+          return null
+        }
+        addMessage({
+          session_id: mainPageReducer.activeSessionId,
+          user,
+          textMessage: params.textMessage
+        })
+        break;
+
+      case 'view_message_picture':
+        if (params.textMessage == null || mainPageReducer.activeSessionId == null) {
+          return null
+        }
+        addMessage({
+          session_id: mainPageReducer.activeSessionId,
+          user,
+          textMessage: params.textMessage
+        })
+        break;
+
+      case 'preview_file_upload':
+        if (mainPageReducer.file != null && mainPageReducer.activeSessionId != null) {
+          addMessageWithFile({
             session_id: mainPageReducer.activeSessionId,
-            user,
             textMessage: params.textMessage ?? null,
-            picture: mainPageReducer.file
-          })
-          dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-          break;
-        case 'record_audio':
-          if (params.audio == null || mainPageReducer.activeSessionId == null) {
-            dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-            return null
-          }
-          addAudioMessage({
-            session_id: mainPageReducer.activeSessionId,
+            file: mainPageReducer.file,
             user,
-            audio: params.audio
           })
           dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-          break;
-      }
+        }
+        break;
 
+      case 'take_webcam_picture':
+        if (params.picture == null) {
+          dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+          return null
+        }
+        dispatch({ type: 'set_mainpage_state', state: 'preview_uploading_webcam', file: params.picture })
+        break;
+
+      case 'preview_uploading_webcam':
+        if (mainPageReducer.file == null || mainPageReducer.activeSessionId == null) {
+          dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+          return null
+        }
+        addMessageWithWebcamPicture({
+          session_id: mainPageReducer.activeSessionId,
+          user,
+          textMessage: params.textMessage ?? null,
+          picture: mainPageReducer.file
+        })
+        dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+        break;
+
+      case 'record_audio':
+        if (params.audio == null || mainPageReducer.activeSessionId == null) {
+          dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+          return null
+        }
+        addAudioMessage({
+          session_id: mainPageReducer.activeSessionId,
+          user,
+          audio: params.audio
+        })
+        dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+        break;
     }
-  })(), [mainPageReducer.state, mainPageReducer.activeSessionId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainPageReducer])
 
-
-  const resetMainPageState = useCallback((() => {
-    console.log('trick to audit rerendering of useCallBack')
-    return () => {
-      dispatch({ type: 'set_mainpage_state', state: 'view_message' })
-    }
-  })(), [])
-
-
-  // WIP: using IIF to control rerenders of useCB
-  // just in order to put the context together
-  // and ensure minimal rerendering
-  const setMainPageState = useCallback((() => {
-    console.log('trick to audit rerendering of useCallBack on useGetActiveChatSession')
-    return (state: MainPageStates) => {
-      console.log('Rerendering setMainPageState')
-      if (state != null) {
-        dispatch({ type: 'set_mainpage_state', state })
-      }
-    }
-  })(), [])
+  const resetMainPageState = () => dispatch({ type: 'set_mainpage_state', state: 'view_message' })
+  const setMainPageState = (state: MainPageStates) => dispatch({ type: 'set_mainpage_state', state })
 
   useEffect(() => {
     setActiveChatSession('2')
   }, [])
 
-  console.log('active session changed SESSIONID>>>>', mainPageReducer.activeSessionId)
-  console.log('active session changed', mainPageReducer.state)
-  console.log('active session changed SESSION>>>>', mainPageReducer.activeChatSession)
-  console.log('ACTIVE SESSION USER BELONGD |>>>', mainPageReducer.activeChatSession?.userBelongsToSession)
   return (
     <MainPageContext.Provider value={{ ...mainPageReducer, finishMainPageState, setActiveChatSession, setMainPageState, resetMainPageState }}>
       {children}

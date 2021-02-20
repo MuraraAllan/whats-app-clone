@@ -1,15 +1,11 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
 import { ActiveChatSession, ChatsArea, FilterArea, UserArea } from 'pages/mainpage/components'
-import { ChatSessionsProvider, MainPageProvider, UploadFileProvider } from 'pages/mainpage/context'
+import { MainPageProvider, UploadFileProvider } from 'pages/mainpage/context'
 import { FullHeightBorderedContainer } from 'shared/components'
-import { useUser } from '../../shared/hooks'
-import { useChatSessions, useMainPage } from './hooks'
-import { DisplayMessages } from './components/ActiveChatSession/components/ActiveChatSessionBody/components'
 
 export default function MainPage() {
-  const { user } = useUser()
   return (
     <Grid container direction='row'>
       {/* activechatsession provider should be removed and become a group of getters */}
@@ -24,7 +20,6 @@ export default function MainPage() {
           </FullHeightBorderedContainer>
           {/* RIGHT AREA CONTAINER */}
           <FullHeightBorderedContainer container item xs={6} sm={7} md={9} lg={9} xl={10} direction="column">
-
             <ActiveChatSession />
           </FullHeightBorderedContainer>
         </UploadFileProvider>

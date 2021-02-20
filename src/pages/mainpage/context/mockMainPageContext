@@ -88,6 +88,8 @@ finishState - reset to VIEW_MESSAGE if no file | send textMessage if a file atta
 
 
 take_webcam_picture - can take picture | can switch between sessions
+
+
 preview_uploading_webcam - can see file upload preview | can add a label to picture | can switch active session
 finishState - reset to VIEW_MESSAGE if no picture | send textMessage if a picture attached | add label if label present | cancel  | 
 

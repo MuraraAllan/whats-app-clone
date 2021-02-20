@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { MainPageProvider, ChatSessionsProvider, UploadFileProvider } from 'pages/mainpage/context'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { LoggedUserProvider } from './context/LoggedUserContext'
-import { useActiveChatSession, useMainPageDispatchers, useUploadFile } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useMainPageDispatchers } from 'pages/mainpage/hooks'
 import { UploadFileDispatchers } from '../pages/mainpage/context/UploadFileContext'
 
 export function useActiveChatSessionMock(Component?: React.ReactNode) {
@@ -18,7 +18,6 @@ export function useActiveChatSessionMock(Component?: React.ReactNode) {
     const { setActiveChatSession } = useMainPageDispatchers()
 
     useEffect(() => {
-      console.log('return active chat session is', activeChatSession?.session_id)
       Object.assign(returnChatSession, activeChatSession)
       Object.assign(userBelongs, { belongs: userBelongsToSession })
       mockSetactiveSession = setActiveChatSession
