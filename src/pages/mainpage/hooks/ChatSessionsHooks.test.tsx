@@ -4,9 +4,8 @@ import { useEffect } from 'react';
 
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { MockProviders } from 'shared/test-utils'
-import { ChatSessions, ChatSessionType, useChatSession } from './ChatSessionsHooks'
-import { useChatSessions } from '.';
-import { User } from 'shared/context/LoggedUserContext';
+import { ChatSessions, useGetChatSession, useUserBelongsToSession, } from './ChatSessionsHooks'
+import { useChatSessionsDispatchers, useChatSessions } from '.';
 import { ChatSessionContextType } from '../context/ChatSessionsContext';
 
 // useChatSessions()
@@ -20,9 +19,8 @@ function useChatSessionsMock() {
       addMessageWithFile,
       addMessageWithWebcamPicture,
       addAudioMessage,
-      chatSessions
-    } = useChatSessions()
-
+    } = useChatSessionsDispatchers()
+    const chatSessions = useChatSessions()
     useEffect(() => {
       Object.assign(state, chatSessions)
       Object.assign(dispatchers, {
@@ -114,7 +112,9 @@ function useChatSessionMock(session_id: string) {
   const returnChatSession = {}
   const userBelongs = {} as { belongs: null | boolean }
   function TestComponent() {
-    const { chatSession, userBelongsToSession } = useChatSession(session_id)
+    const { getChatSession } = useGetChatSession()
+    const userBelongsToSession = useUserBelongsToSession(session_id)
+    const chatSession = getChatSession(session_id)
 
     useEffect(() => {
       Object.assign(returnChatSession, chatSession)

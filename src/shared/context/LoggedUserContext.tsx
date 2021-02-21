@@ -5,7 +5,7 @@ import { userWithChatSessions } from 'mocks/userData'
 export interface User {
   user_id: string,
   userName: string,
-  chatSessions?: ChatSessionType[],
+  chatSessions?: Partial<ChatSessionType>[],
   isRegistering?: boolean
   avatar?: string | Blob
 }

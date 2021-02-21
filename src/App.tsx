@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChatSessionsProvider } from './pages/mainpage/context';
 import MainPage from './pages/mainpage/MainPage';
 import { LoggedUserProvider } from './shared/context/LoggedUserContext';
 
@@ -6,7 +7,9 @@ import { LoggedUserProvider } from './shared/context/LoggedUserContext';
 function App() {
   return (
     <LoggedUserProvider>
-      <MainPage />
+      <ChatSessionsProvider>
+        <MainPage />
+      </ChatSessionsProvider>
     </LoggedUserProvider>
   );
 }

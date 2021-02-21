@@ -5,12 +5,13 @@ import { CircleContainer } from './CircleContainer'
 import { User } from 'shared/context/LoggedUserContext'
 
 interface UserAvatarProps {
-  user: User
+  avatar: User["avatar"]
   limitDimensions?: string | number
 }
 
-export function UserAvatar({ user, limitDimensions }: UserAvatarProps) {
-  if (user.avatar == null) {
+export function UserAvatar({ avatar, limitDimensions }: UserAvatarProps) {
+  // invoke user here =)
+  if (avatar == null) {
     if (limitDimensions != null) {
       return (
         <CircleContainer style={{ maxWidth: limitDimensions, maxHeight: limitDimensions }}>

@@ -1,6 +1,6 @@
 import ActiveChatSession from './ActiveChatSession'
-import { ActiveChatSessionActionBar, ActiveChatSessionBody } from './containers'
-import ActiveChatSessionTitle from './ActiveChatSessionTitle'
+import { ActiveChatSessionActionBar, ActiveChatSessionBody, ActiveChatSessionTitle } from './components'
+
 
 export {
   ActiveChatSession,

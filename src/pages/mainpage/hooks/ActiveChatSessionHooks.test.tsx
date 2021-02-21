@@ -2,16 +2,6 @@ import { act } from "react-dom/test-utils"
 import { chatSessionsMock } from "mocks/chatSessions"
 import { useActiveChatSessionMock } from "shared/test-utils"
 
-
-
-// useActiveChatSession 
-// expect activeSession to be register chat (chat 2) by default 
-// later : expect activeSession to be register chat (chat 2) by default for unregistered users
-// later : expect activeSession to be null for registered users
-// expect that after act setActiveSession
-// expect userBelongsToActiveSession to be false when that user does not belong to chatSession participants
-
-
 describe('useActiveChatSession', () => {
   test('hook returns chat 2 by default', () => {
     const { returnChatSession, userBelongs } = useActiveChatSessionMock()
@@ -27,8 +17,11 @@ describe('useActiveChatSession', () => {
     act(() => {
       mockSetactiveSession("1")
     })
-
-    expect(returnChatSession).toEqual(chatSessionsMock[0])
+    const withUserBelongChatSession = {
+      ...chatSessionsMock[0],
+      userBelongsToSession: true
+    }
+    expect(returnChatSession).toEqual(withUserBelongChatSession)
     expect(typeof userBelongs.belongs).toBe('boolean')
     expect(userBelongs.belongs).toEqual(true)
   })
@@ -42,5 +35,25 @@ describe('useActiveChatSession', () => {
 
     expect(typeof userBelongs.belongs).toBe('boolean')
     expect(userBelongs.belongs).toEqual(false)
+  })
+
+  test('useActiveChatSessionsMessages return exact values', () => {
+    const { messages, mockSetactiveSession } = useActiveChatSessionMock()
+
+    act(() => {
+      mockSetactiveSession("3")
+    })
+
+    expect(messages).toEqual(chatSessionsMock[2].messages)
+  })
+
+  test('useActiveChatSessionID return exact values', () => {
+    const { sessionID, mockSetactiveSession } = useActiveChatSessionMock()
+
+    act(() => {
+      mockSetactiveSession("3")
+    })
+    expect(sessionID?.sess_id).toEqual(chatSessionsMock[2].session_id)
+
   })
 })

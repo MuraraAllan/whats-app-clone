@@ -17,7 +17,7 @@ export default function UserArea() {
       alignItems="center"
       direction="row"
     >
-      <UserAvatar user={user} />
+      <UserAvatar avatar={user.avatar} />
       <Grid item xs={7} sm={8} md={8} lg={9} xl={9}>
         <span>[{user.userName}]</span>
       </Grid>

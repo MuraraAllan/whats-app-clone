@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useReducer } from 'react'
+import React, { ReactNode, useCallback, useReducer } from 'react'
 
 import { chatSessionsMock } from 'mocks/chatSessions'
 import { ChatSessions, ChatSessionType, Message, UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
@@ -51,6 +51,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
         sessions: [...action.state]
       }
     }
+
     case 'add_textMessageWithFile': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -69,6 +70,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_AudioMessage': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -86,6 +88,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_textMessageWithWebcamPicture': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -104,6 +107,7 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
     case 'add_textMessage': {
       const localMessages = { ...state }
       const newMessage: Message = {
@@ -121,48 +125,43 @@ export function ChatSessionsReducer(state: ChatSessions, action: ChatSessionsAct
 
       return localMessages
     }
+
   }
 }
 
 export const ChatSessionsContext = React.createContext<ChatSessionContextType>({} as ChatSessionContextType)
 
+
 type ChatSessionProviderProps = { children: ReactNode }
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
 function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
-  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: [] })
-  useEffect(() => {
-    if (chatSessionsMock == null || dispatch == null) {
-      return
-    }
-    // this is mimicking a subscription which brings us active chat sessions that this user has
-    // firestore should provide which chatSessions user has so we are able to download messagesand check whether or not the user belongs to that chat and the time he leaved
-    dispatch({ type: 'update_fetched', state: chatSessionsMock })
-  }, [])
+  // instead of rendering with chatSessionsMock, this should be rendered with userSessions from backend
+  const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
 
   const addMessage = ({ session_id, textMessage, user }: AddMessageParams) => {
-    if (textMessage == null || user == null || session_id == null) {
-      return
+    if (textMessage == null || user == null || session_id == null || chatSessions == null) {
+      return null
     }
     dispatch({ type: 'add_textMessage', session_id, textMessage, user })
   }
 
   const addMessageWithFile = ({ session_id, textMessage, file, user }: AddMessageWithFileParams) => {
-    if (user == null || session_id == null || file == null) {
+    if (user == null || session_id == null || file == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithFile', session_id, textMessage, user, file })
   }
 
   const addMessageWithWebcamPicture = ({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => {
-    if (textMessage == null || user == null || session_id == null || picture == null) {
+    if (textMessage == null || user == null || session_id == null || picture == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithWebcamPicture', session_id, textMessage, user, picture })
   }
 
   const addAudioMessage = ({ session_id, audio, user }: AddAudioMessageParams) => {
-    if (user == null || session_id == null || audio == null) {
+    if (user == null || session_id == null || audio == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_AudioMessage', session_id, user, audio })

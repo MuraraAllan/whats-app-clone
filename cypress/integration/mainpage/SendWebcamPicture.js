@@ -33,16 +33,10 @@ context('Test take picture with cam and upload Interaction', () => {
       cy.findByTestId('DefaultActionBarUploadPicture').click()
       // custom findAllByText for spans
     })
-    it('find Sala de chat 1 and click then click on UploadPictureActionBarTakePicture', () => {
+    it('find Sala de chat 1 and click then make sure State is reset', () => {
       cy.findByText('Sala de chat 1').click()
-      cy.findByTestId('takePictureWithCamContainer').should('exist')
-      cy.findByTestId('UploadPictureActionBarTakePicture').should('exist')
-    })
-
-    it('take the picture and try to switch sessions then find takePictureWithCamContainer', () => {
-      cy.findByTestId('UploadPictureActionBarTakePicture').click()
-      cy.findByText('Sala de chat 1').click()
-      cy.findByTestId('FileViewerIsViewingWebcamFile').should('exist')
+      cy.findByTestId('takePictureWithCamContainer').should('not.exist')
+      cy.findByTestId('UploadPictureActionBarTakePicture').should('not.exist')
     })
   })
   // TakeScreenShotAgain
@@ -79,7 +73,7 @@ context('Test take picture with cam and upload Interaction', () => {
   // add label "1234testeUploadPictureWithCam" for the picture at FileUploadLabelActionBar
   // get element that displays pictures at TextMessageDisplay
   // get element by text (label of picture)
-  describe('try to take screen shot without sending a label', () => {
+  describe('take screen shot without sending a label', () => {
     it('Visit main page and click on webcam', () => {
       cy.visit('')
       cy.findByTestId('DefaultActionBarUploadPicture').click()
@@ -99,7 +93,7 @@ context('Test take picture with cam and upload Interaction', () => {
   // add label "1234testeUploadPictureWithCam" for the picture at FileUploadLabelActionBar
   // get element that displays pictures at TextMessageDisplay
   // get element by text (label of picture)
-  describe('try to take screen shot without sending a label', () => {
+  describe('take screen shot without sending a label', () => {
     it('Visit main page and click on webcam', () => {
       cy.visit('')
       cy.findByTestId('DefaultActionBarUploadPicture').click()
