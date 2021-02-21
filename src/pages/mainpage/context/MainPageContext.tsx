@@ -11,7 +11,7 @@ interface MainPageActiveChatSession extends ChatSessionType {
 interface MainPageReducerState {
   state: MainPageStates | null
   file?: UploadingFileType | null
-  activeSessionId?: string
+  activeSessionId?: string | null
   activeChatSession?: MainPageActiveChatSession | null
 
 }
@@ -21,11 +21,13 @@ export interface MainPageDispatchers {
   setMainPageState: (state: MainPageStates) => void | null
   finishMainPageState: (params: Partial<Message>) => void
   resetMainPageState: () => void
+  resetActiveChatSession: () => void
 }
 
 type ActionSetMainPageCurrentState = { type: 'set_mainpage_state', state: MainPageStates, file?: UploadingFileType }
-type MainPageActions = SetActiveSession | ActionSetMainPageCurrentState
+type MainPageActions = SetActiveSession | ActionSetMainPageCurrentState | ResetActiveSession
 type MainPageContextState = MainPageReducerState & MainPageDispatchers
+type ResetActiveSession = { type: 'reset_active_session' }
 type SetActiveSession = { type: 'set_active_session', sessionId: string, activeChatSession: MainPageActiveChatSession, state: MainPageStates }
 
 // view_message - defaultState - display all activeChatSession messages | can play audio | can download files | can attach files | can take picture | can send message | can switch active session
@@ -61,6 +63,12 @@ export function MainPageReducer(reducerState: MainPageReducerState, action: Main
         state: action.state,
         file: null
       }
+    case 'reset_active_session':
+      return {
+        ...reducerState,
+        activeSessionId: null,
+        activeChatSession: null
+      }
     case 'set_active_session':
       return {
         ...reducerState,
@@ -77,7 +85,8 @@ export const MainPageContext = React.createContext<MainPageContextState>({
   setActiveChatSession: () => null,
   setMainPageState: () => null,
   finishMainPageState: () => null,
-  resetMainPageState: () => null
+  resetMainPageState: () => null,
+  resetActiveChatSession: () => null
 })
 
 
@@ -89,6 +98,7 @@ function MainPageProvider({ children }: ChatSessionProviderProps) {
   const [mainPageReducer, dispatch] = useReducer(MainPageReducer, {
     state: 'view_message',
     activeChatSession: null,
+    activeSessionId: null,
     file: null
   })
 
@@ -210,13 +220,14 @@ function MainPageProvider({ children }: ChatSessionProviderProps) {
 
   const resetMainPageState = () => dispatch({ type: 'set_mainpage_state', state: 'view_message' })
   const setMainPageState = (state: MainPageStates) => dispatch({ type: 'set_mainpage_state', state })
+  const resetActiveChatSession = () => dispatch({ type: 'reset_active_session' })
 
   useEffect(() => {
     setActiveChatSession('2')
   }, [])
 
   return (
-    <MainPageContext.Provider value={{ ...mainPageReducer, finishMainPageState, setActiveChatSession, setMainPageState, resetMainPageState }}>
+    <MainPageContext.Provider value={{ ...mainPageReducer, finishMainPageState, setActiveChatSession, setMainPageState, resetMainPageState, resetActiveChatSession }}>
       {children}
     </MainPageContext.Provider >
   )
