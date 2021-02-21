@@ -16,7 +16,7 @@ interface MainPageReducerState {
 
 }
 
-interface MainPageDispatchers {
+export interface MainPageDispatchers {
   setActiveChatSession: (sessionId: string) => void | null
   setMainPageState: (state: MainPageStates) => void | null
   finishMainPageState: (params: Partial<Message>) => void

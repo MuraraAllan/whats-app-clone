@@ -14,7 +14,6 @@ export function useMainPage() {
 
 export function useGetMainPageState() {
   const { state } = useMainPage()
-  // const getActiveChatSession = useCallback(() => activeChatSession, [activeChatSession])
   return state
 }
 

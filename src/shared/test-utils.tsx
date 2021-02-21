@@ -1,10 +1,13 @@
 import React, { ReactNode, useEffect } from 'react'
 import { render } from '@testing-library/react'
+import TestRenderer from 'react-test-renderer';
+
 
 import { MainPageProvider, ChatSessionsProvider, UploadFileProvider } from 'pages/mainpage/context'
+import { MainPageDispatchers } from 'pages/mainpage/context/MainPageContext'
 import { ChatSessionType, Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { LoggedUserProvider } from './context/LoggedUserContext'
-import { useActiveChatSession, useActiveChatSessionID, useActiveChatSessionMessages, useMainPageDispatchers } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useActiveChatSessionID, useActiveChatSessionMessages, useGetMainPageState, useMainPageDispatchers, useMainPageFile } from 'pages/mainpage/hooks'
 import { UploadFileDispatchers } from '../pages/mainpage/context/UploadFileContext'
 
 export function useActiveChatSessionMock(Component?: React.ReactNode) {
@@ -68,6 +71,64 @@ export function useUploadFileMock(Component?: React.ReactNode) {
     </MockProviders>
   )
   return { dispatchers, getByTestId, getAllByText, getByText, debug }
+}
+
+interface UseMainPageMockProps {
+  useTestRenderer?: boolean,
+  Component?: React.ReactNode
+}
+
+export function useMainPageMock(props?: UseMainPageMockProps) {
+  const returnObj = {} as {
+    state: any,
+    activeSessionID: any,
+    file: any
+  }
+  const Component = props?.Component ?? null
+  const useTestRenderer = props?.useTestRenderer ?? false
+  const dispatchers = {} as MainPageDispatchers
+
+  function TestComponent() {
+    const localDispatchers = useMainPageDispatchers()
+    const state = useGetMainPageState()
+    const activeSessionID = useActiveChatSessionID()
+    const file = useMainPageFile()
+    useEffect(() => {
+      Object.assign(returnObj, {
+        ...{
+          state,
+          activeSessionID,
+          file
+        }
+      })
+      Object.assign(dispatchers, localDispatchers)
+
+    }, [localDispatchers, state, activeSessionID, file])
+
+    return <>
+      {Component}
+    </>
+  }
+
+  if (useTestRenderer) {
+    const { act } = TestRenderer
+    let render = undefined as unknown as TestRenderer.ReactTestRenderer
+    act(() => {
+      render = TestRenderer.create(
+        <MockProviders>
+          <TestComponent />
+        </MockProviders>
+      )
+    })
+    return { returnObj, dispatchers, root: render.root }
+  }
+
+  const { getByTestId, getAllByText, getByText, debug, } = render(
+    <MockProviders>
+      <TestComponent />
+    </MockProviders>
+  )
+  return { returnObj, dispatchers, getByTestId, getAllByText, getByText, debug }
 }
 
 

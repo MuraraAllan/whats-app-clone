@@ -1,20 +1,79 @@
-import { act } from "react-dom/test-utils"
+import TestRenderer from 'react-test-renderer';
 
-import ActiveChatSessionActionBar from "./ActiveChatSessionActionBar"
-import { useActiveChatSessionMock } from "shared/test-utils"
-// expect that if a user don't belong to ActionBar, it renders blocked;
-// expect that sendMessage is called, when the user try to send a message;
-// should test if I try to send a message, take a photo or send a file the respective hook is called;
-// hooks will be tested individually with forced uploads and not from the components which uses it;
-// Capturing files relies on Browser APIs which are third partys and we don't test.
+import { useMainPageMock } from 'shared/test-utils'
+import ActiveChatSessionActionBar from './ActiveChatSessionActionBar';
+import { DefaultActionBar, FileUploadLabelActionBar, RecordAudioActionBar, RegisteringFormActionBar, TakePictureActionBar } from './components';
 
 
-describe('ActiveChatSessionActionBar', () => {
-  test("should render blocked when the user doesn't belong to session", () => {
-    const { mockSetactiveSession, getByTestId } = useActiveChatSessionMock(<ActiveChatSessionActionBar />)
+global.URL.createObjectURL = jest.fn();
+
+
+Object.defineProperty(window.navigator, 'mediaDevices', {
+  writable: true,
+  value: {
+    getUserMedia: async () => {
+      const stream = new MediaStream()
+      return stream
+    }
+  },
+});
+
+const { act } = TestRenderer
+describe('ActiveChatSessionBody', () => {
+  it('MainPageState is "view_message" render DefaultActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
     act(() => {
-      mockSetactiveSession("3")
+      dispatchers.setMainPageState("view_message")
     })
-    expect(getByTestId('activeChatSessionActionBarBlocked')).toBeDefined()
+    const element = root?.findAllByType(DefaultActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "view_message_picture" render DefaultActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("view_message_picture")
+    })
+    const element = root?.findAllByType(DefaultActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "record_audio"  render RecordAudioActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("record_audio")
+    })
+    const element = root?.findAllByType(RecordAudioActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "preview_file_upload" render FileUploadLabelActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("preview_file_upload")
+    })
+    const element = root?.findAllByType(FileUploadLabelActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "take_webcam_picture" render TakePictureActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("take_webcam_picture")
+    })
+    const element = root?.findAllByType(TakePictureActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "preview_uploading_webcam" render FileUploadLabelActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("preview_uploading_webcam")
+    })
+    const element = root?.findAllByType(FileUploadLabelActionBar);
+    expect(element?.length).toEqual(1)
+  })
+  it('MainPageState is "register_form" render RegisteringFormActionBar', () => {
+    const { dispatchers, root } = useMainPageMock({ useTestRenderer: true, Component: <ActiveChatSessionActionBar /> })
+    act(() => {
+      dispatchers.setMainPageState("register_form")
+    })
+    const element = root?.findAllByType(RegisteringFormActionBar);
+    expect(element?.length).toEqual(1)
   })
 })

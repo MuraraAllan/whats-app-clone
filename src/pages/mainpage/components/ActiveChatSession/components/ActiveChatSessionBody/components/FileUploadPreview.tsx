@@ -47,7 +47,7 @@ const filePreviewStyles = makeStyles((theme) => {
 
 
 
-export default function FileUploadPreview({ fileView, setFileView }: { fileView?: UploadingFileType, setFileView?: Dispatch<SetStateAction<UploadingFileType | null>> }) {
+export default function FileUploadPreview() {
   const { resetMainPageState } = useMainPageDispatchers()
   const file = useMainPageFile()
   const classes = filePreviewStyles()
@@ -60,7 +60,7 @@ export default function FileUploadPreview({ fileView, setFileView }: { fileView?
           <FontWidthSpan data-testid="FileViewerClose" onClick={() => resetMainPageState()} style={{ padding: '5px', cursor: 'pointer' }}>x</FontWidthSpan>
           {/* implement i18n */}
           <FontWidthSpan data-testid="FileViewerLabel">
-            "Digite o label do arquivo"
+            Digite o label do arquivo
           </FontWidthSpan>
         </Grid>
       </BorderedContainer>
