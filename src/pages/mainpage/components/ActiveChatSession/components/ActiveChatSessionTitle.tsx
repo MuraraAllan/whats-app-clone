@@ -2,10 +2,12 @@ import React, { useMemo } from 'react'
 import Grid from '@material-ui/core/Grid';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import styled from 'styled-components';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { BorderedContainer, CircleContainer } from 'shared/components';
-import { useActiveChatSession } from 'pages/mainpage/hooks'
+import { useActiveChatSession, useMainPageDispatchers } from 'pages/mainpage/hooks'
 import { useUser } from 'shared/hooks';
+import { ArrowBack } from '@material-ui/icons';
 
 const Container = styled(BorderedContainer)`height: 72px`
 const LimitedContainer = styled(Grid)`max-width: 50%`
@@ -16,7 +18,9 @@ const LimitedContainer = styled(Grid)`max-width: 50%`
 
 export default function ActiveChatSessionTitle() {
   const { activeChatSession } = useActiveChatSession()
+  const { resetActiveChatSession } = useMainPageDispatchers()
   const { user } = useUser()
+  const isMobile = useMediaQuery('(max-width: 600px')
 
   const usersInChat = useMemo(() => {
     if (user == null || activeChatSession == null || activeChatSession.participants == null) {
@@ -39,6 +43,9 @@ export default function ActiveChatSessionTitle() {
       direction="row"
       style={{ backgroundColor: activeChatSession.userBelongsToSession ? 'white' : '#80808066' }}
     >
+      { isMobile ?
+        <ArrowBack onClick={() => resetActiveChatSession()} />
+        : null}
       <CircleContainer style={{ marginLeft: '10px', marginRight: '10px' }}>
         <PeopleAltIcon style={{ width: '75%', height: '75%' }} />
       </CircleContainer>

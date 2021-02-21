@@ -29,13 +29,14 @@ export function useMainPageFile() {
 }
 
 export function useMainPageDispatchers() {
-  const { setActiveChatSession, setMainPageState, finishMainPageState, resetMainPageState } = useContext(MainPageContext)
+  const { setActiveChatSession, setMainPageState, finishMainPageState, resetMainPageState, resetActiveChatSession } = useContext(MainPageContext)
 
   return {
     setActiveChatSession,
     setMainPageState,
     finishMainPageState,
-    resetMainPageState
+    resetMainPageState,
+    resetActiveChatSession
   }
 }
 

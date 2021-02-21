@@ -34,7 +34,7 @@ export default function DefaultActionBar() {
         <input data-testid="DefaultActionBarHiddenInputFile" type="file" ref={inputRef} style={{ display: 'none' }} />
         <RotatedAttachFile onClick={() => inputRef.current?.click()} fontSize="large" />
       </Grid>
-      <FullHeightContainer container item xs={8} sm={7} md={8} lg={9} xl={10} alignItems="center">
+      <FullHeightContainer container item xs={6} sm={7} md={8} lg={9} xl={10} alignItems="center">
         {/* implement i18n */}
         <BorderedInput
           data-testid="DefaultActionBarInput"
