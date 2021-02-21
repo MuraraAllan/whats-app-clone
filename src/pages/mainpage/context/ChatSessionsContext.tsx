@@ -139,33 +139,33 @@ function ChatSessionsProvider({ children }: ChatSessionProviderProps) {
   // instead of rendering with chatSessionsMock, this should be rendered with userSessions from backend
   const [chatSessions, dispatch] = useReducer(ChatSessionsReducer, { sessions: chatSessionsMock })
 
-  const addMessage = useCallback(({ session_id, textMessage, user }: AddMessageParams) => {
+  const addMessage = ({ session_id, textMessage, user }: AddMessageParams) => {
     if (textMessage == null || user == null || session_id == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessage', session_id, textMessage, user })
-  }, [chatSessions])
+  }
 
-  const addMessageWithFile = useCallback(({ session_id, textMessage, file, user }: AddMessageWithFileParams) => {
+  const addMessageWithFile = ({ session_id, textMessage, file, user }: AddMessageWithFileParams) => {
     if (user == null || session_id == null || file == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithFile', session_id, textMessage, user, file })
-  }, [chatSessions])
+  }
 
-  const addMessageWithWebcamPicture = useCallback(({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => {
+  const addMessageWithWebcamPicture = ({ session_id, textMessage, picture, user }: AddMessageWithWebcamPictureParams) => {
     if (textMessage == null || user == null || session_id == null || picture == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_textMessageWithWebcamPicture', session_id, textMessage, user, picture })
-  }, [chatSessions])
+  }
 
-  const addAudioMessage = useCallback(({ session_id, audio, user }: AddAudioMessageParams) => {
+  const addAudioMessage = ({ session_id, audio, user }: AddAudioMessageParams) => {
     if (user == null || session_id == null || audio == null || chatSessions == null) {
       return null
     }
     dispatch({ type: 'add_AudioMessage', session_id, user, audio })
-  }, [chatSessions])
+  }
 
   return (
     <ChatSessionsContext.Provider value={{ chatSessions, addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage }}>
