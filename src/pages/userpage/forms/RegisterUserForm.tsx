@@ -7,10 +7,18 @@ import zxcvbn from 'zxcvbn'
 import { Form } from 'shared/forms';
 import { InputFormField } from 'shared/forms/components';
 import { ShadowedButton } from 'shared/components/ShadowedButton';
+import { firebaseRegister } from '../../../shared/firebase/FireBaseHelper';
 
 
-
-// test if username already exists on yup and set the method validation to on Submit 
+async function handleRegisterUser(this: any, formData: any, setError: any,) {
+  const registeredUser = await firebaseRegister(formData)
+  if (registeredUser.user == null) {
+    this.setError("username", {
+      type: "manual",
+      message: "Erro, e-mail em uso"
+    })
+  }
+}
 
 const schema = yup.object().shape({
   username: yup.string().required('Username é um campo obrigatório').min(7),
@@ -18,23 +26,25 @@ const schema = yup.object().shape({
     if (val == null) {
       return false
     }
-    const strongEnough = zxcvbn(val).score > 2
-    return strongEnough
+    const strongEnought = zxcvbn(val).score > 2
+    return strongEnought
   })
 })
+
 const FormGroup = styled(Grid)`padding: 5px;`
 
 export function RegisterUserForm() {
 
   return (
-    <Form id="register_user_account" fullWidth={false} validationMode="onSubmit" revalidationMode="onSubmit" schema={schema}>
+    <Form id="register_user_account" onSubmit={handleRegisterUser}
+      fullWidth={false} validationMode="onSubmit" revalidationMode="onSubmit" schema={schema}>
       <FormGroup>
         <label>Nome de usuário</label>
         <InputFormField border={2} placeholder="novo nome de usuário" name="username" showErrorMessage={true} />
       </FormGroup>
       <FormGroup>
         <label>Password</label>
-        <InputFormField border={2} placeholder="Password" name="password" showErrorMessage={true} />
+        <InputFormField type="password" border={2} placeholder="Password" name="password" showErrorMessage={true} />
       </FormGroup>
       <FormGroup container justify="center" >
         <ShadowedButton type="submit">

@@ -22,7 +22,7 @@ export function InputFormField(props: InputFormFieldProps) {
   const error = methods.errors[props.name]
   const hasErrors = error != null && methods.formState.submitCount > 0
   const { border } = props
-  console.log(error)
+
   // component is now connect to form validation through FormProvider
   return (
     <>

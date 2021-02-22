@@ -14,7 +14,6 @@ describe('ChatArea', () => {
         <ChatsArea />
       </MockProviders>
     ).root;
-    // console.log('rooot is', root)
     const element = root.findAllByType(ChatContent);
     expect(element.length).toBe(3)
   })

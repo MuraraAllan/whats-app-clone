@@ -9,7 +9,7 @@ import { useActiveChatSessionID } from "../../pages/mainpage/hooks";
 interface FormProps {
   id?: string
   children: ReactNode
-  onSubmit?: () => void
+  onSubmit?: (param: any, setError: any) => void
   schema: ObjectSchema<any>
   validationMode?: 'all' | 'onSubmit'
   revalidationMode?: 'onSubmit' | 'onChange'
@@ -26,15 +26,16 @@ interface FormProps {
 // and wraps the component with a red border
 
 export function Form({ children, defaultValues, fullWidth, id, onSubmit, revalidationMode, schema, validationMode }: FormProps) {
-  console.log('validation mode', validationMode)
-  console.log('validation mode', revalidationMode)
+
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues,
     mode: validationMode ?? 'all',
     reValidateMode: revalidationMode ?? 'onChange'
   });
+
   const { handleSubmit } = methods
+
   const session_id = useActiveChatSessionID()
   const localHandleSubmit = useCallback((data, form) => {
     if (handleSubmit != null) {
@@ -57,10 +58,15 @@ export function Form({ children, defaultValues, fullWidth, id, onSubmit, revalid
     return null
   }
 
+  const bindedSubmit = onSubmit != null ? onSubmit.bind({
+    setError: methods.setError
+  }) : null
 
   return (
     <FormProvider {...methods} >
-      <form id={id} style={fullWidth ? { width: '100%' } : undefined} onSubmit={handleSubmit((d) => localHandleSubmit(d, id))}>
+      <form id={id}
+        style={fullWidth ? { width: '100%' } : undefined}
+        onSubmit={handleSubmit(bindedSubmit ? bindedSubmit : (d) => localHandleSubmit(d, id))}>
         {children}
       </form>
     </FormProvider>
