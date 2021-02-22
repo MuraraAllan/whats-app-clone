@@ -11,6 +11,11 @@ const Container = styled(BorderedContainer)`height: 72px`
 
 export default function UserArea() {
   const { user } = useUser()
+
+  if (user == null) {
+    return null
+  }
+
   return (
     <Container container
       justify="space-evenly"

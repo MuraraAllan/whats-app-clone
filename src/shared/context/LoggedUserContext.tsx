@@ -1,6 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { ChatSessionType } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { userWithChatSessions } from 'mocks/userData'
+import { SetStateAction } from 'react'
+import { Dispatch } from 'react'
 
 export interface User {
   user_id: string,
@@ -10,16 +12,13 @@ export interface User {
   avatar?: string | Blob
 }
 
-export type RegisteringFormControl = {
-  isRegisteringFormOpen: boolean,
-  setIsRegisterFormOpen: Dispatch<SetStateAction<boolean>>
-}
 
 type UserProviderProps = { children: React.ReactNode }
 
 type UserContext = {
-  user: User
-} & RegisteringFormControl
+  user: User | null
+  setUser: Dispatch<SetStateAction<User | null>>
+}
 
 // user context will not carry any reducer nor actions
 // our backend will propagate all user's chat rooms
@@ -31,11 +30,11 @@ export const LoggedUserContext = React.createContext<UserContext | null>(null)
 function LoggedUserProvider({ children }: UserProviderProps) {
   // this is a top context we shouldnt rerender it
   // move state to useActiveSessionUserStates (?)
-  const [user,] = useState<User>(userWithChatSessions)
-  const [isRegisteringFormOpen, setIsRegisterFormOpen] = useState<boolean>(false)
+  const [user, setUser] = useState<User | null>(null)
+
 
   return (
-    <LoggedUserContext.Provider value={{ user, isRegisteringFormOpen, setIsRegisterFormOpen }}>
+    <LoggedUserContext.Provider value={{ user, setUser }}>
       {children}
     </LoggedUserContext.Provider>
   )

@@ -1,0 +1,19 @@
+need an user collection which should be feeded with chatSessions which user
+belongs or belonged in some point in time.
+
+need a collection for store chat chatSessions
+
+
+
+ideally we would have a collection of messages also | just point out to messages document on chatSession.messages
+but initially lets just implement messages collection
+
+
+do we need firebase admin to manage users?!
+
+when a new user is created, we should create a new entry on usersCollection
+create the default chat sessions and share it all around the users;
+
+implement chatSessions collection to boostrap chatSessions to new users.
+  
+

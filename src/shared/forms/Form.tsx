@@ -9,9 +9,12 @@ import { useActiveChatSessionID } from "../../pages/mainpage/hooks";
 interface FormProps {
   id?: string
   children: ReactNode
-  onSubmit?: () => void
+  onSubmit?: (param: any, setError: any) => void
   schema: ObjectSchema<any>
-  defaultValues: {
+  validationMode?: 'all' | 'onSubmit'
+  revalidationMode?: 'onSubmit' | 'onChange'
+  fullWidth?: boolean
+  defaultValues?: {
     [key: string]: unknown
   }
 }
@@ -22,13 +25,17 @@ interface FormProps {
 // there is a component called FormErrorHandling which listens for form errors by name
 // and wraps the component with a red border
 
-export function Form({ children, id, onSubmit, schema, defaultValues }: FormProps) {
+export function Form({ children, defaultValues, fullWidth, id, onSubmit, revalidationMode, schema, validationMode }: FormProps) {
+
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues,
-    mode: 'all',
+    mode: validationMode ?? 'all',
+    reValidateMode: revalidationMode ?? 'onChange'
   });
+
   const { handleSubmit } = methods
+
   const session_id = useActiveChatSessionID()
   const localHandleSubmit = useCallback((data, form) => {
     if (handleSubmit != null) {
@@ -51,10 +58,15 @@ export function Form({ children, id, onSubmit, schema, defaultValues }: FormProp
     return null
   }
 
+  const bindedSubmit = onSubmit != null ? onSubmit.bind({
+    setError: methods.setError
+  }) : null
 
   return (
     <FormProvider {...methods} >
-      <form id={id} style={{ width: '100%' }} onSubmit={handleSubmit((d) => localHandleSubmit(d, id))}>
+      <form id={id}
+        style={fullWidth ? { width: '100%' } : undefined}
+        onSubmit={handleSubmit(bindedSubmit ? bindedSubmit : (d) => localHandleSubmit(d, id))}>
         {children}
       </form>
     </FormProvider>

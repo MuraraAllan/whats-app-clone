@@ -59,7 +59,7 @@ const country_list = {
 
 export default function RegisteringForm() {
   return (
-    <Form id="fazer_meu_cadastro" schema={schema} defaultValues={defaultValues}>
+    <Form id="fazer_meu_cadastro" fullWidth={true} schema={schema} defaultValues={defaultValues}>
       <FullHeightContainer container item direction="column" justify="center">
         {/* implement i18n */}
 

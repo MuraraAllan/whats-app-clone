@@ -8,7 +8,6 @@ import { MainPageDispatchers } from 'pages/mainpage/context/MainPageContext'
 import { ChatSessionType, Message } from 'pages/mainpage/hooks/ChatSessionsHooks'
 import { LoggedUserProvider } from './context/LoggedUserContext'
 import { useActiveChatSession, useActiveChatSessionID, useActiveChatSessionMessages, useGetMainPageState, useMainPageDispatchers, useMainPageFile } from 'pages/mainpage/hooks'
-import { UploadFileDispatchers } from '../pages/mainpage/context/UploadFileContext'
 
 export function useActiveChatSessionMock(Component?: React.ReactNode) {
   const returnChatSession = {} as ChatSessionType
@@ -49,7 +48,7 @@ export function useActiveChatSessionMock(Component?: React.ReactNode) {
 }
 
 export function useUploadFileMock(Component?: React.ReactNode) {
-  const dispatchers = {} as UploadFileDispatchers
+  const dispatchers = {} as any
   let mockSetactiveSession: (session_id: string) => void = (session_id: string) => null
 
   function TestComponent() {

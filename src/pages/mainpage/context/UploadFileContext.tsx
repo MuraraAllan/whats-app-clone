@@ -1,17 +1,10 @@
-import React, { createRef, Dispatch, MutableRefObject, SetStateAction, useState } from 'react'
-import { UploadingFileType } from 'pages/mainpage/hooks/ChatSessionsHooks'
+import React, { createRef, MutableRefObject } from 'react'
 
 interface UploadingFileController {
-  uploadingFile: UploadingFileType | null
   videoRef: MutableRefObject<HTMLVideoElement | null>
 }
 
-export interface UploadFileDispatchers {
-  setUploadingFile: Dispatch<SetStateAction<UploadingFileType | null>>
-
-}
-
-type UploadFilesControlType = UploadingFileController & UploadFileDispatchers
+type UploadFilesControlType = UploadingFileController
 
 type ActiveSessionProviderProps = { children: React.ReactNode }
 
@@ -24,15 +17,11 @@ export const UploadFileContext = React.createContext<UploadFilesControlType | nu
 
 function UploadFileProvider({ children }: ActiveSessionProviderProps) {
 
-  const [uploadingFile, setUploadingFile] = useState<UploadingFileType | null>(null)
   const videoRef = createRef<HTMLVideoElement>()
 
   return (
     <UploadFileContext.Provider value={{
-      uploadingFile,
-      setUploadingFile,
       videoRef,
-
     }}>
       {children}
     </UploadFileContext.Provider>
