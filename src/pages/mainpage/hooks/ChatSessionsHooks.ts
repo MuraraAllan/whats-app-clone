@@ -106,7 +106,9 @@ export function useChatSessionsDispatchers() {
 
 
 export function useUserBelongsToSession(session_id: ChatSessionType["session_id"]) {
-  const { user: { user_id } } = useUser()
+  const { user } = useUser()
+  const user_id = user?.user_id
+
   const { getChatSession } = useGetChatSession()
   const chatSession = getChatSession(session_id)
   if (chatSession == null) {

@@ -11,7 +11,10 @@ interface FormProps {
   children: ReactNode
   onSubmit?: () => void
   schema: ObjectSchema<any>
-  defaultValues: {
+  validationMode?: 'all' | 'onSubmit'
+  revalidationMode?: 'onSubmit' | 'onChange'
+  fullWidth?: boolean
+  defaultValues?: {
     [key: string]: unknown
   }
 }
@@ -22,11 +25,14 @@ interface FormProps {
 // there is a component called FormErrorHandling which listens for form errors by name
 // and wraps the component with a red border
 
-export function Form({ children, id, onSubmit, schema, defaultValues }: FormProps) {
+export function Form({ children, defaultValues, fullWidth, id, onSubmit, revalidationMode, schema, validationMode }: FormProps) {
+  console.log('validation mode', validationMode)
+  console.log('validation mode', revalidationMode)
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues,
-    mode: 'all',
+    mode: validationMode ?? 'all',
+    reValidateMode: revalidationMode ?? 'onChange'
   });
   const { handleSubmit } = methods
   const session_id = useActiveChatSessionID()
@@ -54,7 +60,7 @@ export function Form({ children, id, onSubmit, schema, defaultValues }: FormProp
 
   return (
     <FormProvider {...methods} >
-      <form id={id} style={{ width: '100%' }} onSubmit={handleSubmit((d) => localHandleSubmit(d, id))}>
+      <form id={id} style={fullWidth ? { width: '100%' } : undefined} onSubmit={handleSubmit((d) => localHandleSubmit(d, id))}>
         {children}
       </form>
     </FormProvider>

@@ -32,7 +32,7 @@ export default function DisplayMessages() {
   //DISPLAY MESSAGES : pass message id down instead of passing 
   return <FullWidthContainer data-testid="ActiveChatSessionBodyMessages" ref={fileDropRef} container item direction="column">
     {messages?.map((message, index) => {
-      const isCurrentUserMessage = message.user.user_id === user.user_id
+      const isCurrentUserMessage = message.user.user_id === user?.user_id
       return (
         <GridPadded key={index} container direction="row" justify={isCurrentUserMessage === true ? "flex-end" : "flex-start"} wrap="nowrap" >
           {isCurrentUserMessage === false ? <UserAvatarWithName message={message} /> : null}

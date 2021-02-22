@@ -103,11 +103,12 @@ function MainPageProvider({ children }: ChatSessionProviderProps) {
   })
 
   const { user } = useUser()
-  const { user_id } = user
+  const user_id = user?.user_id
+
   const { getChatSession } = useGetChatSession()
   const { addMessage, addMessageWithFile, addMessageWithWebcamPicture, addAudioMessage } = useChatSessionsDispatchers()
 
-  // maybe a callBack is not necessary here 
+
   const setActiveChatSession = (sessionId: string) => {
     if (sessionId != null && sessionId !== mainPageReducer.activeSessionId) {
       const activeChatSession = getChatSession(sessionId)
@@ -130,6 +131,11 @@ function MainPageProvider({ children }: ChatSessionProviderProps) {
   }
 
   const finishMainPageState = useCallback((params: Partial<Message>) => {
+
+    if (user == null) {
+      return
+    }
+
     switch (mainPageReducer.state) {
       case 'view_message':
         // on view message, if the finishAction brings picture, it means viewing uploaded picture

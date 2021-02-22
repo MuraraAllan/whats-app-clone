@@ -27,7 +27,7 @@ type ChangeEventExtended = React.MouseEvent<HTMLDivElement, MouseEvent> & {
 
 export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
   const { progress, currentTime, audioRef, duration } = useAudioPlayerHook()
-  const { user: { avatar } } = useUser()
+  const { user } = useUser()
 
   const isStoped = useMemo(() => {
     if (progress == null || audioRef.current?.paused === true) {
@@ -87,7 +87,7 @@ export default function AudioPlayer({ audioSrc }: { audioSrc: string }) {
       <PaddedBorderedContainer container item xs={9} sm={7} md={5} lg={3} xl={2} direction="column" alignItems="center" border={2}>
         <FixedHeightGrid container alignItems="center">
           <Grid item style={{ flex: 0.15 }}>
-            <UserAvatar avatar={avatar} limitDimensions="50px" />
+            <UserAvatar avatar={user?.avatar} limitDimensions="50px" />
           </Grid>
           <Grid item style={{ flex: 0.15 }}>
             {isPlaying === false ? <PlayArrow data-testid="AudioMessagePlay" fontSize="large" onClick={() => playAudio()} /> : <Stop data-testid={"AudioMessageStop"} fontSize="large" onClick={() => pauseAudio()} />}

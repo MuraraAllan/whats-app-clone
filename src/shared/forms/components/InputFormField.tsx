@@ -14,13 +14,15 @@ interface InputFormFieldProps {
   height?: string | number
   type?: HTMLInputElement["type"]
   placeholder?: HTMLInputElement["placeholder"]
+  showErrorMessage?: boolean
 }
 
 export function InputFormField(props: InputFormFieldProps) {
   const methods = useFormContext()
-  const hasErrors = methods.errors[props.name] != null && methods.formState.submitCount > 0
+  const error = methods.errors[props.name]
+  const hasErrors = error != null && methods.formState.submitCount > 0
   const { border } = props
-
+  console.log(error)
   // component is now connect to form validation through FormProvider
   return (
     <>
@@ -32,6 +34,9 @@ export function InputFormField(props: InputFormFieldProps) {
         {...props}
         border={hasErrors ? '2px solid red' : border}
       />
+      {props.showErrorMessage && hasErrors ? (
+        <span>{error.message}</span>
+      ) : null}
     </>
   );
 }
