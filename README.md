@@ -39,7 +39,7 @@ A page is an action or behavior that the application can have, such as UserPage 
 
 # Usage
 
- Don't forget to attach yarn.lock when changing package.json
+ Remember to attach yarn.lock when changing package.json
  
 ## Installation
 
