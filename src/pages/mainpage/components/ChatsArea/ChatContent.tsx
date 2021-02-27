@@ -19,6 +19,7 @@ export const findLastMessageChatPreview = (lastMessage: ChatSessionType['lastMes
     return lastMessage.inlineButtons[0].label.substring(0, 10).concat('...')
   }
 }
+
 const Container = styled(BorderedContainer)`height: 72px; cursor: pointer;`
 
 export const ChatContent = function ChatContent({ session_id }: { session_id: ChatSessionType["session_id"] }): React.ReactElement {
@@ -29,6 +30,7 @@ export const ChatContent = function ChatContent({ session_id }: { session_id: Ch
   const chatSession = getChatSession(session_id)
   const userBelongsToSession = useUserBelongsToSession(session_id)
   const isCurrentActiveSession = activeSessionID != null && activeSessionID === session_id
+
   const chatPreview = useMemo(() => {
     // if lastMessage has a file then we should check for its type
     // and render a respective icon
@@ -68,7 +70,7 @@ export const ChatContent = function ChatContent({ session_id }: { session_id: Ch
       return messageDate.toLocaleDateString()
     }
     return null
-  }, [chatSession])
+  }, [chatSession?.lastMessage])
 
 
   if (chatSession == null) {

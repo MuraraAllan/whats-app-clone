@@ -49,14 +49,14 @@ describe('useChatSessions', () => {
     act(() => {
       dispatchers.addMessage({ session_id: "1", textMessage: null, user: { user_id: "3333", userName: 'test user' } })
     })
-    expect(state?.sessions[0].messages?.length ?? "0").toBe(2)
+    expect(state?.sessions[0].messages?.length ?? "0").toBe(1)
   })
   test('expect that addMessage adds a message', () => {
     const { dispatchers, state } = useChatSessionsMock()
     act(() => {
       dispatchers.addMessage({ session_id: "1", textMessage: "anything to test", user: { user_id: "3333", userName: 'test user' } })
     })
-    expect(state?.sessions[0].messages?.length ?? "0").toBe(3)
+    expect(state?.sessions[0].messages?.length ?? "0").toBe(2)
   })
   test('expect that addMessageWithFile adds a message with File', () => {
     const { dispatchers, state } = useChatSessionsMock()
@@ -65,7 +65,7 @@ describe('useChatSessions', () => {
       dispatchers.addMessageWithFile({ session_id: "1", textMessage: "anything to test", user: { user_id: "3333", userName: 'test user' }, file: mockFile })
     })
     const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
-    expect(lengthOfTestedSessionMessagesArray).toBe(4)
+    expect(lengthOfTestedSessionMessagesArray).toBe(3)
     const lastMessage = state?.sessions[0].lastMessage
     expect(lastMessage).toHaveProperty("file")
   })
@@ -82,7 +82,7 @@ describe('useChatSessions', () => {
       })
     })
     const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
-    expect(lengthOfTestedSessionMessagesArray).toBe(5)
+    expect(lengthOfTestedSessionMessagesArray).toBe(4)
     const lastMessage = state?.sessions[0].lastMessage
     expect(lastMessage).toHaveProperty("picture")
   })
@@ -98,7 +98,7 @@ describe('useChatSessions', () => {
       })
     })
     const lengthOfTestedSessionMessagesArray = state?.sessions[0].messages?.length ?? "0"
-    expect(lengthOfTestedSessionMessagesArray).toBe(6)
+    expect(lengthOfTestedSessionMessagesArray).toBe(5)
     const lastMessage = state?.sessions[0].lastMessage
     expect(lastMessage).toHaveProperty("audio")
   })

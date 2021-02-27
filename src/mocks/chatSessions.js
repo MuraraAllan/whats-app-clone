@@ -9,20 +9,20 @@ export const chatSessionsMock = [
     ],
     unreadMessages: 1,
     lastMessage: {
-      message_id: '1b',
+      message_id: '1a',
+      textMessage: "Houve um cadastro de pessoa Física \n Informações: \n Nome: Fulano Pereira \n Data de Nascimento : 21/01/1992 \n CPF: 23.562.865-73 \n Endereço : Endereço informado, 1552 - Bombinhas, SC",
       inlineButtons: [
-        { label: "Detran-SP - Autenticidade. R$0,20" },
-        { label: "Receita Federal - Antecedentes CPF. R$0,20" },
-        { label: "Polícia Civil SP - Antecedentes. R$ 0,20" },
-        { label: "Ficha de crédito. R$ 0,20" }
+        { label: "Aprovar" },
+        { label: "Rejeitar" },
+        { label: "Solicitar Info Adicional" }
       ],
-      user: { user_id: "2", userName: 'KYC' },
-      timeStamp: 1612648789136,
+      user: { user_id: "1", userName: 'Karen' },
+      timeStamp: 1612275839631,
     },
     messages: [
       {
         message_id: '1a',
-        textMessage: "Houve um cadastro de pessoa Física \n Dados Do formulário: \n Nome: José Da Silva \n Data de Nascimento : 22/02/1922 \n CPF: 22.332.556-65 \n Endereço : Rua das flores, 1022 - São Paulo, SP",
+        textMessage: "Houve um cadastro de pessoa Física \n Informações: \n Nome: Fulano Pereira \n Data de Nascimento : 21/01/1992 \n CPF: 23.562.865-73 \n Endereço : Endereço informado, 1552 - Bombinhas, SC",
         inlineButtons: [
           { label: "Aprovar" },
           { label: "Rejeitar" },
@@ -31,17 +31,7 @@ export const chatSessionsMock = [
         user: { user_id: "1", userName: 'Karen' },
         timeStamp: 1612275839631,
       },
-      {
-        message_id: '1b',
-        inlineButtons: [
-          { label: "Detran-SP - Autenticidade. R$0,20" },
-          { label: "Receita Federal - Antecedentes CPF. R$0,20" },
-          { label: "Polícia Civil SP - Antecedentes. R$ 0,20" },
-          { label: "Ficha de crédito. R$ 0,20" }
-        ],
-        user: { user_id: "2", userName: 'KYC' },
-        timeStamp: 1612275839631,
-      }
+
     ]
   },
   {
@@ -54,10 +44,9 @@ export const chatSessionsMock = [
     unreadMessages: 1,
     lastMessage: {
       message_id: '2a',
-      textMessage: "Olá \n Meu nome é Karen, eu sou o robô assistente de cadastro da Intersowa OTC \n Vamos dar início ao seu processo de cadastramento?",
+      textMessage: "Ola, quer se cadastrar?",
       inlineButtons: [
         { label: "Fazer meu cadastro" },
-        { label: "Informações sobre a Intersowa OTC" },
       ],
       user: { user_id: "1", userName: 'Karen' },
       timeStamp: 1612275839631,
@@ -65,10 +54,9 @@ export const chatSessionsMock = [
     messages: [
       {
         message_id: '2a',
-        textMessage: "Olá \n Meu nome é Karen, eu sou o robô assistente de cadastro da Intersowa OTC \n Vamos dar início ao seu processo de cadastramento?",
+        textMessage: "Ola, quer se cadastrar?",
         inlineButtons: [
           { label: "Fazer meu cadastro", onClickAction: "openRegisteringForm" },
-          { label: "Informações sobre a Intersowa OTC" },
         ],
         user: { user_id: "1", userName: 'Karen' },
         timeStamp: 1612275839631,

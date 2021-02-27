@@ -52,7 +52,7 @@ describe('findLastMessageChatPreview', () => {
   test('expect that a text with \n gets cut on it and add ...', () => {
     const lastMessage = chatSessionsMock[1].lastMessage
     const foundMessage = findLastMessageChatPreview(lastMessage)
-    expect(foundMessage).toEqual('Olá ...')
+    expect(foundMessage).toEqual('Ola, quer ...')
   })
 
   test('expect that a text without \n renders 10 letters and add ...', () => {
@@ -65,6 +65,6 @@ describe('findLastMessageChatPreview', () => {
   test('expect that a message without text grabs first inlineButton label 10 letters  and add ...', () => {
     const chatSession = chatSessionsMock[0]
     const foundMessage = findLastMessageChatPreview(chatSession.lastMessage)
-    expect(foundMessage).toEqual("Detran-SP ...")
+    expect(foundMessage).toEqual("Houve um c...")
   })
 })
